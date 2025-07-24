@@ -1,2 +1,2 @@
-# Artistas-Medellin
+# NearBeats
 Proyecto Integrador 1

@@ -1,0 +1,31 @@
+.main-navbar{
+    height: 45px;
+    padding: 15px;
+}
+
+.nav-linkm{
+    color: black;
+}
+
+.nav-itemm{
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+/* A los nav-item que esten dentro de main-navbar*/
+.main-navbar .nav-itemm .nav-linkm:hover {
+    color: rgb(152, 22, 170); /* Cambia el color del texto */
+}
+ /*For nav-itemmine2SignUP*/
+ .main-navbar .nav-itemmSU {
+    background-color: rgb(249,172,255);
+    height: 44px;
+    width: 100px;
+    border-radius: 9%;
+    margin-right: 25px;
+}
+
+.main-navbar .nav-itemmSU .nav-linkm{
+    color: black;
+    text-align: center;
+}

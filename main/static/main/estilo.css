@@ -29,3 +29,34 @@
     color: black;
     text-align: center;
 }
+/*
+.align-items-centerm{
+    height: 500px;
+    /*padding-top: 15%;
+    text-align: center;
+}
+*/
+
+.align-items-centerm {
+    background-color: aqua;
+    display: flex; /* Activa flexbox */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    padding: 5%; /* Espaciado dinámico */
+    min-height: 300px; /* Altura mínima para pantallas pequeñas */
+    height: 80vh; /* Ocupa el 80% de la altura de la ventana */
+    text-align: center; /* Centra el texto horizontalmente */
+}
+
+
+.align-items-centerm h1{
+    font-size: 60px;
+}
+
+.parte1 {
+    color: rgb(152, 22, 170);
+}
+
+.parte2 {
+    color: rgb(214,130,227);
+}

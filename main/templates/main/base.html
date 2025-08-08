@@ -11,11 +11,11 @@
 </head>
 
 <body>
-    
+<!--Pendiente: cuando click, que quede en morado-->
     <nav class="main-navbar">
         <ul class="nav justify-content-end nav-underline nav-underlinem">
             <li class="nav-item nav-itemm">
-            <a class="nav-link nav-linkm" aria-current="page" href="#">Home</a>
+            <a class="nav-link nav-linkm" aria-current="page" href="">Home</a>
             </li>
             <li class="nav-item nav-itemm">
             <a class="nav-link nav-linkm" href="#">Library</a>
@@ -32,5 +32,9 @@
             </li>-->
         </ul>
     </nav>
+
+    <!-- Bloque para contenido dinámico -->
+    {% block content %}
+    {% endblock %}
 </body>
 </html>

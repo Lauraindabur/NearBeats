@@ -43,3 +43,9 @@ def home(request):
     # Show the home page after login or just as a landing page
     return render(request, 'usuarios/home.html')
 
+def logout_usuario(request):
+    logout(request)
+    messages.success(request, "You have been logged out.")
+    return redirect('login')
+
+

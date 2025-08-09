@@ -2,18 +2,29 @@
 <html lang="es"></html>
 
 {% block content %}
-<div class="d-flex justify-content-center align-items-center align-items-centerm">
-    <h1 class="parte1">Find a Near</h1>
+<div class="main-block">
+  <div class="main-text">
+    <div class="main-titles">
+     <h1 class="parte1">Find a Near</h1>
     <h1 class="parte2">Beat</h1>
-</div>
-<nav class="navbar bg-body-tertiary">
-    <div class="container-fluid">
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
     </div>
-  </nav>
-
+  </div>
+    <div class="dropdown">
+    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      Filter
+    </a>
+    <!-- Filter no deberia ser un dropdown, muchos dropdowns apilados, deberia ser un
+    boton que muestre cuadro con diferentes dropdown -->
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="#">Action</a></li>
+      <li><a class="dropdown-item" href="#">Another action</a></li>
+      <li><hr class="dropdown-divider"></li>
+      <li><a class="dropdown-item" href="#">Something else here</a></li>
+    </ul>
+  </div>
+  </div>
+ 
+ 
+</div>
 {% endblock %}
   </html>

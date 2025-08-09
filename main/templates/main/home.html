@@ -9,22 +9,68 @@
     <h1 class="parte2">Beat</h1>
     </div>
   </div>
-    <div class="dropdown">
-    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+  <!--PARTE DE BOTON FILTER-->
+  <div class="canva-boton-filter">
+    <!-- <a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+  Filter
+    </a> -->
+    <div class="d-grid gap-2 col-6 mx-auto"> <!--Para aplicar estilo de BS que
+    centra el boton
+    El btn-secondaru-->
+      <button class="btn btnm" type="button" data-bs-toggle="offcanvas"
+      data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
       Filter
-    </a>
-    <!-- Filter no deberia ser un dropdown, muchos dropdowns apilados, deberia ser un
-    boton que muestre cuadro con diferentes dropdown -->
-    <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="#">Action</a></li>
-      <li><a class="dropdown-item" href="#">Another action</a></li>
-      <li><hr class="dropdown-divider"></li>
-      <li><a class="dropdown-item" href="#">Something else here</a></li>
-    </ul>
+      </button>
+    </div>
+    
+    <!--
+    data-bs-toggle="offcanvas" -> indica a BS que ese boton activa un
+    componenete "ofcanvas", que es el panel lateral.
+    data-bs-target="#offcanvasExample" <- especifica el id del offcanvas que se
+    debe mostrar al hacer click al botón.
+    -->
+
+    <div class="offcanvas offcanvasm" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+      <div class="offcanvas-header offcanvas-headerm">
+        <h5 class="offcanvas-title offcanvas-titlem" id="offcanvasExampleLabel">Filter by</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <!-- <div class="offcanvas-body">
+        <div>
+          Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+        </div> -->
+        <div class="dropdown mt-3 dropdownm">
+          <button class="btn dropdown-toggle dropdown-togglem" type="button" data-bs-toggle="dropdown">
+            Emoción
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+          <button class="btn dropdown-toggle dropdown-togglem" type="button" data-bs-toggle="dropdown">
+            Año de publicación
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+          <button class="btn dropdown-toggle dropdown-togglem" type="button" data-bs-toggle="dropdown">
+            Género
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
-  </div>
+  
  
  
 </div>
 {% endblock %}
-  </html>
+</html>

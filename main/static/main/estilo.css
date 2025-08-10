@@ -25,7 +25,7 @@
 }
  /*For nav-itemmine2SignUP*/
  .main-navbar .nav-itemmSU {
-    background-color: rgb(249,172,255);
+    background-color: rgb(249,172,255); 
     height: 44px;
     width: 100px;
     border-radius: 9%;
@@ -122,4 +122,41 @@
     color: rgba(117, 13, 131, 0.664);
     font-weight: 500;
     /* width: 40vh; */
+}
+
+.btn.dropdown-togglem:hover,
+.btn.dropdown-togglem:focus,
+.btn.dropdown-togglem:active,
+.btn.dropdown-togglem.show {
+    color: rgba(117, 13, 131, 0.664) !important;
+    border-color: rgb(202,196,208) !important;
+    background-color: rgb(220, 192, 237) !important;
+    box-shadow: none !important;
+}
+
+.dropdown-menum {
+    width: 54vh;
+    text-align: center;
+} 
+
+.dropdown-itemm:active, .dropdown-itemm:focus {
+    background-color: #c0c0c0e3;
+    color:black; 
+} 
+
+.offcanvasm .form-checkm {
+    display: flex;
+    align-items: center; /*Alinea en eje y*/
+    margin-left: 19vh;
+}
+
+.form-check-labelm {
+    margin: 1vh;
+    font-weight: 500;
+}
+
+.form-check-input:checked {
+    background-color: #a23bb9; 
+    border-color: #a23bb9;
+    box-shadow: 0 0 0 0.25rem rgba(162, 59, 185, 0.25);
 }

@@ -24,9 +24,12 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', busqueda_views.home),  # Include the URLs from the busqueda app
-    
+    path('', busqueda_views.home, name='home'),  # Include the URLs from the busqueda app
+    path('buscar/', busqueda_views.base, name='buscar'),
 
 ]
+
+
+
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

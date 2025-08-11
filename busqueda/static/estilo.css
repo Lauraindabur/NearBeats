@@ -1,0 +1,116 @@
+.main-navbar {
+    /*background-color: aqua;*/
+    /*min-height: 45px; /* Altura mínima para pantallas pequeñas */
+    height: 12vh;      /* Ocupa el 8% de la altura de la ventana */
+    padding: 20px 15px; /* Más espacio arriba y abajo */
+}
+
+.nav-linkm{
+    color: black;
+    font-size:medium;
+}
+
+.nav-itemm{
+    /*min-height: 6vh;
+    min-width: 10vh;*/
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+/* A los nav-item que esten dentro de main-navbar*/
+.main-navbar .nav-itemm .nav-linkm:hover {
+    color: rgb(152, 22, 170); /* Cambia el color del texto */
+}
+ /*For nav-itemmine2SignUP*/
+ .main-navbar .nav-itemmSU {
+    background-color: rgb(249,172,255);
+    height: 44px;
+    width: 100px;
+    border-radius: 9%;
+    margin-right: 25px;
+}
+
+.main-navbar .nav-itemmSU .nav-linkm{
+    color:#7b1789;
+    text-align: center;
+}
+
+
+
+.nav-itemmSU.active {
+    background-color: rgb(242, 119, 251);
+    color: #9816aa !important;
+    height: 44px;
+    width: 100px;
+    border-radius: 9%;
+    margin-right: 25px;
+}
+
+
+.btn-search {
+  background-color: rgb(242, 119, 251);
+  border-color: #F3ACFF;
+  color: #fff;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-search:hover {
+  background-color: #a000b8;
+  box-shadow: 0 5px 15px rgba(208, 16, 241, 0.6);
+  color: #fff;
+}
+
+.form-control {
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.form-control:focus {
+  box-shadow: 0 0 8px 2px #e7abf1;
+  border-color: #e7aff1;
+  outline: none;
+}
+
+    
+
+/*
+.main-block{
+    background-color: brown;
+}
+*/
+
+.main-text {
+    /*Con este manejamos que el texto aparezca al fondo del div, para lo cual
+    necesitamos usar flex, con el cual podemos manejar al padre y a sus hijos,
+    pero ambos tiene caracteristicas diferentes
+      - el padre (.main-text) debe estar centrado y al fondo del contenedor
+      - los hijos (h1) deben estar alineados, no uno debajo del otro
+        Como no comparten caracteristicas, deben estar en contenedores
+        diferentes, y el flex del padre solo afecta a sus hijos directos, no a
+        sus nietos, por lo que no afecta a los h1.
+    */
+    /*background-color: blueviolet;*/
+    height: 45vh;
+    display: flex; 
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.main-titles {
+    display: flex;
+}
+
+.main-titles h1 {
+    font-size: 10vh;
+    margin: 0;
+}
+
+.parte1 {
+    color: rgb(152, 22, 170);
+}
+
+.parte2 {
+    color: rgb(214,130,227);
+}
+
+

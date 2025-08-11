@@ -1,179 +1,30 @@
-<!DOCTYPE html>
-<html lang="es">
-<head> <!-- todoas los datos librerias -->
-  <meta charset="UTF-8">
-  <title>TEST 1</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- lo hace responsive -->
+{% extends 'main/base.html'%} <!--Heredamos el contenido de base.html (es como una herencia en POO), y si queremos lo sobreescribimos.-->
+<html lang="es"></html>
 
-  <!-- Bootstrap 5 -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome unsertar iconos visuales sin imagenes -->
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
-  <style>  /* partes del css */
-
-    /* Estilos mejorados para los botones de navegación */
-    .nav-link {
-      color: #4a148c; /* color gris por defecto */
-      font-weight: 500;
-      transition: all 0.3s ease;
-      border-radius: 0.5rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* Estilo para el botón de búsqueda */
-    .btn-search {
-      background-color: #F3ACFF; /* color morado como tu paleta */
-      border-color: #F3ACFF;
-      color: #4a148c; /* color gris */
-    }
-
-    .nav-link:hover {
-      background: linear-gradient(135deg, #f7c7ff, #F3ACFF) ;
-      color: white ;
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(224, 64, 251, 0.3);
-      border-radius: 0.5rem;
-    }
-   
-    .nav-link::before {    
-      content: '';
-      position: absolute;   /* Efecto adicional para el hover */
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transition: left 0.9s;
-    }
-
-    .nav-link:hover::before {
-      left: 100%;
-    }
-     /* Estilo para el botón activo (página actual) */
-    .nav-link.active {
-      background: linear-gradient(135deg, #f7c7ff, #F3ACFF);
-      color: white;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(224, 64, 251, 0.3);
-      border-radius: 0.5rem;
-    }
-
-    .nav-link.active::before {
-      left: 100%;
-    }   
-    
-  </style>
-</head>
-<body>
-
-<nav class="navbar navbar-expand-lg navbar-white bg-white navbar-custom">  <!-- esta viene de bootstrap -->
-  <div class="container">
-
-    <!-- Boton para cunado se maneje responsive -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-            data-bs-target="#navbarContent" aria-controls="navbarContent"
-            aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+{% block content %}
+<div class="main-block">
+  <div class="main-text">
+    <div class="main-titles">
+     <h1 class="parte1">Find a Near</h1>
+    <h1 class="parte2">Beat</h1>
+    </div>
+  </div>
+    <div class="dropdown">
+    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      Filter
+    </a>
+    <!-- Filter no deberia ser un dropdown, muchos dropdowns apilados, deberia ser un
+    boton que muestre cuadro con diferentes dropdown -->
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="#">Action</a></li>
+      <li><a class="dropdown-item" href="#">Another action</a></li>
+      <li><hr class="dropdown-divider"></li>
+      <li><a class="dropdown-item" href="#">Something else here</a></li>
+    </ul>
+  </div>
+  </div>
  
-
-      <!-- Search -->
-    <form class="d-flex align-items-center w-50 form-search" method="GET" action="/ ">
-        <div class="input-group">
-        <!-- Botón desplegable para el filtro -->
-            <select class="form-select" name="filtro" style="max-width: 150px; background-color: #f3e5f5">
-                <option value="">+</option>
-                <option value="titulo" {% if filtro == "titulo" %}selected{% endif %}>Título</option>
-                <option value="artista" {% if filtro == "artista" %}selected{% endif %}>Artista</option>
-                <option value="genero" {% if filtro == "genero" %}selected{% endif %}>Género</option>
-                <option value="año_publicacion" {% if filtro == "año_publicacion" %}selected{% endif %}>Año de Publicación</option> 
-                <option value="emocion" {% if filtro == "emocion" %}selected{% endif %}>Emoción</option>
-                </select>
-
-                <!-- Campo de texto de búsqueda -->
-                <input type="search" class="form-control" name="q" id="busqueda" placeholder="¿Qué quieres escuchar hoy?" value="{{ searchTerm }}">
-
-
-                <!-- Botón de búsqueda -->
-                <button type="submit" class="btn btn-search">
-                    <i class="fas fa-search"></i>
-                </button>
-        </div>
-    </form>
-
-        
-
-<!-- Grupo de botones: Home, Biblioteca, Log in -->
-    <ul class="navbar-nav mx-auto d-flex flex-row gap-4">
-        <li class="nav-item">
-            <a class="nav-link px-3 py-2 {% if request.path == '/' %}active{% endif %}" href="/"><i class="fas fa-home pe-2"></i>Home</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link px-3 py-2 {% if request.path == 'biblioteca' %}active{% endif %}" href="#!">
-            <i class="fas fa-bookmark pe-2"></i>Biblioteca
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link px-3 py-2 rounded {% if request.path == 'login' %}active{% endif %}" href="#!"><i class="fas fa-sign-in-alt pe-2"></i>Log in</a>
-        </li>
-    </ul>
-
-    <!-- Botón Sign Up alineado a la derecha -->
-    <ul class="navbar-nav ms-auto">
-    <li class="nav-item">
-        <a class="nav-link fw-bold text-nowrap"
-        href="#!"
-        style="
-            background-color: #F3ACFF;
-            border-radius: 3px;
-            min-width: 120px;
-            color: #4a148c;
-            text-align: center;
-        "
-        ">
-        <i class="fas fa-user pe-2"></i> Sign Up 
-        </a>
-    </li>
-    </ul>
-
-
-
-    </div>
-
-    </div> <!-- Este cierra el <div class="container"> -->
-</nav>
-
-<div class="container mt-4">
-  {% if canciones %}
-    <div class="row">
-      {% for cancion in canciones %}
-        <div class="col-md-4 mb-3">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">{{ cancion.titulo }}</h5>
-              <p class="card-text">Artista: {{ cancion.artista }}</p>
-              <p class="card-text">Género: {{ cancion.genero }}</p>
-              <p class="card-text">Año de Publicación: {{ cancion.año_publicacion }}</p>
-              <p class="card-text">Emoción: {{ cancion.emocion }}</p>
-            </div>
-          </div>
-        </div>
-      {% endfor %}
-    </div>
-  {% else %}
-    <p class="text-center">No se encontraron canciones, prueba cambiar de filtro!</p>
-  {% endif %}
+ 
 </div>
-
-
-
-    <!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
-
-</script>
-
-    </script>
-    </body>
-    </html>
+{% endblock %}
+  </html>

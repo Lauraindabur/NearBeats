@@ -35,4 +35,4 @@ def base(request):
     return render(request, 'busqueda/base.html',{'canciones': cancion, 'searchTerm': searchTerm, 'filterOption': filterOption})  # Le pasamos el request y llamamos a la template base.html 
     
 def home(request):
-    return render(request, "busqueda/home.html")  # Asegúrate de que el archivo home.html existe en la carpeta templates/busqueda
+    return render(request, "home.html")  

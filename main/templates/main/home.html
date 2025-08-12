@@ -33,10 +33,12 @@
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div class="offcanvas-body offcanvas-bodym">
-        <!--
-        <div>
-          Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
-        </div> -->
+        <!--method=get le indicamos al navegador que los parametros se pasarán
+        por la URL. 
+        Con <form> agrupamos los campos que queremos evial al
+        servidor cuando se clickee boton. 
+        Con action={} indicamos a qué ruta se enviarán los datos, la cual debe
+        estar definida en urls.py-->
         <form method="get" action="{% url 'filtrar_sugerencias' %}">
           
           <div class="dropdown mt-3 dropdownm">
@@ -70,14 +72,14 @@
               <li><a class="dropdown-item dropdown-itemm" href="#" onclick="setFiltro('created_atInput','2010')" >2010</a></li>
               <li><a class="dropdown-item dropdown-itemm" href="#" onclick="setFiltro('created_atInput','2020')" >2020</a></li>
             </ul>
-            <input type="hidden" name="moods" id="moodsInput">
+            <input type="hidden" name="genre" id="moodsInput">
             <button class="btn dropdown-toggle dropdown-togglem" type="button" data-bs-toggle="dropdown">
               Género
             </button>
             <ul class="dropdown-menu dropdown-menum">
-              <li><a class="dropdown-item dropdown-itemm" href="#" onclick="setFiltro('moodsInput','pop')">Pop</a></li>
-              <li><a class="dropdown-item dropdown-itemm" href="#" onclick="setFiltro('moodsInput','rock')">Rock</a></li>
-              <li><a class="dropdown-item dropdown-itemm" href="#" onclick="setFiltro('moodsInput','merengue')">Merengue</a></li>
+              <li><a class="dropdown-item dropdown-itemm" href="#" onclick="setFiltro('genreInput','pop')">Pop</a></li>
+              <li><a class="dropdown-item dropdown-itemm" href="#" onclick="setFiltro('genreInput','rock')">Rock</a></li>
+              <li><a class="dropdown-item dropdown-itemm" href="#" onclick="setFiltro('genreInput','merengue')">Merengue</a></li>
             </ul>
           </div>
           <div class="form-check form-checkm">
@@ -96,6 +98,14 @@
       </div>
     </div>
   </div>
+  <!-- Aqui obtendremos los elementos que cumplen filtro -->
+    <ul>
+      {% for song in songs %}
+      <li>{{song.title}} - ${{song.artist_name}}</li>
+      {% empty %}
+          <li>No hay productos disponibles.</li>
+      {% endfor %}
+    </ul>
 </div>
 
 <!-- JS functions -->

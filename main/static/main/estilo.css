@@ -72,11 +72,26 @@
   outline: none;
 }
 
+.mb-2 {
+  margin-left: 19px;
+}
+
+.btn-morado {
+  color:  rgb(152, 22, 170); 
+  border-color:  rgb(152, 22, 170);
+}
+
+.btn-morado:hover, .btn-morado:focus {
+  color: #fff;
+  background-color:#e7abf1;
+  border-color: #e7abf1;
+}
+
+
+
 
 /*-------------------PARTE DE HOME.HTML*/
-.main-block{
-    /*background-color: brown;*/
-}
+
 
 .main-text {
     /*Con este manejamos que el texto aparezca al fondo del div, para lo cual

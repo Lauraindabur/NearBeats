@@ -1,4 +1,21 @@
 // Seleccionamos el dropdown y el input oculto
+document.addEventListener('DOMContentLoaded', function () {
+  const offcanvas = document.getElementById('emocionesOffcanvas');
+  const emotionButtons = offcanvas.querySelectorAll('.list-group-item');
+  const searchInput = document.getElementById('busqueda');
+
+  emotionButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const emotion = btn.getAttribute('data-emotion');
+      searchInput.value = emotion;
+      // Cerrar offcanvas
+      const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvas);
+      bsOffcanvas.hide();
+    });
+  });
+});
+
+
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form.form-search');
     const input = document.getElementById('busqueda');

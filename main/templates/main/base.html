@@ -41,6 +41,7 @@
                 </div>
                 <input type="hidden" name="filtro" id="inputFiltro" value="{{ filterOption }}">
 
+
                 <!-- Campo de texto de búsqueda -->
                 <input type="search" class="form-control" name="q" id="busqueda" placeholder="¿Qué quieres escuchar hoy?" value="{{ searchTerm }}">
 
@@ -50,6 +51,7 @@
                     <i class="fas fa-search"></i>
                 </button>
         </div>
+        
     </form>
 
         <ul class="nav justify-content-end nav-underline nav-underlinem">
@@ -70,16 +72,26 @@
             <a class="nav-link disabled" aria-disabled="true">Disabled</a>
             </li>-->
         </ul>
+    
     </nav>
 
+    <div class="mb-2">
+        <button class="btn btn-outline-primary btn-morado" type="button" data-bs-toggle="offcanvas" data-bs-target="#emocionesOffcanvas" aria-controls="emocionesOffcanvas">
+            ¿No sabes qué emoción buscar?
+        </button>
+     </div>
+
+<!-- Contador de mensajes encontrados según busqueda -->
 {% if searchTerm %}
-  <div id="mensaje-resultados" class="alert {% if resultados_count > 0 %}alert-info{% else %}alert-warning{% endif %} my-3" role="alert">
-    {% if resultados_count > 0 %}
-      Se encontraron {{ resultados_count }} resultados para "{{ searchTerm }}"
-    {% else %}
-      No se encontraron resultados para "{{ searchTerm }}"
-    {% endif %}
-  </div>
+  {% with resultados_count=results|length %}
+    <div id="mensaje-resultados" class="alert {% if resultados_count > 0 %}alert-info{% else %}alert-warning{% endif %} my-3" role="alert">
+      {% if resultados_count > 0 %}
+        Se encontraron {{ resultados_count }} resultados para "{{ searchTerm }}"
+      {% else %}
+        No se encontraron resultados para "{{ searchTerm }}"
+      {% endif %}
+    </div>
+  {% endwith %}
 {% endif %}
 
 
@@ -105,6 +117,27 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+<!-- Offcanvas/lista para seleccionar algunos moods -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="emocionesOffcanvas" aria-labelledby="emocionesOffcanvasLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="emocionesOffcanvasLabel">Elige una emoción</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="list-group">
+      <button type="button" class="list-group-item list-group-item-action" data-emotion="Happy">😊 Happy</button>
+      <button type="button" class="list-group-item list-group-item-action" data-emotion="Sad">😢 Sad</button>
+      <button type="button" class="list-group-item list-group-item-action" data-emotion="Energetic">⚡ Energetic</button>
+      <button type="button" class="list-group-item list-group-item-action" data-emotion="Calm">🌿 Calm</button>
+      <button type="button" class="list-group-item list-group-item-action" data-emotion="Romantic">❤️ Romantic</button>
+      <button type="button" class="list-group-item list-group-item-action" data-emotion="Melancholic">🌅 Melancholic</button>
+      <button type="button" class="list-group-item list-group-item-action" data-emotion="Epic">😰 Epic </button>
+      <button type="button" class="list-group-item list-group-item-action" data-emotion="Chill">😌 Chill</button>
+      <button type="button" class="list-group-item list-group-item-action" data-emotion="empowered">💪 Empowered</button>
+
+    </div>
+  </div>
+</div>
 
 
 </body>

@@ -1,0 +1,111 @@
+<!--Base.html contiene lo que será común en todos mis modulos, por ejm: la barra de menu y todo lo que contiene, el fondo.-->
+{% load static %} <!--Porque usaremos archivos dinamicos (como css, imagenes,etc), es decir, que no cambian con la logica del servidor, sino que siempre se mantienen.-->
+<html lang="es">
+<!--Acá va la metadata-->
+<head> 
+    <meta charset="UTF-8">
+    <title>NearBeats</title>
+    <!--Usamos bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'main/estilo.css' %}"> <!--Conectamos a estilo.css-->
+    <script src="{% static 'main/search.js' %}"></script>
+</head>
+
+<body>
+<!--Pendiente: cuando click, que quede en morado-->
+    <nav class="main-navbar d-flex justify-content-between align-items-center" style="padding-left: 20px;"> <!--Se adapata al nav apra unir los botones y el form -->
+
+    <form class="d-flex align-items-center w-50 form-search" method="GET" action="{% url 'buscar' %}">
+        <div class="input-group">
+      <!-- Dropdown visual para el filtro -->
+                <div class="btn-group me-2">
+                                <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownFiltro" style="background-color: #f3e5f5; min-width: 120px;">
+                                    <span id="filtroSeleccionado">
+                                        {% if filterOption == "titulo" %}Título
+                                        {% elif filterOption == "artista" %}Artista
+                                        {% elif filterOption == "genero" %}Género
+                                        {% elif filterOption == "año_publicacion" %}Año de Publicación
+                                        {% elif filterOption == "emocion" %}Emoción
+                                        {% else %}Todo{% endif %}
+                                    </span>
+                                </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#" data-value="">Todo</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="titulo">Título</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="artista">Artista</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="genero">Género</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="año_publicacion">Año de Publicación</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="emocion">Emoción</a></li>
+                    </ul>
+                </div>
+                <input type="hidden" name="filtro" id="inputFiltro" value="{{ filterOption }}">
+
+                <!-- Campo de texto de búsqueda -->
+                <input type="search" class="form-control" name="q" id="busqueda" placeholder="¿Qué quieres escuchar hoy?" value="{{ searchTerm }}">
+
+
+                <!-- Botón de búsqueda -->
+                <button type="submit" class="btn btn-search">
+                    <i class="fas fa-search"></i>
+                </button>
+        </div>
+    </form>
+
+        <ul class="nav justify-content-end nav-underline nav-underlinem">
+            <li class="nav-item nav-itemm nav-itemmHome">
+            <a class="nav-link nav-linkm {% if request.path == '/' %}active{% endif %}" aria-current="page" href="{% url 'home' %}">Home</a>
+            </li>
+            <li class="nav-item nav-itemm">
+            <a class="nav-link nav-linkm {% if request.path == '/library' %}active{% endif %}" href="#!">Library</a>
+            </li>
+            <li class="nav-item nav-itemm">
+            <a class="nav-link nav-linkm {% if request.path == '/login' %}active{% endif %}" href="#!">Log in</a>
+            </li>
+            <li class="nav-item nav-itemmSU">
+                <a class="nav-link nav-linkm {% if request.path == '/signup' %}active{% endif %}" href="#!">Sign up</a>
+            </li>
+            <!--
+            <li class="nav-item">
+            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+            </li>-->
+        </ul>
+    </nav>
+
+{% if searchTerm %}
+  <div id="mensaje-resultados" class="alert {% if resultados_count > 0 %}alert-info{% else %}alert-warning{% endif %} my-3" role="alert">
+    {% if resultados_count > 0 %}
+      Se encontraron {{ resultados_count }} resultados para "{{ searchTerm }}"
+    {% else %}
+      No se encontraron resultados para "{{ searchTerm }}"
+    {% endif %}
+  </div>
+{% endif %}
+
+
+
+
+   <!-- Bloque para contenido dinámico -->
+    {% block content %}
+    {% endblock %}
+
+
+<script>
+// Script para manejar el dropdown de filtro y actualizar el input oculto
+document.addEventListener('DOMContentLoaded', function() {
+    var dropdownItems = document.querySelectorAll('.dropdown-menu .dropdown-item');
+    var filtroSeleccionado = document.getElementById('filtroSeleccionado');
+    var inputFiltro = document.getElementById('inputFiltro');
+    dropdownItems.forEach(function(item) {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            filtroSeleccionado.textContent = item.textContent;
+            inputFiltro.value = item.getAttribute('data-value');
+        });
+    });
+});
+</script>
+
+
+</body>
+</html>

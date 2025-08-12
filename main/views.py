@@ -9,3 +9,6 @@ def base(request):
     
 def home(request):
     return render(request, "main/home.html")  # Asegúrate de que el archivo home.html existe en la carpeta templates/main
+
+def filtrar_sugerencias(request):
+    pass

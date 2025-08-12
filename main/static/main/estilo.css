@@ -135,7 +135,7 @@
 }
 
 .dropdown-menum {
-    width: 54vh;
+    width: 47vh;
     text-align: center;
 } 
 
@@ -159,4 +159,22 @@
     background-color: #a23bb9; 
     border-color: #a23bb9;
     box-shadow: 0 0 0 0.25rem rgba(162, 59, 185, 0.25);
+}
+
+.btndiv { /*Para que sus hijos se centren*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btndiv .btnm {
+    background-color: #a23bb9;
+    color: white;
+}
+
+.btndiv .btnm:hover, .btndiv .btnm:focus,
+.btndiv .btnm:active, .btndiv .btnm.show{
+    background-color: #a23bb9;
+    color: white;
+    border-color: black;
 }

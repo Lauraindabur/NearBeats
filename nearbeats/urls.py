@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',mainViews.home), #debería poder acceder a la base directamente? no
     #path('home/',mainViews.home),
+    path('filtrar/', mainViews.filtrar_sugerencias, name='filtrar_sugerencias'),
 ]

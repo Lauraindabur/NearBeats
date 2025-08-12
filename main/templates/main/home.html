@@ -32,52 +32,78 @@
         <h5 class="offcanvas-title offcanvas-titlem" id="offcanvasExampleLabel">Filter by</h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
-      <div class="offcanvas-body">
+      <div class="offcanvas-body offcanvas-bodym">
         <!--
         <div>
           Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
         </div> -->
-        <div class="dropdown mt-3 dropdownm">
-          <button class="btn dropdown-toggle dropdown-togglem" type="button" data-bs-toggle="dropdown">
-            Emoción
-          </button>
-          <ul class="dropdown-menu dropdown-menum">
-            <li><a class="dropdown-item dropdown-itemm" href="#">Tristeza</a></li>
-            <li><a class="dropdown-item dropdown-itemm" href="#">Ira</a></li>
-            <li><a class="dropdown-item dropdown-itemm" href="#">Alegria</a></li>
-          </ul>
-          <button class="btn dropdown-toggle dropdown-togglem" type="button" data-bs-toggle="dropdown">
-            Año de publicación
-          </button>
-          <ul class="dropdown-menu dropdown-menum">
-            <li><a class="dropdown-item dropdown-itemm" href="#">2000</a></li>
-            <li><a class="dropdown-item dropdown-itemm" href="#">2010</a></li>
-            <li><a class="dropdown-item dropdown-itemm" href="#">2020</a></li>
-          </ul>
-          <button class="btn dropdown-toggle dropdown-togglem" type="button" data-bs-toggle="dropdown">
-            Género
-          </button>
-          <ul class="dropdown-menu dropdown-menum">
-            <li><a class="dropdown-item dropdown-itemm" href="#">Pop</a></li>
-            <li><a class="dropdown-item dropdown-itemm" href="#">Rock</a></li>
-            <li><a class="dropdown-item dropdown-itemm" href="#">Merengue</a></li>
-          </ul>
+        <form method="get" action="{% url 'filtrar_sugerencias' %}">
+          
+          <div class="dropdown mt-3 dropdownm">
+            <!--Para decirle a web que estamos esperando un input de ese elemento-->
+            <input type="hidden" name="emocion" id="emocionInput">
+            <button class="btn dropdown-toggle dropdown-togglem" type="button" data-bs-toggle="dropdown">
+              Emoción
+            </button>
+            <ul class="dropdown-menu dropdown-menum">
+              <!-- Explicacion:
+               Cada dropdown tendrá un input oculto, el cual enviará a una
+               función de JS (setfiltro" (llamada cuando se da click a un valor
+               del dropdown) los valores seleccionados.
+               Usamos JS para permitir seleccionar multiples dropdowns.
+               Lo que hacemos es, al onclick, llamamos a la funcion y le pasamos
+               el valor seleccionado, lo que hace esta es ir "creando" un link
+               (request) que contenga todos los filtros, para poder acceder a
+               ellos en views.py con GET.
+               ejm de formateada de funcion -> /productos/?emocion=sad&created_at=2000
+               -->
+              <li><a class="dropdown-item dropdown-itemm" href="#" onclick="setFiltro('emocionInput','sad')">Tristeza</a></li>
+              <li><a class="dropdown-item dropdown-itemm" href="#" onclick="setFiltro('emocionInput','angry')">Ira</a></li>
+              <li><a class="dropdown-item dropdown-itemm" href="#" onclick="setFiltro('emocionInput','happy')">Alegria</a></li>
+            </ul>
+            <input type="hidden" name="created_at" id="created_atInput">
+            <button class="btn dropdown-toggle dropdown-togglem" type="button" data-bs-toggle="dropdown">
+              Año de publicación
+            </button>
+            <ul class="dropdown-menu dropdown-menum">
+              <li><a class="dropdown-item dropdown-itemm" href="#" onclick="setFiltro('created_atInput','2000')" >2000</a></li>
+              <li><a class="dropdown-item dropdown-itemm" href="#" onclick="setFiltro('created_atInput','2010')" >2010</a></li>
+              <li><a class="dropdown-item dropdown-itemm" href="#" onclick="setFiltro('created_atInput','2020')" >2020</a></li>
+            </ul>
+            <input type="hidden" name="moods" id="moodsInput">
+            <button class="btn dropdown-toggle dropdown-togglem" type="button" data-bs-toggle="dropdown">
+              Género
+            </button>
+            <ul class="dropdown-menu dropdown-menum">
+              <li><a class="dropdown-item dropdown-itemm" href="#" onclick="setFiltro('moodsInput','pop')">Pop</a></li>
+              <li><a class="dropdown-item dropdown-itemm" href="#" onclick="setFiltro('moodsInput','rock')">Rock</a></li>
+              <li><a class="dropdown-item dropdown-itemm" href="#" onclick="setFiltro('moodsInput','merengue')">Merengue</a></li>
+            </ul>
+          </div>
+          <div class="form-check form-checkm">
+            <input type="hidden" name="random" id="randomInput">
+            <input class="form-check-input form-check-inputm" type="radio"
+            name="flexRadioDefault" id="flexRadioDefault1"  onclick="setFiltro('randomInput', '1')">
+            <label class="form-check-label form-check-labelm " for="flexRadioDefault1">
+            Random
+            </label>
+          </div>
+          <div class="btndiv">
+            <!--El boton no deberia ir dentro del canvas, sino al lado de filter-->
+            <button type="submit" class="btn btnm">Buscar</button> 
         </div>
-        <div class="form-check form-checkm">
-          <input class="form-check-input form-check-inputm" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-          <label class="form-check-label form-check-labelm " for="flexRadioDefault1">
-          Random
-          </label>
-        </div>
-        <!--El boton no deberia ir dentro del canvas, sino al lado de filter-->
-        <button type="button" class="btn">Primary</button>
+        </form>
       </div>
     </div>
   </div>
-  
-  
- 
- 
 </div>
+
+<!-- JS functions -->
+<script>
+  // Si ponemos random, no se limpierá el request, pero eso lo manejaremos en la funcion filtrar_sugerencias
+  function setFiltro(inputId, valor) {
+    document.getElementById(inputId).value = valor;
+  }
+</script>
 {% endblock %}
 </html>

@@ -102,12 +102,12 @@
     <!-- <ul> -->
       <!-- {% if songs|length > 1 %} -->
         {% for song in songs %}
-        <div class="card mb-3" style="max-width: 70vh;">
-          <div class="row g-0">
-            <div class="col-md-4">
+        <div class="card mb-3 cardm" style="max-width: 70vh;">
+          <div class="row g-0 rowm">
+            <div class="col-md-4 col4m">
               <img src="{{ song.cover_image.url }}" class="img-fluid rounded-start" alt="...">
             </div>
-            <div class="col-md-8">
+            <div class="col-md-8 col8m">
               <div class="card-body">
                 <h5 class="card-title">{{ song.title }}</h5>
                 <p class="card-text"> {{ song.artist_name}}</p>

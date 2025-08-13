@@ -18,9 +18,14 @@ from django.contrib import admin
 from django.urls import path
 from main import views as mainViews #Importamos todas las vistas que se creen, accediendo a ellas con mainViems.tatata
 
+from django.conf.urls.static import static
+from django.conf import settings
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',mainViews.home), #debería poder acceder a la base directamente? no
     #path('home/',mainViews.home),
     path('filtrar/', mainViews.filtrar_sugerencias, name='filtrar_sugerencias'),
 ]
+
+urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

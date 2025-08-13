@@ -37,7 +37,7 @@ def filtrar_sugerencias(request):
             songs = songs.filter(genre=genre)
     
     #Retornamos el diccionario con los valores
-    return render(request, "home.html", {"songs": songs})
+    return render(request, 'main/home.html', {'songs': songs})
     # if (request.GET.get("random") == 1):
     #     pass
     # else:

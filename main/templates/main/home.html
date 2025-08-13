@@ -100,7 +100,7 @@
   </div>
   <!-- Aqui obtendremos los elementos que cumplen filtro -->
     <!-- <ul> -->
-      {% if songs|length > 1 %}
+      <!-- {% if songs|length > 1 %} -->
         {% for song in songs %}
         <div class="card mb-3" style="max-width: 70vh;">
           <div class="row g-0">
@@ -118,11 +118,29 @@
         </div>
         <!-- <li>{{song.title}} - {{song.artist_name}}</li> -->
         {% empty %}
-            <li>No hay productos disponibles.</li>
+            <!-- <li>No hay productos disponibles.</li> -->
+            <div class="card text-center" style="max-width: 400px; margin: 20px auto;">
+              <div class="card-body">
+                <p class="card-text">No hay canciones que cumplan esa condición.</p>
+              </div>
+            </div>
         {% endfor %}
-      {% else %}
-        <li>{{songs.title}} - {{songs.artist_name}}</li>
-      {% endif %}
+      <!-- {% else %}
+        <div class="card mb-3" style="max-width: 70vh;">
+            <div class="row g-0">
+              <div class="col-md-4">
+                <img src="{{ songs.cover_image.url }}" class="img-fluid rounded-start" alt="...">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">{{ songs.title }}</h5>
+                  <p class="card-text"> {{ songs.artist_name}}</p>
+                  <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                </div>
+              </div>
+            </div>
+          </div>
+      {% endif %} -->
       <!-- </ul> -->
 </div>
 

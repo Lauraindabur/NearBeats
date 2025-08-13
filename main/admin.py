@@ -5,5 +5,3 @@ from .models import Song
 
 #Para poder garantizar quee el modelo se incluya en la interfaz de administración
 admin.site.register(Song)
-
-#Quede en punto 7

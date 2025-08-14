@@ -40,6 +40,7 @@
         <form method="get" action="{% url 'filtrar_sugerencias' %}" id="filterForm">
           
           <div class="dropdown mt-3 dropdownm">
+            <!-- --------EMOTION--------- -->
             <!--Para decirle a web que estamos esperando un input de ese elemento-->
             <input type="hidden" name="emotion" id="emotionInput">
             <button class="btn dropdown-toggle dropdown-togglem" type="button" data-bs-toggle="dropdown">
@@ -61,6 +62,8 @@
               <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('emotionInput','angry', event)">Ira</a></li>
               <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('emotionInput','happy', event)">Alegria</a></li>
             </ul>
+
+             <!-- --------CREATED_AT--------- -->
             <input type="hidden" name="created_at" id="created_atInput">
             <button class="btn dropdown-toggle dropdown-togglem" type="button" data-bs-toggle="dropdown">
               Año de publicación
@@ -70,6 +73,7 @@
               <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('created_atInput','2010-02-20 14:30:00', event)" >2010-02-20 14:30:00</a></li>
               <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('created_atInput','2020-02-20 14:30:00', event)" >2020-02-20 14:30:00</a></li>
             </ul>
+             <!-- --------GENRE--------- -->
             <input type="hidden" name="genre" id="genreInput">
             <button class="btn dropdown-toggle dropdown-togglem" type="button" data-bs-toggle="dropdown">
               Género
@@ -80,6 +84,7 @@
               <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('genreInput','merengue', event)">Merengue</a></li>
             </ul>
           </div>
+           <!-- --------RANDOM--------- -->
           <div class="form-check form-checkm">
             <input type="hidden" name="random" id="randomInput">
             <input class="form-check-input form-check-inputm" type="radio"
@@ -96,8 +101,10 @@
       </div>
     </div>
   </div>
+
   <!-- Aqui obtendremos los elementos que cumplen filtro -->
   <div class="songs-block">
+    
     {% for song in songs %}
     <div class="card mb-3 cardm" style="max-width: 150vh;">
       <div class="row g-0 rowm">

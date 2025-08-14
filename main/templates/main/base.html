@@ -83,16 +83,44 @@
 
 <!-- Contador de mensajes encontrados según busqueda -->
 {% if searchTerm %}
-  {% with resultados_count=results|length %}
-    <div id="mensaje-resultados" class="alert {% if resultados_count > 0 %}alert-info{% else %}alert-warning{% endif %} my-3" role="alert">
-      {% if resultados_count > 0 %}
-        Se encontraron {{ resultados_count }} resultados para "{{ searchTerm }}"
-      {% else %}
-        No se encontraron resultados para "{{ searchTerm }}"
-      {% endif %}
-    </div>
-  {% endwith %}
+        <div id="mensaje-resultados" class="alert {% if resultados_count > 0 %}alert-info{% else %}alert-warning{% endif %} my-3" role="alert">
+            {% if resultados_count > 0 %}
+                Se encontraron {{ resultados_count }} resultados para "{{ searchTerm }}"
+            {% else %}
+                No se encontraron resultados para "{{ searchTerm }}"
+            {% endif %}
+        </div>
 {% endif %}
+
+{% if canciones %}
+<div class="row mt-4 justify-content-center">
+    {% for song in canciones %}
+        <div class="col-12 mb-4 d-flex justify-content-center">
+            <div class="card shadow-sm w-75" style="min-height: 180px;">
+                <div class="row g-0 align-items-center">
+                    <div class="col-auto">
+                        {% if song.cover_image %}
+                            <img src="{{ song.cover_image.url }}" alt="{{ song.title }}" style="width: 180px; height: 120px; object-fit: cover; margin: 10px; border-radius: 10px;">
+                        {% else %}
+                            <img src="{% static 'main/default.jpg' %}" alt="Sin imagen" style="width: 180px; height: 120px; object-fit: cover; margin: 10px; border-radius: 10px;">
+                        {% endif %}
+                    </div>
+                    <div class="col ps-3">
+                        <div class="card-body">
+                            <h5 class="card-title mb-2">{{ song.title }}</h5>
+                            <p class="card-text text-muted mb-0">{{ song.artist_name }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>No se encontraron canciones.</p>
+{% endif %}
+
+
 
 
 

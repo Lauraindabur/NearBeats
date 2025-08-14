@@ -17,6 +17,7 @@ Including another URLconf
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls.static import static
 from main import views as mainViews #Importamos todas las vistas que se creen, accediendo a ellas con mainViems.tatata
 
 urlpatterns = [
@@ -24,6 +25,6 @@ urlpatterns = [
     path('',mainViews.home, name = 'home'), #debería poder acceder a la base directamente? no
     path('buscar/', mainViews.base, name='buscar'), #esto lo que hace es 
     #path('home/',mainViews.home),
-]
+]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

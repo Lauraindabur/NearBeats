@@ -179,12 +179,18 @@
     border-color: black;
 }
 
-.cardm {
+.songs-block {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
 }
 
-.rowm {
-    width: 50vh;
+.cardm {
+    width: 80vh;
 }
+
+/* .img-fluidm {
+    width: 15vh;
+    height: 15vh;
+} */

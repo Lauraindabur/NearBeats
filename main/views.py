@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse  
 from .models import Song
-from random import randint
+import random
 
 # Create your views here.
 
@@ -14,19 +14,20 @@ def home(request):
 
 def filtrar_sugerencias(request):
 
-    emotion = request.GET.get("emocion")
+    emotion = request.GET.get("emotion")
     created_at = request.GET.get("created_at")
     genre = request.GET.get("genre")
-    random = request.GET.get("random")
+    random_el = request.GET.get("random")
 
+    
     songs = Song.objects.all()
 
-    if(random):
+    if(random_el):
         # Obtenemos dos elementos en posición aleatoria
-        ids= list(Song.object.values_list('id',flat=True))
+        ids= list(Song.objects.values_list('id',flat=True))
         if len(ids) >= 2:
             random_ids =random.sample(ids,2)
-            songs = Song.objects.filter(id_in=random_ids)
+            songs = Song.objects.filter(id__in=random_ids)
         # count = Song.objects.count()
         # if ( count > 0):
         #     random_index = randint(0, count-1)
@@ -38,7 +39,7 @@ def filtrar_sugerencias(request):
             songs = songs.filter(created_at=created_at)
         if genre:
             songs = songs.filter(genre=genre)
-    
+
     #Retornamos el diccionario con los valores
     return render(request, 'main/home.html', {'songs': songs})
  

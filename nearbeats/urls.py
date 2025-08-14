@@ -26,4 +26,6 @@ urlpatterns = [
     path('buscar/', mainViews.base, name='buscar'),  
     #path('home/',mainViews.home),
     path('filtrar/', mainViews.filtrar_sugerencias, name='filtrar_sugerencias'),
+    path('library/', mainViews.library, name="library"),
+    path('upload/', mainViews.upload_songs, name='upload_songs'),
 ]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

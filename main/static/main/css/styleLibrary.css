@@ -1,0 +1,378 @@
+ body {
+      background: linear-gradient(135deg, #f3f4f6, #ffffff);
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .sidebar {
+      width: 260px;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: rgb(255, 255, 255);
+      backdrop-filter: blur(10px);
+      border-right: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 4px 0 16px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem 1rem;
+      z-index: 100;
+    }
+
+    .logo-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+    }
+
+    .logo img {
+      height: 48px;
+      transition: transform 0.3s ease;
+    }
+
+    .logo img:hover {
+      transform: scale(1.05);
+    }
+
+.brand-name {
+  font-family: "Dancing Script", cursive;
+  font-size: 2.2rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #a05dff, #5a189a, #c77dff);
+  background-size: 300% auto;
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientMove 5s ease infinite;
+  text-shadow: 0 1px 2px rgba(90, 24, 154, 0.25);
+  transition: transform 0.4s ease, text-shadow 0.4s ease;
+}
+
+.brand-name:hover {
+  transform: scale(1.07);
+  text-shadow: 0 0 10px rgba(155, 89, 255, 0.5);
+}
+
+    @keyframes gradientMove {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+
+    .divider {
+      width: 80%;
+      height: 1px;
+      background: #ccc;
+      margin: 1rem auto;
+      opacity: 0.4;
+    }
+
+    .nav-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      flex-grow: 1;
+    }
+
+    .nav-links li {
+      margin-bottom: 0.75rem;
+    }
+
+    .nav-links a {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.65rem 1rem;
+      border-radius: 10px;
+      color: #333;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .nav-links a:hover {
+      background-color: #e3c9ff;
+      color: #5a189a;
+      transform: translateX(4px);
+    }
+
+    .nav-links i {
+      font-size: 1.2rem;
+    }
+    .nav-links a.active {
+  background-color: #de8aff30;
+  color: #855df7;
+  font-weight: 600;
+  box-shadow: inset 2px 0 0 #855df7;
+}
+
+
+    .bottom-buttons {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      padding: 0.5rem;
+    }
+
+    /* Botones minimalistas pero con impacto */
+  .bottom-buttons .btn-outline-dark {
+    background-color: transparent;
+    border: none;
+    color: #855df7;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    transition: background 0.25s ease;
+  }
+
+  .bottom-buttons .btn-outline-dark:hover {
+    background-color: rgba(90, 24, 154, 0.08);
+    color: #5a189a;
+  }
+
+  .bottom-buttons .btn-dark {
+    background-color: #855df7;
+    color: white;
+    border: none;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    transition: background 0.25s ease;
+  }
+
+  .bottom-buttons .btn-dark:hover {
+    background-color: #3c0d7b;
+  }
+
+
+    .main-content {
+      margin-left: 260px;
+      padding: 2rem;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #fdfcfe, #faf8ff);
+    }
+
+    h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      color: #555;
+      font-size: 1.1rem;
+    }
+
+    .fade-in {
+      animation: fade 0.6s ease forwards;
+    }
+
+    @keyframes fade {
+      0% { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+ .song-card {
+    border: none;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    max-width: 240px; /* 🔹 más grande */
+    margin: auto;
+ }
+
+  .song-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  }
+
+  .song-cover {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+  }
+
+  .song-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .song-card:hover img {
+    transform: scale(1.06);
+  }
+
+  .play-btn {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: #855df7;
+    color: white;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    opacity: 0;
+    transform: translateY(5px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    cursor: pointer;
+  }
+
+  .song-card:hover .play-btn {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .song-info {
+    padding: 0.5rem;
+    text-align: center;
+  }
+
+  .song-title {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #222;
+    margin-bottom: 0.25rem;
+  }
+
+  .song-artist {
+    font-size: 0.8rem;
+    color: #666;
+  }
+
+#player-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(270deg, #d8b4fe, #a5d8ff, #f0bfff);
+    background-size: 700% 700%;
+    animation: gradientFlow 18s ease infinite;
+    color: white;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 24px;
+    box-shadow: 0 -4px 15px rgba(190, 160, 255, 0.5); /* sombra suave lavanda */
+    font-family: 'Inter', sans-serif;
+    z-index: 10000;
+    user-select: none;
+}
+
+@keyframes gradientFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+
+  #player-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-width: 250px;
+  }
+  #player-left img {
+    width: 56px;
+    height: 56px;
+    border-radius: 4px;
+    object-fit: cover;
+    background: #222;
+  }
+  #player-song-info {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  #player-title {
+    font-weight: 600;
+    font-size: 1rem;
+    color:#646464;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  #player-artist {
+    font-size: 0.85rem;
+    color: #818181;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  #player-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    flex-grow: 1;
+    max-width: 500px;
+    min-width: 300px;
+  }
+  #player-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  #player-controls button {
+    background: none;
+    border: none;
+    color: #393939;
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+  #player-controls button:hover {
+    color: #855df7;
+  }
+  #playpause-btn {
+    font-size: 2.2rem;
+  }
+
+  #progress-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+  }
+  #current-time, #duration {
+    font-size: 0.75rem;
+    color: #000000;
+    width: 40px;
+    text-align: center;
+    user-select: none;
+  }
+  #progress-bar {
+    flex-grow: 1;
+    height: 4px;
+    background: #404040;
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+  }
+  #progress-fill {
+    background: #ffffff;
+    height: 100%;
+    width: 0%;
+    border-radius: 2px;
+  } 

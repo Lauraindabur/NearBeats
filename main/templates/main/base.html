@@ -59,7 +59,7 @@
             <a class="nav-link nav-linkm {% if request.path == '/' %}active{% endif %}" aria-current="page" href="{% url 'home' %}">Home</a>
             </li>
             <li class="nav-item nav-itemm">
-            <a class="nav-link nav-linkm {% if request.path == '/library' %}active{% endif %}" href="#!">Library</a>
+            <a class="nav-link nav-linkm {% if request.path == '/library' %}active{% endif %}" href="{% url 'library' %}">Library</a>
             </li>
             <li class="nav-item nav-itemm">
             <a class="nav-link nav-linkm {% if request.path == '/login' %}active{% endif %}" href="#!">Log in</a>

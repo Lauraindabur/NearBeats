@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Subir canción</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
+    <link rel="icon" href="{% static 'main/images/Logo_NearBeats.png' %}" type="image/png" />
+    <link rel="stylesheet" href="{% static 'main/css/styleupload.css' %}?v=3">
+</head>
+<body>
+    <div class="upload-container">
+        <h1 style="font-family: Dancing Script">  <i class="bi bi-cloud-upload" style="color:#5d3fd3; font-size: 2rem;"></i> Subir canción</h1>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label class="form-label">Título</label>
+                <input type="text" name="title" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Artista</label>
+                <input type="text" name="artist_name" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Género</label>
+                <input type="text" name="genre" class="form-control" placeholder="Ej: Rock, Pop, Trap">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Letra</label>
+                <textarea name="lyrics" class="form-control" placeholder="Escribe la letra aquí..."></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Estado de ánimo</label>
+                <select name="mood" class="form-select">
+                    {% for value, label in moods %}
+                        <option value="{{ value }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Archivo MP3</label>
+                <input type="file" name="audio_file" class="form-control" accept=".mp3" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Portada (opcional)</label>
+                <input type="file" name="cover_image" class="form-control" accept="image/*">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Copyright</label>
+                <input type="text" name="copyright" class="form-control" placeholder="Ej: © 2025 NearBeats">
+            </div>
+
+            <div class="d-flex gap-3 mt-4">
+                <button type="submit" class="btn btn-dark">Subir</button>
+                <a href="{% url 'library' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

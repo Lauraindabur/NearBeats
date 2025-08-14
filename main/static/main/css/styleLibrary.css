@@ -124,7 +124,7 @@
       padding: 0.5rem;
     }
 
-    /* Botones minimalistas pero con impacto */
+    
   .bottom-buttons .btn-outline-dark {
     background-color: transparent;
     border: none;
@@ -191,7 +191,7 @@
     overflow: hidden;
     box-shadow: 0 2px 10px rgba(0,0,0,0.06);
     transition: transform 0.25s ease, box-shadow 0.25s ease;
-    max-width: 240px; /* 🔹 más grande */
+    max-width: 240px; 
     margin: auto;
  }
 
@@ -273,7 +273,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 10px 24px;
-    box-shadow: 0 -4px 15px rgba(190, 160, 255, 0.5); /* sombra suave lavanda */
+    box-shadow: 0 -4px 15px rgba(190, 160, 255, 0.5); 
     font-family: 'Inter', sans-serif;
     z-index: 10000;
     user-select: none;

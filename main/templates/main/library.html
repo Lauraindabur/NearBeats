@@ -42,10 +42,17 @@
       <li><a href="#"><i class="bi bi-heart-fill"></i> Favoritos</a></li>
     </ul>
 
-    <div class="bottom-buttons">
-      <button class="btn btn-outline-dark btn-sm"><i class="bi bi-box-arrow-in-right me-1"></i>Iniciar sesión</button>
-      <button class="btn btn-dark btn-sm"><i class="bi bi-person-plus-fill me-1"></i>Registrarse</button>
-    </div>
+<div class="bottom-buttons">
+  <a href="{% url 'login' %}" class="btn btn-outline-dark btn-sm">
+    <i class="bi bi-box-arrow-in-right me-1"></i>Iniciar sesión
+  </a>
+  <a href="{% url 'register' %}" class="btn btn-dark btn-sm">
+    <i class="bi bi-person-plus-fill me-1"></i>Registrarse
+  </a>
+</div>
+
+
+
   </aside>
 
   <!-- Contenido principal -->

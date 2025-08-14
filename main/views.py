@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse  
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
 from django.db.models import Q  # Nos deja usar OR |
 from django.http import JsonResponse #Para usar AJAX y devolver JSON (temporal)
 from .models import Song
@@ -75,7 +77,14 @@ def library(request):
 
 
 def upload_songs(request):
+    if not request.user.is_authenticated or request.user.rol != "Artista":
+        return render(request, 'main/upload_songs.html', {
+            'user': request.user,
+            'moods': [],  # aunque no se usen, se necesita para la plantilla
+        })
+     
     if request.method == 'POST':
+        
         title = request.POST.get('title')
         artist_name = request.POST.get('artist_name')
         genre = request.POST.get('genre')

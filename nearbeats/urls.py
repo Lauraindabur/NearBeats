@@ -1,8 +1,5 @@
 """
 URL configuration for nearbeats project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-https://docs.djangoproject.com/en/5.2/topics/http/urls/
 """
 from django.conf import settings
 from django.contrib import admin
@@ -20,9 +17,9 @@ urlpatterns = [
     path('library/', mainViews.library, name='library'),
     path('upload/', mainViews.upload_songs, name='upload_songs'),
 
-    # Rutas de la app usuarios
-    path('usuarios/', include('usuarios.urls')),  # Prefijo para diferenciar rutas de usuarios
+    # Rutas de la app usuarios (prefijo para no chocar con main)
+    path('usuarios/', include('usuarios.urls')),
 ]
 
-# Configuración para archivos media
+# Archivos media
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

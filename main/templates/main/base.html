@@ -52,28 +52,29 @@
                 </button>
         </div>
         
-    </form>
+     </form>
 
         <ul class="nav justify-content-end nav-underline nav-underlinem">
             <li class="nav-item nav-itemm nav-itemmHome">
-            <a class="nav-link nav-linkm {% if request.path == '/' %}active{% endif %}" aria-current="page" href="{% url 'home' %}">Home</a>
+                <a class="nav-link nav-linkm {% if request.path == '/' %}active{% endif %}" aria-current="page" href="{% url 'home' %}">Home</a>
             </li>
             <li class="nav-item nav-itemm">
-            <a class="nav-link nav-linkm {% if request.path == '/library' %}active{% endif %}" href="{% url 'library' %}">Library</a>
+                <a class="nav-link nav-linkm {% if request.path == '/library' %}active{% endif %}" href="{% url 'library' %}">Library</a>
             </li>
             <li class="nav-item nav-itemm">
-            <a class="nav-link nav-linkm {% if request.path == '/login' %}active{% endif %}" href="#!">Log in</a>
+                <a class="nav-link nav-linkm {% if request.path == '/usuarios/login/' %}active{% endif %}" href="{% url 'login' %}">Log in</a>
             </li>
             <li class="nav-item nav-itemmSU">
-                <a class="nav-link nav-linkm {% if request.path == '/signup' %}active{% endif %}" href="#!">Sign up</a>
+                <a class="nav-link nav-linkm {% if request.path == '/usuarios/register/' %}active{% endif %}" href="{% url 'register' %}">Sign up</a>
             </li>
             <!--
             <li class="nav-item">
-            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
             </li>-->
         </ul>
     
     </nav>
+
 
     <div class="mb-2">
         <button class="btn btn-outline-primary btn-morado" type="button" data-bs-toggle="offcanvas" data-bs-target="#emocionesOffcanvas" aria-controls="emocionesOffcanvas">

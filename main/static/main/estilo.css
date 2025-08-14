@@ -1,13 +1,20 @@
-.main-navbar{
-    height: 45px;
-    padding: 15px;
+/*-------------------PARTE DE BASE.HTML*/
+.main-navbar {
+    /*background-color: aqua;*/
+    /*min-height: 45px; /* Altura mínima para pantallas pequeñas */
+    height: 12vh;      /* Ocupa el 8% de la altura de la ventana */
+    padding: 20px 15px; /* Más espacio arriba y abajo */
 }
 
 .nav-linkm{
     color: black;
+    font-size:medium;
 }
 
 .nav-itemm{
+    /*min-height: 6vh;
+    min-width: 10vh;*/
+    /*background-color: blueviolet;*/
     margin-left: 20px;
     margin-right: 20px;
 }
@@ -18,7 +25,7 @@
 }
  /*For nav-itemmine2SignUP*/
  .main-navbar .nav-itemmSU {
-    background-color: rgb(249,172,255);
+    background-color: rgb(249,172,255); 
     height: 44px;
     width: 100px;
     border-radius: 9%;
@@ -26,6 +33,221 @@
 }
 
 .main-navbar .nav-itemmSU .nav-linkm{
+    color:#7b1789;
+    text-align: center;
+}
+
+
+
+.nav-itemmSU.active {
+    background-color: rgb(242, 119, 251);
+    color: #9816aa !important;
+    height: 44px;
+    width: 100px;
+    border-radius: 9%;
+    margin-right: 25px;
+}
+
+
+.btn-search {
+  background-color: rgb(242, 119, 251);
+  border-color: #F3ACFF;
+  color: #fff;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-search:hover {
+  background-color: #a000b8;
+  box-shadow: 0 5px 15px rgba(208, 16, 241, 0.6);
+  color: #fff;
+}
+
+.form-control {
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.form-control:focus {
+  box-shadow: 0 0 8px 2px #e7abf1;
+  border-color: #e7aff1;
+  outline: none;
+}
+
+.mb-2 {
+  margin-left: 19px;
+}
+
+.btn-morado {
+  color:  rgb(152, 22, 170); 
+  border-color:  rgb(152, 22, 170);
+}
+
+.btn-morado:hover, .btn-morado:focus {
+  color: #fff;
+  background-color:#e7abf1;
+  border-color: #e7abf1;
+}
+
+
+
+
+
+.main-navbar .nav-itemmSU .nav-linkm{
     color: black;
     text-align: center;
 }
+
+/*-------------------PARTE DE HOME.HTML*/
+
+
+.main-text {
+    /*Con este manejamos que el texto aparezca al fondo del div, para lo cual
+    necesitamos usar flex, con el cual podemos manejar al padre y a sus hijos,
+    pero ambos tiene caracteristicas diferentes
+      - el padre (.main-text) debe estar centrado y al fondo del contenedor
+      - los hijos (h1) deben estar alineados, no uno debajo del otro
+        Como no comparten caracteristicas, deben estar en contenedores
+        diferentes, y el flex del padre solo afecta a sus hijos directos, no a
+        sus nietos, por lo que no afecta a los h1.
+    */
+    /*background-color: blueviolet;*/
+    height: 45vh;
+    display: flex; 
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.main-titles {
+    display: flex;
+}
+
+.main-titles h1 {
+    font-size: 10vh;
+    margin: 0;
+}
+
+.parte1 {
+    color: rgb(152, 22, 170);
+}
+
+.parte2 {
+    color: rgb(214,130,227);
+}
+
+.btnm{
+    background-color: rgb(243,237,247);
+    margin: 3vh;
+    color: rgb(121,116,126);
+}
+
+.btn.btnm:hover, .btn.btnm:focus { /*Para los elementos que tengan AMBAS clases, no que sean hijos*/
+    background-color: rgb(243,237,247);
+    color: black;
+    border-color: none;
+    box-shadow: none;
+}
+
+.offcanvasm {
+    left: 50% !important; 
+    top: 50% !important;
+    width: 60vh;
+    height: 70vh;
+    border-radius: 12px;
+    transform: translate(-50%,-50%) !important;
+    background-color: rgb(247,242,250);
+}
+
+.offcanvas-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.offcanvas-titlem {
+    width: 100%;
+    text-align: center;
+}
+
+.dropdownm {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+}
+
+.dropdown-togglem {
+    margin:3vh ;
+    border-color: rgb(202,196,208);
+    color: rgba(117, 13, 131, 0.664);
+    font-weight: 500;
+    /* width: 40vh; */
+}
+
+.btn.dropdown-togglem:hover,
+.btn.dropdown-togglem:focus,
+.btn.dropdown-togglem:active,
+.btn.dropdown-togglem.show {
+    color: rgba(117, 13, 131, 0.664) !important;
+    border-color: rgb(202,196,208) !important;
+    background-color: rgb(220, 192, 237) !important;
+    box-shadow: none !important;
+}
+
+.dropdown-menum {
+    width: 47vh;
+    text-align: center;
+} 
+
+.dropdown-itemm:active, .dropdown-itemm:focus {
+    background-color: #c0c0c0e3;
+    color:black; 
+} 
+
+.offcanvasm .form-checkm {
+    display: flex;
+    align-items: center; /*Alinea en eje y*/
+    margin-left: 19vh;
+}
+
+.form-check-labelm {
+    margin: 1vh;
+    font-weight: 500;
+}
+
+.form-check-input:checked {
+    background-color: #a23bb9; 
+    border-color: #a23bb9;
+    box-shadow: 0 0 0 0.25rem rgba(162, 59, 185, 0.25);
+}
+
+.btndiv { /*Para que sus hijos se centren*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btndiv .btnm {
+    background-color: #a23bb9;
+    color: white;
+}
+
+.btndiv .btnm:hover, .btndiv .btnm:focus,
+.btndiv .btnm:active, .btndiv .btnm.show{
+    background-color: #a23bb9;
+    color: white;
+    border-color: black;
+}
+
+.songs-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.cardm {
+    width: 80vh;
+}
+
+/* .img-fluidm {
+    width: 15vh;
+    height: 15vh;
+} */

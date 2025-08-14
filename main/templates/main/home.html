@@ -1,1 +1,149 @@
 {% extends 'main/base.html'%} <!--Heredamos el contenido de base.html (es como una herencia en POO), y si queremos lo sobreescribimos.-->
+{% load static %}
+
+{% block content %}
+<div class="main-block">
+  <div class="main-text">
+    <div class="main-titles">
+     <h1 class="parte1">Find a Near</h1>
+    <h1 class="parte2">Beat</h1>
+    </div>
+  </div>
+  <!--PARTE DE BOTON FILTER-->
+  <div class="canva-boton-filter">
+    <div class="d-grid gap-2 col-6 mx-auto"> <!--Para aplicar estilo de BS -->
+      <button class="btn btnm" type="button" data-bs-toggle="offcanvas"
+      data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+      Filter
+      </button>
+    </div>
+    
+    <!--
+    data-bs-toggle="offcanvas" -> indica a BS que ese boton activa un
+    componenete "ofcanvas", que es el panel lateral.
+    data-bs-target="#offcanvasExample" <- especifica el id del offcanvas que se
+    debe mostrar al hacer click al botón.
+    -->
+
+    <div class="offcanvas offcanvasm" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+      <div class="offcanvas-header offcanvas-headerm">
+        <h5 class="offcanvas-title offcanvas-titlem" id="offcanvasExampleLabel">Filter by</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body offcanvas-bodym">
+        <!--method=get le indicamos al navegador que los parametros se pasarán
+        por la URL. 
+        Con <form> agrupamos los campos que queremos evial al
+        servidor cuando se clickee boton. 
+        Con action={} indicamos a qué ruta se enviarán los datos, la cual debe
+        estar definida en urls.py-->
+        <form method="get" action="{% url 'filtrar_sugerencias' %}" id="filterForm">
+          
+          <div class="dropdown mt-3 dropdownm">
+            <!-- --------EMOTION--------- -->
+            <!--Para decirle a web que estamos esperando un input de ese elemento-->
+            <input type="hidden" name="emotion" id="emotionInput">
+            <button class="btn dropdown-toggle dropdown-togglem" type="button" data-bs-toggle="dropdown">
+              Emoción
+            </button>
+            <ul class="dropdown-menu dropdown-menum">
+              <!-- Explicacion:
+               Cada dropdown tendrá un input oculto, el cual enviará a una
+               función de JS (setfiltro" (llamada cuando se da click a un valor
+               del dropdown) los valores seleccionados.
+               Usamos JS para permitir seleccionar multiples dropdowns.
+               Lo que hacemos es, al onclick, llamamos a la funcion y le pasamos
+               el valor seleccionado, lo que hace esta es ir "creando" un link
+               (request) que contenga todos los filtros, para poder acceder a
+               ellos en views.py con GET.
+               ejm de formateada de funcion -> /productos/?emocion=sad&created_at=2000
+               -->
+              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('emotionInput','sad', event)">Tristeza</a></li>
+              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('emotionInput','angry', event)">Ira</a></li>
+              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('emotionInput','happy', event)">Alegria</a></li>
+            </ul>
+
+             <!-- --------CREATED_AT--------- -->
+            <input type="hidden" name="created_at" id="created_atInput">
+            <button class="btn dropdown-toggle dropdown-togglem" type="button" data-bs-toggle="dropdown">
+              Año de publicación
+            </button>
+            <ul class="dropdown-menu dropdown-menum">
+              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('created_atInput','2000-02-20 14:30:00', event)" >2000-02-20 14:30:00</a></li>
+              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('created_atInput','2010-02-20 14:30:00', event)" >2010-02-20 14:30:00</a></li>
+              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('created_atInput','2020-02-20 14:30:00', event)" >2020-02-20 14:30:00</a></li>
+            </ul>
+             <!-- --------GENRE--------- -->
+            <input type="hidden" name="genre" id="genreInput">
+            <button class="btn dropdown-toggle dropdown-togglem" type="button" data-bs-toggle="dropdown">
+              Género
+            </button>
+            <ul class="dropdown-menu dropdown-menum">
+              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('genreInput','pop', event)">Pop</a></li>
+              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('genreInput','rock', event)">Rock</a></li>
+              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('genreInput','merengue', event)">Merengue</a></li>
+            </ul>
+          </div>
+           <!-- --------RANDOM--------- -->
+          <div class="form-check form-checkm">
+            <input type="hidden" name="random" id="randomInput">
+            <input class="form-check-input form-check-inputm" type="radio"
+            name="flexRadioDefault" id="flexRadioDefault1"  onclick="setFiltro('randomInput', '1')">
+            <label class="form-check-label form-check-labelm " for="flexRadioDefault1">
+            Random
+            </label>
+          </div>
+          <div class="btndiv">
+            <!--El boton no deberia ir dentro del canvas, sino al lado de filter-->
+            <button type="submit" class="btn btnm">Buscar</button> 
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Aqui obtendremos los elementos que cumplen filtro -->
+  <div class="songs-block">
+    
+    {% for song in songs %}
+    <div class="card mb-3 cardm" style="max-width: 150vh;">
+      <div class="row g-0 rowm">
+        <div class="col-md-4 col4m">
+          <img src="{{ song.cover_image.url }}" class="img-fluid rounded-start img-fluidm" alt="...">
+        </div>
+        <div class="col-md-8 col8m">
+          <div class="card-body card-bodym">
+            <h5 class="card-title card-titlem">{{ song.title }}</h5>
+            <p class="card-text card-textm"> {{ song.artist_name}}</p>
+            <p class="card-text card-textm"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+          </div>
+        </div>
+      </div>
+      <p>{{song.genre}} - {{song.created_at}} - {{song.mood}}</p>
+    </div>
+    <!-- Si está vacia la lista:  -->
+    {% empty %}
+      <div class="card text-center" style="max-width: 400px; margin: 20px auto;">
+        <div class="card-body card-bodyalertm">
+          <p class="card-text">No hay canciones que cumplan esa condición.</p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  
+</div>
+
+<!-- JS functions -->
+<script src="{% static 'main/funciones.js' %}"></script>
+<!-- <script>
+  function setFiltro(inputId, value, event) {
+  if (event) event.preventDefault(); // Evita que el enlace recargue la página
+  const input = document.getElementById(inputId);
+  if (input) {
+    input.value = value;
+    console.log(`Filtro asignado: ${inputId} = ${value}`);
+  }
+  }
+
+</script> -->
+{% endblock %}

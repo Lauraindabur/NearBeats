@@ -1,126 +1,79 @@
-{% load static %} 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>NearBeats</title>
-  
-  <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
-  <!-- Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"/>
-
-  <!-- Bootstrap Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
-
-  <link rel="icon" href="{% static 'main/images/Logo_NearBeats.png' %}" type="image/png" />
-  <link rel="stylesheet" href="{% static 'main/css/styleLibrary.css' %}?v=1">
-  <script src="{% static 'main/js/player.js' %}"></script>
+{% extends "main/base_library.html" %}
+{% load static %}
 
 
+{% block title %}Biblioteca - NearBeats{% endblock %}
 
-</head>
+{% block content %}
+  <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2">
+    {% for song in songs %}
+      <div class="col">
+        <div class="song-card">
+          <div class="song-cover">
+            {% if song.cover_image %}
+              <img src="{{ song.cover_image.url }}" alt="{{ song.title }}">
+            {% else %}
+              <img src="{% static 'main/images/sin_portada.png' %}" alt="Sin portada">
+            {% endif %}
+            <div class="play-btn" 
+                data-audio="{{ song.audio_file.url }}"
+                data-title="{{ song.title }}"
+                data-artist="{{ song.artist_name }}">
+              <i class="bi bi-play-fill"></i>
+            </div>
+          </div>
 
-  <!-- Sidebar -->
-  <aside class="sidebar fade-in">
-    <div class="logo-container">
-      <div class="logo">
-        <img src="{% static 'main/images/Logo_NearBeats.png' %}" alt="NearBeats">
-        <span class="brand-name">NearBeats</span>
-      </div>
-      <div class="divider"></div>
-    </div>
+          <div class="song-info position-relative text-center">
+            <div>
+              <div class="song-title fw-semibold">{{ song.title }}</div>
+              <div class="song-artist text-muted small">{{ song.artist_name }}</div>
+            </div>
 
-    <ul class="nav-links">
-      <li><a href="{% url 'library' %}" class="active"><i class="bi bi-search"></i> Explorar</a></li>
-      <li><a href="{% url 'upload_songs' %}"><i class="bi bi-cloud-upload"></i> Subir canciones</a></li>
-      <li><a href="#"><i class="bi bi-music-note-list"></i> Playlists</a></li>
-      <li><a href="#"><i class="bi bi-heart-fill"></i> Favoritos</a></li>
-    </ul>
-
-<div class="bottom-buttons">
-  <a href="{% url 'login' %}" class="btn btn-outline-dark btn-sm">
-    <i class="bi bi-box-arrow-in-right me-1"></i>Iniciar sesión
-  </a>
-  <a href="{% url 'register' %}" class="btn btn-dark btn-sm">
-    <i class="bi bi-person-plus-fill me-1"></i>Registrarse
-  </a>
-</div>
-
-
-
-  </aside>
-
-  <!-- Contenido principal -->
-  <main class="main-content fade-in">
-      <div class="d-flex justify-content-end mb-3">
-    <ul class="nav">
-      <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'library' %}">Biblioteca</a>
-      </li>
-    </ul>
-  </div>
-   
-<div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2">
-  {% for song in songs %}
-  <div class="col">
-    <div class="song-card">
-      <div class="song-cover">
-        {% if song.cover_image %}
-          <img src="{{ song.cover_image.url }}" alt="{{ song.title }}">
-        {% else %}
-          <img src="{% static 'main/images/sin_portada.png' %}" alt="Sin portada">
-        {% endif %}
-        <div class="play-btn" 
-             data-audio="{{ song.audio_file.url }}"
-             data-title="{{ song.title }}"
-             data-artist="{{ song.artist_name }}">
-          <i class="bi bi-play-fill"></i>
+            {% if user.is_authenticated %}
+              <div class="d-flex flex-column align-items-center position-absolute top-50 end-0 translate-middle-y me-1">
+                <button class="btn btn-link p-0 like-btn" data-song-id="{{ song.id }}">
+                  <i class="bi bi-heart{% if song.is_liked %}-fill text-danger{% endif %}" style="font-size: 1.4rem;"></i>
+                </button>
+                <span id="likes-count-{{ song.id }}" class="px-2 py-0 rounded-pill mt-1"
+                      style="font-size: 0.7rem; background-color: #f1f1f1; color: #555;">
+                  {{ song.likes_count }}
+                </span>
+              </div>
+              <div class="d-flex flex-column align-items-center position-absolute top-50 start-0 translate-middle-y ms-1">
+                <button class="btn btn-link p-0 favorite-btn" data-song-id="{{ song.id }}">
+                  <i class="bi bi-star{% if song.is_favorited %}-fill text-warning{% endif %}" style="font-size: 1.4rem;"></i>
+                </button>
+              </div>
+            {% endif %}
+          </div>
         </div>
       </div>
-      <div class="song-info">
-        <div class="song-title">{{ song.title }}</div>
-        <div class="song-artist">{{ song.artist_name }}</div>
+    {% endfor %}
+  </div>
+
+  <!-- Player bar -->
+  <div id="player-bar">
+    <div id="player-left">
+      <img id="cover-img" src="{% static 'img/sin_portada.jpg' %}" alt="Cover">
+      <div id="player-song-info">
+        <div id="player-title">No hay canción</div>
+        <div id="player-artist">---</div>
       </div>
     </div>
-  </div>
-  {% endfor %}
-</div>
-<div id="player-bar">
-  <div id="player-left">
-    <img id="cover-img" src="{% static 'img/sin_portada.jpg' %}" alt="Cover">
-    <div id="player-song-info">
-      <div id="player-title">No hay canción</div>
-      <div id="player-artist">---</div>
-    </div>
-  </div>
-  <div id="player-center">
-    <div id="player-controls">
-      <button id="rewind-btn" title="Retroceder 10 segundos"><i class="bi bi-skip-backward-fill"></i></button>
-      <button id="playpause-btn" title="Reproducir / Pausar"><i class="bi bi-play-fill"></i></button>
-      <button id="forward-btn" title="Adelantar 10 segundos"><i class="bi bi-skip-forward-fill"></i></button>
-    </div>
-    <div id="progress-container">
-      <span id="current-time">0:00</span>
-      <div id="progress-bar" title="Barra de progreso">
-        <div id="progress-fill"></div>
+    <div id="player-center">
+      <div id="player-controls">
+        <button id="rewind-btn" title="Retroceder 10 segundos"><i class="bi bi-skip-backward-fill"></i></button>
+        <button id="playpause-btn" title="Reproducir / Pausar"><i class="bi bi-play-fill"></i></button>
+        <button id="forward-btn" title="Adelantar 10 segundos"><i class="bi bi-skip-forward-fill"></i></button>
       </div>
-      <span id="duration">0:00</span>
+      <div id="progress-container">
+        <span id="current-time">0:00</span>
+        <div id="progress-bar" title="Barra de progreso">
+          <div id="progress-fill"></div>
+        </div>
+        <span id="duration">0:00</span>
+      </div>
     </div>
+    <audio id="audio-player"></audio>
   </div>
-  <audio id="audio-player"></audio>
-</div>
-
-  </main>
-
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+{% endblock %}

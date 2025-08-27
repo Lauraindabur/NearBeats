@@ -1,34 +1,4 @@
-body { 
-    background: linear-gradient(135deg, #fafaff 0%, #efdbf9f7 100%);
-    font-family: 'Segoe UI', sans-serif;
-    padding: 2rem;
-    animation: fadeIn 1.2s ease-in-out;
-}
 
-/* Contenedor principal */
-.upload-container {
-    max-width: 650px;
-    background: white;
-    padding: 2.5rem;
-    border-radius: 20px;
-    box-shadow: 0 8px 24px rgba(93, 63, 211, 0.08);
-    margin: 2rem auto;
-    position: relative;
-    overflow: hidden;
-    animation: slideUp 0.9s ease;
-}
-
-.upload-container::before {
-    content: "";
-    position: absolute;
-    width: 150px;
-    height: 150px;
-    background: rgba(93, 63, 211, 0.07);
-    border-radius: 50%;
-    top: -50px;
-    right: -50px;
-    filter: blur(40px);
-}
 
 h1 {
     font-weight: 700;

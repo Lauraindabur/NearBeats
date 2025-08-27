@@ -16,10 +16,14 @@ urlpatterns = [
     path('filtrar/', mainViews.filtrar_sugerencias, name='filtrar_sugerencias'),
     path('library/', mainViews.library, name='library'),
     path('upload/', mainViews.upload_songs, name='upload_songs'),
-
+    path("toggle-like/<int:song_id>/", mainViews.toggle_like, name="toggle_like"),
     # Rutas de la app usuarios (prefijo para no chocar con main)
     path('usuarios/', include('usuarios.urls')),
+     path("toggle-favorite/<int:song_id>/", mainViews.toggle_favorite, name="toggle_favorite"),
+    path("favorites/", mainViews.favorites_list, name="favorites"),
 ]
 
 # Archivos media
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+from django.urls import path
+

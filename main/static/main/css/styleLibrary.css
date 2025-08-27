@@ -217,6 +217,10 @@
   .song-card:hover img {
     transform: scale(1.06);
   }
+  .song-info-text {
+    flex: 1;
+    text-align: center;   /* centra el título y artista */
+  }
 
   .play-btn {
     position: absolute;
@@ -376,3 +380,4 @@
     width: 0%;
     border-radius: 2px;
   } 
+

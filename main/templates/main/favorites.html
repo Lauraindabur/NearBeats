@@ -1,0 +1,35 @@
+{% extends "main/base_library.html" %}
+{% load static %}
+
+{% block title %}NearBeats - Favoritos{% endblock %}
+
+
+
+{% block content %}
+<div class="container-fluid mt-4">
+  <h1 class="favorites-title mb-3" style=" font-family: 'Dancing Script', cursive;   text-align: center;">⭐ Mis Favoritos</h1>
+
+  <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-3">
+    {% for song in songs %}
+      <div class="col d-flex justify-content-center">
+        <div class="song-card text-center">
+          <div class="song-cover">
+            {% if song.cover_image %}
+              <img src="{{ song.cover_image.url }}" alt="{{ song.title }}">
+            {% else %}
+              <img src="{% static 'main/images/sin_portada.png' %}" alt="Sin portada">
+            {% endif %}
+          </div>
+
+          <div class="song-info mt-2">
+            <div class="fw-semibold">{{ song.title }}</div>
+            <div class="text-muted small">{{ song.artist_name }}</div>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p>No tienes canciones favoritas aún.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

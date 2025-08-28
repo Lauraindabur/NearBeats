@@ -14,6 +14,7 @@ urlpatterns = [
     path('', mainViews.home, name='home'),
     path('buscar/', mainViews.base, name='buscar'),
     path('filtrar/', mainViews.filtrar_sugerencias, name='filtrar_sugerencias'),
+    path('profile/<str:artist_name>/', mainViews.profile, name='profile'),
     path('library/', mainViews.library, name='library'),
     path('upload/', mainViews.upload_songs, name='upload_songs'),
     path("toggle-like/<int:song_id>/", mainViews.toggle_like, name="toggle_like"),

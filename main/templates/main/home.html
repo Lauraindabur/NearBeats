@@ -94,7 +94,6 @@
             </label>
           </div>
           <div class="btndiv">
-            <!--El boton no deberia ir dentro del canvas, sino al lado de filter-->
             <button type="submit" class="btn btnm">Buscar</button> 
           </div>
         </form>
@@ -114,7 +113,9 @@
         <div class="col-md-8 col8m">
           <div class="card-body card-bodym">
             <h5 class="card-title card-titlem">{{ song.title }}</h5>
-            <p class="card-text card-textm"> {{ song.artist_name}}</p>
+            <!-- Lo ponemos como link para implementar R-21 -->
+            <!-- Con ese song... insertamos el nombre del artista en la url -->
+            <a class="card-text card-textm" href="{% url 'profile' song.artist_name %}"> {{ song.artist_name}}</a>
             <p class="card-text card-textm"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
           </div>
         </div>
@@ -139,15 +140,5 @@
 
 <!-- JS functions -->
 <script src="{% static 'main/js/funciones.js' %}"></script>
-<!-- <script>
-  function setFiltro(inputId, value, event) {
-  if (event) event.preventDefault(); // Evita que el enlace recargue la página
-  const input = document.getElementById(inputId);
-  if (input) {
-    input.value = value;
-    console.log(`Filtro asignado: ${inputId} = ${value}`);
-  }
-  }
 
-</script> -->
 {% endblock %}

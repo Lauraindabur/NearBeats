@@ -1,0 +1,12 @@
+{% extends 'main/base.html'%} 
+
+{% block content %}
+<div class="main-block">
+    <h1>Profile: {{ artist_name }}</h1>
+    <h2>Canciones del artista</h2>
+    {% for song in songs%}
+        <p> {{ song.title }}</p>
+        <p> {{ song.genre }}</p>
+    {% endfor %}
+</div>
+{% endblock %}

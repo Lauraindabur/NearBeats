@@ -84,6 +84,12 @@ def filtrar_sugerencias(request):
     #Retornamos el diccionario con los valores
     return render(request, 'main/home.html', {'songs': songs, 'usando_filtro': usando_filtro})
 
+def profile(request, artist_name): #artist_name lo pasamo en la url
+    #Obtenemos las canciones de ese artista
+    songs = Song.objects.filter(artist_name=artist_name)
+    return render(request, 'main/profile.html', {'songs':songs, 'artist_name':artist_name})
+
+
 def library(request):
     songs = Song.objects.annotate(likes_count=Count("likes"))
 

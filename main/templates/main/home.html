@@ -123,11 +123,15 @@
     </div>
     <!-- Si está vacia la lista:  -->
     {% empty %}
-      <div class="card text-center" style="max-width: 400px; margin: 20px auto;">
-        <div class="card-body card-bodyalertm">
-          <p class="card-text">No hay canciones que cumplan esa condición.</p>
+    <!-- El usando_filtro lo obtenemos de la vista, y es para que no aparezca el
+    mensaje si no se ha aplicado un filtro -->
+      {% if usando_filtro %}
+        <div class="card text-center" style="max-width: 400px; margin: 20px auto;">
+          <div class="card-body card-bodyalertm">
+            <p class="card-text">No hay canciones que cumplan esa condición.</p>
+          </div>
         </div>
-      </div>
+      {% endif %}
     {% endfor %}
   </div>
   

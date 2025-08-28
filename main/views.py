@@ -43,35 +43,46 @@ def home(request):
     return render(request, "main/home.html")  # Asegúrate de que el archivo home.html existe en la carpeta templates/main
 
 def filtrar_sugerencias(request):
-
+    #print("entrando a func")
     emotion = request.GET.get("emotion")
     created_at = request.GET.get("created_at")
     genre = request.GET.get("genre")
     random_el = request.GET.get("random")
 
-    
+    #print(emotion,created_at,genre, random_el)
+    usando_filtro = any([emotion, created_at, genre, random_el])
     songs = Song.objects.all()
-
+    # print(songs)
     if(random_el):
         # Obtenemos dos elementos en posición aleatoria
         ids= list(Song.objects.values_list('id',flat=True))
         if len(ids) >= 2:
             random_ids =random.sample(ids,2)
             songs = Song.objects.filter(id__in=random_ids)
-        # count = Song.objects.count()
-        # if ( count > 0):
-        #     random_index = randint(0, count-1)
-        #     songs=Song.objects.all()[random_index]
     else:
         if emotion:
-            songs= songs.filter(mood=emotion)
+            #print("entre a if emotion")
+            songs= songs.filter(mood__iexact=emotion)
+            #print(songs)
         if created_at:
+            #print("entre a if created_at")
             songs = songs.filter(created_at=created_at)
+            #print(songs)
         if genre:
-            songs = songs.filter(genre=genre)
+            #print("entre a if genre")
+            songs = songs.filter(genre__iexact=genre)
+            #print(songs)
+    
+    # if(len(songs) == 0):
+    #     print("no hay elementos")
+    # else:
+    #     print("entre else")
+    #     for songss in songs:
+    #         print("entre for")
+    #         print(songss.title)
 
     #Retornamos el diccionario con los valores
-    return render(request, 'main/home.html', {'songs': songs})
+    return render(request, 'main/home.html', {'songs': songs, 'usando_filtro': usando_filtro})
 
 def library(request):
     songs = Song.objects.annotate(likes_count=Count("likes"))

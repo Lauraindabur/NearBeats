@@ -47,7 +47,7 @@ class Song(models.Model):
     ],
     blank=True
 )
-
+    #Organizar lo de tipo de dato para created_at
     created_at = models.DateTimeField(auto_now_add=True)
     copyright = models.CharField(max_length=255, blank=True, null=True)
 

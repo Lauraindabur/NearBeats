@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main',       # de main
     'usuarios',   # de registroLogin
+    'artist'   # del perfil del artista
 ]
 
 MIDDLEWARE = [

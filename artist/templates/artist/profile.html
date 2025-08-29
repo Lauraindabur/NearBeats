@@ -1,0 +1,24 @@
+{% extends 'main/base.html'%} 
+
+{% block content %}
+<div class="main-block">
+    <h1>Profile: {{ artist_name }}</h1>
+    {% if artist_profile.profile_image %}
+        <img src="{{ artist_profile.profile_image.url }}" alt="{{ artist_name }} Profile Image" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; margin-bottom: 20px;">
+    {% endif %}
+
+    {% if artist_profile.bio %}
+        <h2>Biografía</h2>
+        <p>{{ artist_profile.bio }}</p>
+    {% endif %}
+
+    <h2>Canciones del artista</h2>
+    {% for song in songs%}
+        <p> {{ song.title }}</p>
+        <p> {{ song.genre }}</p>
+    {% endfor %}
+
+    <h2>Reproducciones este mes</h2>
+    <p>{{ plays_this_month }}</p>
+</div>
+{% endblock %}

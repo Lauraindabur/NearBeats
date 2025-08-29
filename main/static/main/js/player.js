@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function() {
   const durationElem = document.getElementById("duration");
   const playerBar = document.getElementById('player-bar');
 
+
   let currentSong = null;
 
   function formatTime(seconds) {
@@ -38,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const songTitle = this.getAttribute("data-title");
       const songArtist = this.getAttribute("data-artist");
       const songCover = this.parentElement.querySelector("img").src || "{% static 'img/sin_portada.jpg' %}";
-
+      
       if (currentSong !== songUrl) {
         audioPlayer.src = songUrl;
         currentSong = songUrl;
@@ -59,6 +60,7 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     });
   });
+
 
   playPauseBtn.addEventListener("click", () => {
     if (audioPlayer.paused) {

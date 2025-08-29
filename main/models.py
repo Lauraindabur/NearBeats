@@ -93,3 +93,18 @@ class Favorite(models.Model):
 
     class Meta:
         unique_together = ("user", "song")  # Para evitar duplicados
+
+#-----cambio-----
+class SongPlay(models.Model):  #permite almacenar fecha y hora de cuando se escucha una cancion
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    song = models.ForeignKey(
+        Song,
+        on_delete=models.CASCADE
+    )
+    played_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user} escuchó {self.song.title} en {self.played_at}"

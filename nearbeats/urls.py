@@ -22,6 +22,10 @@ urlpatterns = [
     path('usuarios/', include('usuarios.urls')),
      path("toggle-favorite/<int:song_id>/", mainViews.toggle_favorite, name="toggle_favorite"),
     path("favorites/", mainViews.favorites_list, name="favorites"),
+    # Rutas de la app artist
+    path('artist/', include('artist.urls')),
+    path('play/<int:song_id>/', mainViews.play_song, name='play_song'),  # cambio contador
+
 ]
 
 # Archivos media

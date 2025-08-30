@@ -12,6 +12,17 @@ from django.utils import timezone
 
 # Create your views here.
 
+def top_songs(request, artist_name):
+    top_songs=  Song.objects.filter(artist_name=artist_name).annotate(
+        play_count=Count('songplay')
+    ).order_by('-play_count')[:2]
+
+    song_names = [song.title for song in top_songs]
+    play_counts = [song.play_count for song in top_songs]
+
+    return song_names, play_counts
+
+
 def artist_page(request, artist_name):
     songs = Song.objects.filter(artist_name=artist_name)
     artist_profile = ArtistProfile.objects.filter(name=artist_name).first()
@@ -22,9 +33,14 @@ def artist_page(request, artist_name):
         played_at__gte=month_start
         ).count()
 
+    song_names, play_counts = top_songs(request, artist_name)
+
     return render(request, 'artist/profile.html', {
         'artist_name': artist_name,
         'artist_profile': artist_profile,
         'songs': songs,
         'plays_this_month': plays_this_month,
+        'play_counts': play_counts,
+        'song_names': song_names,
     })
+

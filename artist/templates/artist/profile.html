@@ -1,4 +1,5 @@
 {% extends 'main/base.html'%} 
+{% load static %}
 
 {% block content %}
 <div class="main-block">
@@ -20,5 +21,15 @@
 
     <h2>Reproducciones este mes</h2>
     <p>{{ plays_this_month }}</p>
+
+    <h2>Top canciones mas reproducidas</h2>
+    <canvas id="topSongsChart" width="400" height="200"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        window.song_names = {{ song_names|safe }};
+        window.play_counts = {{ play_counts|safe }};
+    </script>
+    <script src="{% static 'artist/js/graphic.js' %}"></script>
+
 </div>
 {% endblock %}

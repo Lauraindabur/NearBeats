@@ -13,7 +13,7 @@
 </head>
 
 <body>
-<!--Pendiente: cuando click, que quede en morado-->
+<!-- Cuando click, que quede en morado-->
     <nav class="main-navbar d-flex justify-content-between align-items-center" style="padding-left: 20px;"> <!--Se adapata al nav apra unir los botones y el form -->
 
     <form class="d-flex align-items-center w-50 form-search" method="GET" action="{% url 'buscar' %}">
@@ -118,7 +118,7 @@
     {% endfor %}
 </div>
 {% else %}
-<p>No se encontraron canciones.</p>
+{# <p>No se encontraron canciones.</p> #}
 {% endif %}
 
 

@@ -43,34 +43,30 @@ def home(request):
     return render(request, "main/home.html")  # Asegúrate de que el archivo home.html existe en la carpeta templates/main
 
 def filtrar_sugerencias(request):
-
-    emotion = request.GET.get("emotion")
-    created_at = request.GET.get("created_at")
-    genre = request.GET.get("genre")
+    emotion = request.GET.get("emotion", "").strip().lower()
+    created_at = request.GET.get("created_at", "").strip()
+    genre = request.GET.get("genre", "").strip()
     random_el = request.GET.get("random")
 
-    
     songs = Song.objects.all()
+    
 
-    if(random_el):
+    if random_el:
         # Obtenemos dos elementos en posición aleatoria
-        ids= list(Song.objects.values_list('id',flat=True))
+        ids = list(Song.objects.values_list('id', flat=True))
         if len(ids) >= 2:
-            random_ids =random.sample(ids,2)
+            random_ids = random.sample(ids, 2)
             songs = Song.objects.filter(id__in=random_ids)
-        # count = Song.objects.count()
-        # if ( count > 0):
-        #     random_index = randint(0, count-1)
-        #     songs=Song.objects.all()[random_index]
     else:
         if emotion:
-            songs= songs.filter(mood=emotion)
+            # Filtramos por mood en español, insensible a mayúsculas
+            songs = songs.filter(mood__iexact=emotion.strip())
         if created_at:
-            songs = songs.filter(created_at=created_at)
+            songs = songs.filter(created_at__icontains=created_at)
         if genre:
-            songs = songs.filter(genre=genre)
+            songs = songs.filter(genre__icontains=genre)
 
-    #Retornamos el diccionario con los valores
+    # Retornamos el diccionario con los valores
     return render(request, 'main/home.html', {'songs': songs})
 
 def library(request):

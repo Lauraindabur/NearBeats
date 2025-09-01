@@ -1,4 +1,6 @@
+
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -18,10 +20,13 @@
 
   <!-- Estilos -->
   <link rel="icon" href="{% static 'main/images/Logo_NearBeats.png' %}" type="image/png" />
+  <link rel="stylesheet" href="{% static 'main/css/style_BaseLibrary.css' %}?v=1">
   <link rel="stylesheet" href="{% static 'main/css/styleLibrary.css' %}?v=1">
+  <link rel="stylesheet" href="{% static 'main/css/estilo.css' %}?v=1">
    {% block extra_css %}{% endblock %}
 
   <!-- Scripts -->
+  <script src="{% static 'main/js/search.js' %}"></script>
   <script src="{% static 'main/js/player.js' %}"></script>
   <script src="{% static 'main/js/like.js' %}"></script>
   <script src="{% static 'main/js/favorite.js' %}"></script>
@@ -105,33 +110,25 @@
             </li>
           </ul>
         </div>
-      {% else %}
-        <a href="{% url 'login' %}" class="btn btn-outline-dark btn-sm w-100 mb-2">
-          <i class="bi bi-box-arrow-in-right me-1"></i>Iniciar sesión
-        </a>
-        <a href="{% url 'register' %}" class="btn btn-dark btn-sm w-100">
-          <i class="bi bi-person-plus-fill me-1"></i>Registrarse
-        </a>
-      {% endif %}
+{% else %}
+<a href="{% url 'login' %}" class="login-card">
+  <div>
+    <div class="login-title">🎶 Inicia sesión</div>
+    <div class="login-subtitle">
+      y desbloquea tu <span>experiencia musical</span>
     </div>
+  </div>
+</a>
+
+{% endif %}
+  </div>
   </aside>
   
 
   <!-- Contenido principal -->
- <main class="main-content fade-in">
+ <main class="main-content fade-in" >
   <!-- Barra de navegación secundaria -->
-  <div class="d-flex justify-content-end mb-3">
-    <ul class="nav">
-      <li class="nav-item">
-        <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" 
-           href="{% url 'home' %}">Home</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link {% if request.resolver_match.url_name == 'library' %}active{% endif %}" 
-           href="{% url 'library' %}">Biblioteca</a>
-      </li>
-    </ul>
-  </div>
+{% include 'main/main_navbar.html' %}
 
   <!-- Contenido específico de cada página -->
   {% block content %}{% endblock %}

@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Seleccionamos todos los botones de favorito
   document.querySelectorAll(".favorite-btn").forEach(button => {
     button.addEventListener("click", async () => {
       const songId = button.dataset.songId;
@@ -13,25 +12,30 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         });
 
-        if (!response.ok) {
-          console.error("Error en la respuesta del servidor");
-          return;
-        }
-
         const data = await response.json();
         const icon = button.querySelector("i");
 
         if (data.is_favorited) {
-          // Si quedó en favoritos  estrella amarilla llena
           icon.classList.remove("bi-star");
           icon.classList.add("bi-star-fill", "text-warning");
         } else {
-          // Si se quitó  estrella vacía
           icon.classList.remove("bi-star-fill", "text-warning");
           icon.classList.add("bi-star");
+
+          // **Eliminar tarjeta en favoritos**
+          const songItem = document.querySelector(`#song-${songId}`);
+          if (songItem) {
+            songItem.remove();
+          }
+
+          // **Mostrar mensaje si la lista queda vacía**
+          if (!document.querySelector(".song-item")) {
+            const container = document.querySelector(".row");
+            container.innerHTML = "<p>No tienes canciones favoritas aún.</p>";
+          }
         }
       } catch (error) {
-        console.error("Error al hacer la petición:", error);
+        console.error("Error:", error);
       }
     });
   });

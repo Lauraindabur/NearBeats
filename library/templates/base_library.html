@@ -1,0 +1,137 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}NearBeats{% endblock %}</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+
+  <!-- Estilos -->
+  <link rel="icon" href="{% static 'images/Logo_NearBeats.png' %}" type="image/png" />
+  <link rel="stylesheet" href="{% static 'css/style_BaseLibrary.css' %}?v=1">
+  <link rel="stylesheet" href="{% static 'css/styleLibrary.css' %}?v=1">
+   <link rel="stylesheet" href="{% static 'css/styleFavorites.css' %}?v=1">
+  <link rel="stylesheet" href="{% static 'main/css/estilo.css' %}?v=1">
+
+  {% block extra_css %}{% endblock %}
+
+  <!-- Scripts -->
+  <script src="{% static 'main/js/search.js' %}"></script>
+  <script src="{% static 'js/player.js' %}"></script>
+  <script src="{% static 'js/like.js' %}"></script>
+  <script src="{% static 'js/favorite.js' %}"></script>
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar fade-in">
+    <div class="logo-container">
+      <div class="logo">
+        <img src="{% static 'images/Logo_NearBeats.png' %}" alt="NearBeats">
+        <span class="brand-name">NearBeats</span>
+      </div>
+      <div class="divider"></div>
+    </div>
+
+    <ul class="nav-links">
+      <li>
+        <a href="{% url 'library' %}" 
+           class="{% if request.resolver_match.url_name == 'library' %}active{% endif %}">
+           <i class="bi bi-search"></i> Explorar
+        </a>
+      </li>
+
+      {% if user.is_authenticated and user.rol == "Artista" %}
+        <li>
+          <a href="{% url 'upload_songs' %}" 
+             class="{% if request.resolver_match.url_name == 'upload_songs' %}active{% endif %}">
+             <i class="bi bi-cloud-upload"></i> Subir canciones
+          </a>
+        </li>
+      {% endif %}
+
+      <li>
+        <a href="#">
+           <i class="bi bi-music-note-list"></i> Playlists
+        </a>
+      </li>
+
+      <li>
+        <a href="{% url 'favorites' %}" 
+           class="{% if request.resolver_match.url_name == 'favorites' %}active{% endif %}">
+           <i class="bi bi-star-fill"></i> Favoritos
+        </a>
+      </li>
+    </ul>
+
+    <!-- Si el usuario NO está logueado -->
+    <div class="bottom-buttons mt-auto p-2">
+      {% if not user.is_authenticated %}
+        <a href="{% url 'login' %}" class="login-card">
+          <div>
+            <div class="login-title">🎶 Inicia sesión</div>
+            <div class="login-subtitle">
+              y desbloquea tu <span>experiencia musical</span>
+            </div>
+          </div>
+        </a>
+      {% endif %}
+    </div>
+  </aside>
+  
+
+  <!-- Contenido principal -->
+  <main class="main-content fade-in">
+    <!-- Barra de navegación secundaria -->
+    {% include 'main/main_navbar.html' %}
+
+    <!-- Contenido específico de cada página -->
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Player bar -->
+<div id="player-bar">
+  <div id="player-left">
+    <img id="cover-img" src="{% static 'images/sin_portada.png' %}" alt="Cover">
+    <div id="player-song-info">
+      <div id="player-title">No hay canción</div>
+      <div id="player-artist">---</div>
+    </div>
+  </div>
+
+  <div id="player-center">
+    <div id="player-controls">
+      <button id="rewind-btn" title="Retroceder 10 segundos"><i class="bi bi-skip-backward-fill"></i></button>
+      <button id="playpause-btn" title="Reproducir / Pausar"><i class="bi bi-play-fill"></i></button>
+      <button id="forward-btn" title="Adelantar 10 segundos"><i class="bi bi-skip-forward-fill"></i></button>
+    </div>
+
+    <div id="progress-container">
+      <span id="current-time">0:00</span>
+      <div id="progress-bar" title="Barra de progreso">
+        <div id="progress-fill"></div>
+        <div id="progress-thumb"></div> <!-- <- Esta es la bolita draggable -->
+      </div>
+      <span id="duration">0:00</span>
+    </div>
+  </div>
+
+  <audio id="audio-player"></audio>
+</div>
+
+ 
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

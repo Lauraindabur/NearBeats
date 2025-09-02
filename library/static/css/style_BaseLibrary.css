@@ -179,3 +179,143 @@
   .login-subtitle span {
     font-weight: 500;
   }
+#player-bar {
+  position: fixed;
+  bottom: 0;
+  left: 250px; /* ancho del sidebar */
+  width: calc(100% - 250px);
+
+  padding: 10px 20px;
+  display: flex;
+  z-index: 1000;
+}
+
+body {
+  padding-bottom: 100px; /* espacio para que el player no tape contenido */
+}
+
+#player-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-width: 250px;
+}
+#player-left img {
+    width: 84px;              
+    height: 84px;
+    border-radius: 16px;       
+    object-fit: cover;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);  
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+#player-song-info {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+#player-title {
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: #2d2d2d;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#player-artist {
+    font-size: 0.9rem;
+    color: #5e5e5e;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+#player-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex-grow: 1;
+    max-width: 500px;
+    min-width: 300px;
+}
+#player-controls {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+#player-controls button {
+    background: none;
+    border: none;
+    color: #2f2f2f;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+#player-controls button:hover {
+    color: #855df7;
+    transform: scale(1.15);
+}
+/* Botón principal Play/Pause */
+#playpause-btn {
+    width: 56px;          /* ancho fijo */
+    height: 56px;         /* alto fijo */
+    font-size: 1.8rem;    /* tamaño del ícono dentro */
+    background: white;
+    color: #855df7;
+    border-radius: 50%;   /* círculo perfecto */
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    display: flex;        /* centra el ícono */
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+#playpause-btn:hover {
+    background: #f8f8f8;
+    transform: scale(1.12);
+}
+
+
+/* ---- Barra de progreso ---- */
+#progress-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+#current-time, #duration {
+    font-size: 0.75rem;
+    color: #2a2a2a;
+    width: 40px;
+    text-align: center;
+    user-select: none;
+}
+#progress-bar {
+    flex-grow: 1;
+    height: 6px;
+    background: rgba(64, 64, 64, 0.2);
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+#progress-fill {
+    background: white;
+    height: 100%;
+    width: 0%;
+    border-radius: 3px;
+}
+#progress-thumb {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 14px;
+  height: 14px;
+  background: #6366f1;
+  border-radius: 50%;
+  cursor: pointer;
+}
+

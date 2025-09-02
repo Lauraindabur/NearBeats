@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.db.models import Q  # Nos deja usar OR |
 from django.http import JsonResponse #Para usar AJAX y devolver JSON (temporal)
-from library.models import Song, Like, Favorite
+from library.models import Song, Like, Favorite, SongPlay
 from django.db.models import F, Count
 import random
 
@@ -130,3 +130,10 @@ def toggle_favorite(request, song_id):
 
 
 
+@login_required
+def play_song(request, song_id):
+    song = get_object_or_404(Song, id=song_id)  #busca la cancion con el id de la cancion que se reproduce
+    SongPlay.objects.create(     #crea un registro en SongPlay con el usuario
+        user=request.user,    #guarda el nombre del usuario
+        song=song)   #guarda la cancion que se reproduce
+    return JsonResponse({'status': 'ok'})   #para revisar en network si se recibe la peticion

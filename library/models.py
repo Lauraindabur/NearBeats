@@ -96,3 +96,19 @@ class Favorite(models.Model):
 
     class Meta:
         unique_together = ("user", "song")  # Para evitar duplicados
+
+
+#-----Historial de reproducciones con hora, usuario y canciónn-----
+class SongPlay(models.Model):  #cada vez que se le da click a reproducir se crea un registro en songplay
+    user = models.ForeignKey(     #usuario que la escuchó que ya se guardó
+        settings.AUTH_USER_MODEL,     
+        on_delete=models.CASCADE
+    )
+    song = models.ForeignKey(     #que cancion se escuchó (ya guardada)  cada registro o hisorial esta relacionado con la cancion que se escuchó
+        Song,
+        on_delete=models.CASCADE
+    )
+    played_at = models.DateTimeField(auto_now_add=True)   #la toma el sistema como fecha y hora en que se dio a iniciar
+
+    def __str__(self):
+        return f"{self.user} escuchó {self.song.title} en {self.played_at}"

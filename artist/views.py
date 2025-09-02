@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.db.models import Q  # Nos deja usar OR |
 from django.http import JsonResponse #Para usar AJAX y devolver JSON (temporal)
-from main.models import Song, SongPlay
+from library.models import Song, SongPlay
 from django.db.models import F, Count
 from .models import ArtistProfile  # Importa desde la app artist
 from django.utils import timezone

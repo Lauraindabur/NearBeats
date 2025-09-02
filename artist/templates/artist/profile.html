@@ -1,0 +1,82 @@
+{% extends 'main/base.html'%}
+{% load static %}
+
+{% block content %}
+<div class="profile-max">
+    <!-- Tarjeta principal del artista -->
+    <section class="hero" aria-label="Tarjeta de artista">
+      <div class="hero-grid">
+        <figure class="avatar" aria-label="Imagen de perfil">
+            {% if artist_profile.profile_image %}
+                <img src="{{ artist_profile.profile_image.url }}" alt="{{ artist_name }} Profile Image">
+            {% else %}
+                <img src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?q=80&w=600&auto=format&fit=crop" alt="Foto del artista">
+            {% endif %}
+        </figure>
+        <div>
+          <div class="title-wrap">
+            <h1 class="artist">{{ artist_name }}</h1>
+          </div>
+          <div id="repro-mes-container">
+               <h2>Reproducciones este mes</h2>
+                <p>{{ plays_this_month }}</p>
+          </div>
+          {% if artist_profile.bio %}
+            <div class="note">{{ artist_profile.bio }}</div>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+
+    <!-- Canciones del artista -->
+    <section class="artist_songs">
+      <h2>Canciones del artista</h2>
+      {% for song in songs %}
+        <p>{{ song.title }}</p>
+      {% endfor %}
+    </section>
+
+    <h2>Reproducciones este mes</h2>
+    <p>{{ plays_this_month }}</p>
+
+
+
+    <!-- Contenido: Bio + analitica  -->
+    <section class="grid" aria-label="Contenido del perfil">
+      <!-- BIO -->
+      <article class="card" aria-label="Biografía del artista">
+        <h3>Biografía</h3>
+        <p class="bio">
+            {{ artist_profile.bio }}
+        </p>
+      </article>
+
+      <!-- Analítica para insertar gráficos -->
+<aside class="card" aria-label="Analítica del artista">
+  <h3>Análisis</h3>
+  <div class="charts">
+    <div class="chart" aria-label="Área para gráfico 1">
+      <h5>Top canciones</h5>
+      <canvas id="topSongsChart" width="400" height="200"></canvas>
+    </div>
+    <div class="chart" aria-label="Área para gráfico 2">Grafico 2</div>
+  </div>
+  <p class="note">Zona reservada para widgets de analítica.</p>
+</aside>
+
+<!-- Datos para JS y scripts (solo una vez, fuera del bloque de la gráfica) -->
+
+<script>
+    window.plays_this_month = {{ plays_this_month }};
+    window.song_names = {{ song_names|safe }};
+    window.play_counts = {{ play_counts|safe }};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'artist/js/graphic.js' %}"></script>
+
+
+
+
+</div>
+
+{% endblock %}

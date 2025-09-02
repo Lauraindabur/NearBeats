@@ -22,6 +22,7 @@ urlpatterns = [
     path('usuarios/', include('usuarios.urls')),
      path("toggle-favorite/<int:song_id>/", libraryViews.toggle_favorite, name="toggle_favorite"),
     path("favorites/", libraryViews.favorites_list, name="favorites"),
+    path('artist/', include('artist.urls')),
     
 ]
 

@@ -23,6 +23,7 @@ urlpatterns = [
      path("toggle-favorite/<int:song_id>/", libraryViews.toggle_favorite, name="toggle_favorite"),
     path("favorites/", libraryViews.favorites_list, name="favorites"),
     path('artist/', include('artist.urls')),
+    path('play/<int:song_id>/', libraryViews.play_song, name='play_song'),  # cambio contador
     
 ]
 

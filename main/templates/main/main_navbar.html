@@ -115,11 +115,7 @@
 </nav>
 
 {% if request.resolver_match.url_name != 'upload_songs' %}
-    <div class="mb-2">
-        <button class="btn btn-outline-primary btn-morado" type="button" data-bs-toggle="offcanvas" data-bs-target="#emocionesOffcanvas" aria-controls="emocionesOffcanvas">
-            ¿No sabes qué emoción buscar?
-        </button>
-    </div>
+   
 
     {% if searchTerm %}
         <div id="mensaje-resultados" class="alert {% if resultados_count > 0 %}alert-info{% else %}alert-warning{% endif %} my-3" role="alert">
@@ -169,16 +165,22 @@
 {% endif %}
 
 <script>
-// Dropdown filtro búsqueda
 document.addEventListener('DOMContentLoaded', function() {
     var dropdownItems = document.querySelectorAll('.dropdown-menu .dropdown-item');
     var filtroSeleccionado = document.getElementById('filtroSeleccionado');
     var inputFiltro = document.getElementById('inputFiltro');
+    var offcanvas = document.getElementById('emocionesOffcanvas');
+
     dropdownItems.forEach(function(item) {
         item.addEventListener('click', function(e) {
             e.preventDefault();
             filtroSeleccionado.textContent = item.textContent;
             inputFiltro.value = item.getAttribute('data-value');
+            // Abre el offcanvas si selecciona "Emoción"
+            if (item.getAttribute('data-value') === 'emocion') {
+                var bsOffcanvas = new bootstrap.Offcanvas(offcanvas);
+                bsOffcanvas.show();
+            }
         });
     });
 

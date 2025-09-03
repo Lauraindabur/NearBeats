@@ -16,6 +16,7 @@
               <img src="{% static 'images/sin_portada.png' %}" alt="Sin portada">
             {% endif %}
             <div class="play-btn" 
+                data-song-id="{{ song.id }}"
                 data-audio="{{ song.audio_file.url }}"
                 data-title="{{ song.title }}"
                 data-artist="{{ song.artist_name }}">

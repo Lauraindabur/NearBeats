@@ -1,11 +1,42 @@
+ console.log('search.js cargado'); // verificar que si este cargando
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form.form-search');
     const input = document.getElementById('busqueda');
     const recentList = document.getElementById('recent-searches-list');
     const maxRecent = 2;
+    const offcanvas = document.getElementById('emocionesOffcanvas');
+    const emotionButtons = offcanvas.querySelectorAll('.list-group-item');
+    const searchInput = document.getElementById('busqueda');
+    const inputFiltro = document.getElementById('inputFiltro');
+    const dropdownItems = document.querySelectorAll('.dropdown-menu .dropdown-item');
+    const filtroSeleccionado = document.getElementById('filtroSeleccionado');
 
     // Si no hay buscador en la página, salimos sin romper nada
     if (!form || !input) return;
+
+    // Abrir offcanvas al seleccionar "Emoción" en el filtro
+    dropdownItems.forEach(function(item) {
+        item.addEventListener('click', function(e) {
+        e.preventDefault();
+        filtroSeleccionado.textContent = item.textContent;
+        inputFiltro.value = item.getAttribute('data-value');
+        if (item.getAttribute('data-value') === 'emocion') {
+            var bsOffcanvas = new bootstrap.Offcanvas(offcanvas);
+            bsOffcanvas.show();
+        }
+        });
+    });
+
+    // Botones de emoción ponen el valor en la barra de búsqueda y mantienen el filtro
+    emotionButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+        const emotion = btn.getAttribute('data-emotion');
+        searchInput.value = emotion;
+        inputFiltro.value = 'emocion';
+        const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvas);
+        bsOffcanvas.hide();
+        });
+    });
 
     function renderRecent() {
         if (!recentList) return; // si no hay contenedor, no hacemos nada

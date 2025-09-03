@@ -7,6 +7,16 @@ document.addEventListener("DOMContentLoaded", function() {
         headers: {
           'X-CSRFToken': getCookie('csrftoken'),
         }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'ok') {
+          //location.reload(); Recarga la página para actualizar el contador
+          const counter = document.getElementById('play-counter');
+          if (counter){
+            counter.textContent = parseInt(counter.textContent) + 1;
+          }
+        }
       });
     });
   });
@@ -25,4 +35,4 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     return cookieValue;
   }
-});
+}); 

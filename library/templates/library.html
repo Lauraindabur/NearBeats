@@ -43,6 +43,9 @@
                 <button class="btn btn-link p-0 favorite-btn" data-song-id="{{ song.id }}">
                   <i class="bi bi-star{% if song.is_favorited %}-fill text-warning{% endif %}" style="font-size: 1.4rem;"></i>
                 </button>
+               <button class=" btn btn-link p-0 share-btn" data-song-id="{{ song.id }}" onclick="shareSong('{{ song.title }}')">
+                 <i class="bi bi-share" style="font-size: 1.4rem;"></i>
+               </button>
               </div>
             {% endif %}
           </div>

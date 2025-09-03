@@ -5,7 +5,9 @@ venv/
 # Archivos de Python compilados
 __pycache__/
 *.pyc
-
+usuarios/__pycache__
+usuarios/migrations/__pycache__
+nearbeats/__pycache__
 # Archivos de configuración del sistema
 *.log
 *.sqlite3

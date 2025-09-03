@@ -24,6 +24,7 @@ urlpatterns = [
     path("favorites/", libraryViews.favorites_list, name="favorites"),
     path('artist/', include('artist.urls')),
     path('play/<int:song_id>/', libraryViews.play_song, name='play_song'),  # cambio contador
+    path('follows/', include('follows.urls')),
     
 ]
 

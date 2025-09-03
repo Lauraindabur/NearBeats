@@ -24,11 +24,17 @@
             </div>
           </div>
 
-          <div class="song-info position-relative text-center">
+          <div class="song-info position-relative text-center" style="height : 5.8rem;">
             <div>
               <div class="song-title fw-semibold">{{ song.title }}</div>
               <div class="song-artist text-muted small">{{ song.artist_name }}</div>
+              <button class="btn btn-link p-0 comment-btn" data-artist-id="{{ song.artist_name }}" onclick="showFollowersCount(this)">
+                <i class="bi bi-eye"></i>
+              </button>
+              <!-- Modal para mostrar seguidores -->
+
             </div>
+
 
             {% if user.is_authenticated %}
               <div class="d-flex flex-column align-items-center position-absolute top-50 end-0 translate-middle-y me-1">
@@ -47,6 +53,9 @@
                <button class=" btn btn-link p-0 share-btn" data-song-id="{{ song.id }}" onclick="shareSong('{{ song.title }}')">
                  <i class="bi bi-share" style="font-size: 1.4rem;"></i>
                </button>
+              <button class="btn btn-follow p-0 follow-btn" data-artist-id="{{ song.artist_name }}" onclick="toggleFollow(this)">
+                <i class="bi bi-person-plus{% if song.is_followed %}-fill text-success{% endif %}" style="font-size: 1.4rem;"></i>
+              </button>
               </div>
             {% endif %}
           </div>

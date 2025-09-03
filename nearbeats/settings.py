@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'usuarios',   # de registroLogin
     'library',    # para biblioteca
     'artist',     # para perfil de artista
+    'follows',    # para seguir artistas
 ]
 
 MIDDLEWARE = [

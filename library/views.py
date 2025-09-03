@@ -6,6 +6,8 @@ from django.db.models import Q  # Nos deja usar OR |
 from django.http import JsonResponse #Para usar AJAX y devolver JSON (temporal)
 from library.models import Song, Like, Favorite, SongPlay
 from django.db.models import F, Count
+from follows.models import Follow
+from artist.models import ArtistProfile
 import random
 
 
@@ -23,6 +25,11 @@ def library(request):
         for song in songs:
             song.is_liked = song.id in user_likes
             song.is_favorited = song.id in user_favorites
+            try:
+                artist = ArtistProfile.objects.get(name=song.artist_name)
+                song.is_followed = Follow.objects.filter(user=request.user, artist=artist).exists()
+            except ArtistProfile.DoesNotExist:
+                song.is_followed = False
     else:
         for song in songs:
             song.is_liked = False
@@ -137,3 +144,4 @@ def play_song(request, song_id):
         user=request.user,    #guarda el nombre del usuario
         song=song)   #guarda la cancion que se reproduce
     return JsonResponse({'status': 'ok'})   #para revisar en network si se recibe la peticion
+

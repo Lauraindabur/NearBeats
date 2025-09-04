@@ -1,5 +1,6 @@
 {% extends "base_library.html" %}
 {% load static %}
+
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/styleupload.css' %}?v=3">
 {% endblock %}
@@ -13,108 +14,154 @@
   </h1>
 
   {% if user.is_authenticated and user.rol == "Artista" %}
+
     <!-- Selección inicial -->
-<div id="upload-choice" class="choice-card shadow-lg">
-  <h5 class="mb-4">¿Qué deseas subir?</h5>
-  <div class="d-flex flex-wrap gap-4 justify-content-center">
-    <div class="option-card" onclick="showForm('single')">
-      <i class="bi bi-music-note-beamed"></i>
-      <h6>Canción</h6>
-      <p>Sube un sencillo con sus detalles y portada.</p>
+    {% if not songs_list %}
+    <div id="upload-choice" class="choice-card shadow-lg">
+      <h5 class="mb-4">¿Qué deseas subir?</h5>
+      <div class="d-flex flex-wrap gap-4 justify-content-center">
+        <div class="option-card" onclick="showForm('single')">
+          <i class="bi bi-music-note-beamed"></i>
+          <h6>Canción</h6>
+          <p>Sube un sencillo con sus detalles y portada.</p>
+        </div>
+        <div class="option-card" onclick="showForm('list')">
+          <i class="bi bi-collection"></i>
+          <h6>Lista</h6>
+          <p>Añade varias canciones a la vez</p>
+        </div>
+      </div>
     </div>
-    <div class="option-card" onclick="showForm('list')">
-      <i class="bi bi-collection"></i>
-      <h6>Lista</h6>
-      <p>Añade varias canciones a la vez</p>
+
+    <!-- Formulario canción individual -->
+    <div id="upload-single" style="display:none;">
+      <div class="form-card shadow-lg">
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label">Título</label>
+            <input type="text" name="title" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Género</label>
+            <input type="text" name="genre" class="form-control" placeholder="Ej: Rock, Pop, Trap">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Letra</label>
+            <textarea name="lyrics" class="form-control" placeholder="Escribe la letra aquí..."></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Estado de ánimo</label>
+            <select name="mood" class="form-select">
+              {% for value, label in moods %}
+                <option value="{{ value }}">{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Archivo MP3</label>
+            <input type="file" name="audio_file" class="form-control" accept=".mp3" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Portada (opcional)</label>
+            <input type="file" name="cover_image" class="form-control" accept="image/*">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Copyright</label>
+            <input type="text" name="copyright" class="form-control" placeholder="Ej: © 2025 NearBeats">
+          </div>
+
+          <div class="d-flex gap-3 mt-4 justify-content-center">
+            <button type="submit" class="btn btn-dark">
+              <i class="bi bi-cloud-arrow-up"></i> Subir canción
+            </button>
+            <a href="{% url 'upload_songs' %}" class="btn btn-secondary">Cancelar</a>
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
-</div>
 
+    <!-- Formulario lista inicial -->
+    <div id="upload-list" style="display:none;">
+      <div class="form-card shadow-lg">
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label">Archivo Excel</label>
+            <input type="file" name="songs_excel" class="form-control" accept=".xlsx" required>
+            <div class="form-text">
+              Columnas: <code>title, genre, lyrics, audiofile, coverimage</code>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Archivo ZIP</label>
+            <input type="file" name="songs_zip" class="form-control" accept=".zip" required>
+            <div class="form-text">
+              Incluye <code>.mp3</code> y portadas mencionadas en el Excel
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Copyright (aplica a todas)</label>
+            <input type="text" name="copyright" class="form-control" placeholder="Ej: © 2025 NearBeats">
+          </div>
+
+          <div class="d-flex gap-3 mt-4 justify-content-center">
+            <button type="submit" class="btn btn-dark">
+              <i class="bi bi-cloud-arrow-up"></i> Subir lista
+            </button>
+            <a href="{% url 'upload_songs' %}" class="btn btn-secondary">Cancelar</a>
+          </div>
+        </form>
+      </div>
     </div>
+    {% endif %}
 
-<!-- Formulario canción individual -->
-<div id="upload-single" style="display:none;">
-  <div class="form-card shadow-lg">
-    <form method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      
-      <div class="mb-3">
-        <label class="form-label">Título</label>
-        <input type="text" name="title" class="form-control" required>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Artista</label>
-        <input type="text" name="artist_name" class="form-control" required>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Género</label>
-        <input type="text" name="genre" class="form-control" placeholder="Ej: Rock, Pop, Trap">
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Letra</label>
-        <textarea name="lyrics" class="form-control" placeholder="Escribe la letra aquí..."></textarea>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Estado de ánimo</label>
-        <select name="mood" class="form-select">
-          {% for value, label in moods %}
-            <option value="{{ value }}">{{ label }}</option>
-          {% endfor %}
-        </select>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Archivo MP3</label>
-        <input type="file" name="audio_file" class="form-control" accept=".mp3" required>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Portada (opcional)</label>
-        <input type="file" name="cover_image" class="form-control" accept="image/*">
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Copyright</label>
-        <input type="text" name="copyright" class="form-control" placeholder="Ej: © 2025 NearBeats">
-      </div>
-
-      <div class="d-flex gap-3 mt-4 justify-content-center">
-        <button type="submit" class="btn btn-dark">
-          <i class="bi bi-cloud-arrow-up"></i> Subir canción
-        </button>
-        <a href="{% url 'library' %}" class="btn btn-secondary">Cancelar</a>
-      </div>
-    </form>
-  </div>
-</div>
-
-
-    <!-- Placeholder lista -->
-    <div id="upload-list" class="alert alert-info text-center mt-4" style="display:none;">
-      <i class="bi bi-collection"></i> En proceso
+    <!-- Formulario de selección de moods individuales -->
+    {% if songs_list %}
+    <div class="form-card shadow-lg mt-4">
+      <h5>Selecciona el estado de ánimo de cada canción</h5>
+      <form method="post">
+        {% csrf_token %}
+        {% for song in songs_list %}
+        <div class="mb-3 p-2 border rounded">
+          <h6>{{ song.title }}</h6>
+          <p>Género: {{ song.genre }}</p>
+          <label class="form-label">Estado de ánimo</label>
+          <select name="mood_{{ forloop.counter }}" class="form-select">
+            {% for value, label in moods %}
+              <option value="{{ value }}">{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        {% endfor %}
+        <input type="hidden" name="total_songs" value="{{ songs_list|length }}">
+        <input type="hidden" name="copyright" value="{{ request.session.copyright_text }}">
+        <div class="d-flex gap-3 mt-3 justify-content-center">
+          <button type="submit" class="btn btn-dark">Guardar canciones</button>
+        </div>
+      </form>
     </div>
+    {% endif %}
 
   {% else %}
-    <div class="d-flex justify-content-center align-items-center" style="min-height: 60vh;">
-      <div class="alert alert-warning text-center shadow p-4 rounded" role="alert" style="max-width: 500px;">
-        <i class="bi bi-exclamation-triangle-fill" style="font-size: 1.5rem;"></i>
-        <h4 class="alert-heading mt-2">Acceso restringido</h4>
-        <p>Debes iniciar sesión como <strong>artista</strong> para subir canciones.</p>
-        <hr>
-        <a href="{% url 'login' %}" class="btn btn-primary" style="background-color: #855df7; border: none">Iniciar sesión</a>
-      </div>
+    <div class="alert alert-warning text-center mt-5">
+      Debes iniciar sesión como <strong>artista</strong> para subir canciones.
     </div>
   {% endif %}
+
 </div>
 
 <script>
 function showForm(type) {
   document.getElementById("upload-choice").style.display = "none";
-
   if (type === "single") {
     document.getElementById("upload-single").style.display = "block";
   } else {

@@ -28,7 +28,11 @@ def top_songs(request, artist_name):
     return song_names, play_counts
 
 
+@login_required
 def artist_page(request, artist_name):
+    if not (request.user.is_superuser or getattr(request.user, 'rol', None) == "Artista"):
+        return HttpResponseForbidden("No tienes permiso para ver este perfil.")
+
     songs = Song.objects.filter(artist_name=artist_name)
     artist_profile = ArtistProfile.objects.filter(name=artist_name).first()
     now = timezone.now()

@@ -81,12 +81,14 @@
             </li>
             <li><hr class="dropdown-divider"></li>
             <li>
+                {% if user.is_superuser or user.rol == "Artista" %}
                 <a href="#" 
                     class="dropdown-item d-flex align-items-center"
                     data-url="{% url 'artist_profile' request.user.nombre %}"
                     onclick="event.preventDefault(); window.location.href=this.dataset.url;">
                     <i class="bi bi-person-circle me-2 text-primary"></i> Mi perfil
                 </a>
+                {% endif %}
             </li>
             <li>
                 <a href="#" class="dropdown-item d-flex align-items-center">

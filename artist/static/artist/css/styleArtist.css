@@ -26,20 +26,20 @@
   z-index: 0;
 }
 .hero-grid {
-  position: relative;
+  /* position: relative; */
   z-index: 1;
   display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: 18px;
+  grid-template-columns: 280px 1fr;
+  gap: 32px;
   align-items: center;
 }
 .avatar {
-  width: 120px;
-  height: 120px;
-  border-radius: 26px;
-  overflow: hidden;
-  position: relative;
-  border: 2px solid rgba(255,255,255,.7);
+  width: 100% ;
+  height: 100% ;
+  border-radius: 18px ;
+  overflow: hidden ;
+  position: relative ;
+  border: 2px solid rgba(255,255,255,.7) ;
   box-shadow: 0 8px 24px rgba(0,0,0,.06);
   background: linear-gradient(to bottom right, #f8e1ff, #ffd9f1);
 }
@@ -50,6 +50,7 @@
   display: block;
   filter: contrast(1.02) saturate(1.02);
 }
+
 .avatar::after {
   content: "";
   position: absolute;
@@ -57,19 +58,22 @@
   background: linear-gradient(to right, transparent 60%, rgba(255,255,255,.22));
   mix-blend-mode: screen;
 }
+
+
 .title-wrap {
   display: flex;
   align-items: center;
   gap: 12px;
+  justify-content: center !important;
 }
 
 .artist {
-  margin: 0;
-  font-size: clamp(22px, 3.2vw, 38px); 
-  line-height: 1.02;
-  font-weight: 800;
-  letter-spacing: .3px;
-  background: linear-gradient(90deg, var(--morado-2, #ca9af8), var(--rosa, #f7cfe8));
+   text-align: left;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #2c2c2c;
+  margin-bottom: 0;
+  background: linear-gradient(90deg, #ca9af8, #f7cfe8);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -157,7 +161,7 @@
 .reproducciones-mes {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
   margin-top: 18px;
   font-size: 1.1rem;
   font-weight: 600;
@@ -167,11 +171,41 @@
 .repro-label {
   font-size: 1rem;
   color: #6c6c7a;
+  font-weight: 500;
 }
 .music-waves svg {
   display: inline-block;
   vertical-align: middle;
 }
+
+.followers-box {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(245, 235, 255, 0.7);
+  border-radius: 14px;
+  padding: 8px 18px;
+  box-shadow: 0 2px 8px rgba(106,0,244,0.07);
+  margin-top: 6px;
+}
+
+
+.btn-follow {
+  background: linear-gradient(90deg, #ca9af8, #f7cfe8);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 18px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-follow:hover {
+  background: linear-gradient(90deg, #9333ea, #f7cfe8);
+}
+
+
 
 /* animacion de onda */
 .wave {
@@ -187,3 +221,4 @@
   0%, 100% { height: 8px; y: 8; }
   50% { height: 18px; y: 2; }
 }
+

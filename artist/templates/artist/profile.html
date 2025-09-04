@@ -6,7 +6,7 @@
     <!-- Tarjeta principal del artista -->
     <section class="hero" aria-label="Tarjeta de artista">
       <div class="hero-grid">
-        <figure class="avatar" aria-label="Imagen de perfil">
+        <figure class="avatar"  aria-label="Imagen de perfil">
             {% if artist_profile.profile_image %}
                 <img src="{{ artist_profile.profile_image.url }}" alt="{{ artist_name }} Profile Image">
             {% else %}
@@ -21,9 +21,9 @@
                <h2>Reproducciones este mes</h2>
                 <p>{{ plays_this_month }}</p>
           </div>
-          {% if artist_profile.bio %}
-            <div class="note">{{ artist_profile.bio }}</div>
-          {% endif %}
+          <div class="followers-box">
+            <button class = "btn-follow">Seguir</button>
+          </div>
         </div>
       </div>
     </section>
@@ -35,9 +35,6 @@
         <p>{{ song.title }}</p>
       {% endfor %}
     </section>
-
-    <h2>Reproducciones este mes</h2>
-    <p>{{ plays_this_month }}</p>
 
 
 

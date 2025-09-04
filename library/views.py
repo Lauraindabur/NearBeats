@@ -18,7 +18,7 @@ import random
 
 
 # Create your views here.
-def library(request):
+def library(request):    #see_library
     songs = Song.objects.annotate(likes_count=Count("likes"))
 
     if request.user.is_authenticated:
@@ -44,7 +44,7 @@ def library(request):
     return render(request, 'library.html', {'songs': songs})
 
 
-def upload_songs(request):
+def upload_songs(request):  #upload_songs
     if not request.user.is_authenticated:
         return redirect('login')
 
@@ -164,7 +164,7 @@ def upload_songs(request):
 
 
 @login_required
-def toggle_like(request, song_id):
+def toggle_like(request, song_id):   #like_song
     song = get_object_or_404(Song, id=song_id)
 
     like, created = Like.objects.get_or_create(user=request.user, song=song)
@@ -204,7 +204,7 @@ def favorites_list(request):
 
 
 @login_required
-def toggle_favorite(request, song_id):
+def toggle_favorite(request, song_id):  #save_favorite
     if request.method == "POST":
         song = get_object_or_404(Song, id=song_id)
         user = request.user

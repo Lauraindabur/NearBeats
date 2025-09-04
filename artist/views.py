@@ -12,7 +12,7 @@ from collections import Counter
 
 # Create your views here.
 
-def top_songs(request, artist_name):
+def top_songs(request, artist_name):  #see_top_songs
     # Top canciones basadas en reproducciones reales (SongPlay)
     top = (
         SongPlay.objects
@@ -29,7 +29,7 @@ def top_songs(request, artist_name):
 
 
 @login_required
-def artist_page(request, artist_name):
+def artist_page(request, artist_name):   #show_graphics_page
     if not (request.user.is_superuser or getattr(request.user, 'rol', None) == "Artista"):
         return HttpResponseForbidden("No tienes permiso para ver este perfil.")
 

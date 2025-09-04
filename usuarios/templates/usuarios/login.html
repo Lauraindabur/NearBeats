@@ -9,11 +9,12 @@
             <h2 class="text-center mb-4">Welcome back</h2>
 
             {% if messages %}
-                <div class="alert alert-danger">
-                    {% for message in messages %}
-                        {{ message }}
-                    {% endfor %}
-                </div>
+            {% for message in messages %}
+            <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} mt-2"
+                role="alert">
+                {{ message }}
+            </div>
+            {% endfor %}
             {% endif %}
 
             <form method="POST">

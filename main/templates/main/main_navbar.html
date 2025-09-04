@@ -114,7 +114,7 @@
     </ul>
 </nav>
 
-{% if request.resolver_match.url_name != 'upload_songs' %}
+{% if request.resolver_match.url_name != 'upload_songs' and request.resolver_match.url_name != 'login' and request.resolver_match.url_name != 'register' %}
     <div class="mb-2">
         <button class="btn btn-outline-primary btn-morado" type="button" data-bs-toggle="offcanvas" data-bs-target="#emocionesOffcanvas" aria-controls="emocionesOffcanvas">
             ¿No sabes qué emoción buscar?

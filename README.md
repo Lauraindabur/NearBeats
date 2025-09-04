@@ -19,7 +19,6 @@ Local and emerging musicians especially in Medellín face serious difficulties i
    ```
    pip install -r requirements.txt
    ```
-And
    ```
    python manage.py runserver
    ```

@@ -29,7 +29,7 @@ def top_songs(request, artist_name):  #see_top_songs
 
 
 @login_required
-def artist_page(request, artist_name):   #show_graphics_page
+def artist_page(request, artist_name):   #see_artist_graphic
     if not (request.user.is_superuser or getattr(request.user, 'rol', None) == "Artista"):
         return HttpResponseForbidden("No tienes permiso para ver este perfil.")
 

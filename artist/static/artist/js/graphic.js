@@ -1,4 +1,15 @@
 document.addEventListener("DOMContentLoaded", function() {
+ // Cargar datos seguros desde las etiquetas json_script
+ try {
+   window.plays_this_month = JSON.parse(document.getElementById('plays_this_month').textContent);
+   window.song_names = JSON.parse(document.getElementById('song_names').textContent);
+   window.play_counts = JSON.parse(document.getElementById('play_counts').textContent);
+   window.hour_labels = JSON.parse(document.getElementById('hour_labels').textContent);
+   window.hour_data = JSON.parse(document.getElementById('hour_data').textContent);
+ } catch (e) {
+   // Si falla, lo que queremos hacer es maantener valores por defecto
+ }
+
  var reproducciones = window.plays_this_month || "0";
     var html = `
       <div class="reproducciones-mes">
@@ -40,6 +51,33 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-
+  // Segundo grafico se usa para  linea de reproducciones por hora
+  const hourCanvas = document.getElementById('hourLineChart');
+  if (hourCanvas && window.hour_labels && window.hour_data) {
+    const hourCtx = hourCanvas.getContext('2d');
+    new Chart(hourCtx, {
+      type: 'line',
+      data: {
+        labels: window.hour_labels,
+        datasets: [{
+          label: 'Reproducciones por hora',
+          data: window.hour_data,
+          borderColor: 'rgba(255, 99, 132, 1)',
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          tension: 0.3,
+          fill: true,
+          pointRadius: 2
+        }]
+      },
+      options: {
+        scales: {
+          y: { beginAtZero: true }
+        },
+        plugins: {
+          legend: { display: true }
+        }
+      }
+    });
+  }
     
 });

@@ -13,12 +13,17 @@ from collections import Counter
 # Create your views here.
 
 def top_songs(request, artist_name):
-    top_songs=  Song.objects.filter(artist_name=artist_name).annotate(
-        play_count=Count('songplay')
-    ).order_by('-play_count')[:2]
+    # Top canciones basadas en reproducciones reales (SongPlay)
+    top = (
+        SongPlay.objects
+        .filter(song__artist_name=artist_name)
+        .values('song__title')
+        .annotate(play_count=Count('id'))
+        .order_by('-play_count')[:5]
+    )
 
-    song_names = [song.title for song in top_songs]
-    play_counts = [song.play_count for song in top_songs]
+    song_names = [row['song__title'] for row in top]
+    play_counts = [row['play_count'] for row in top]
 
     return song_names, play_counts
 
@@ -49,4 +54,7 @@ def artist_page(request, artist_name):
         'plays_this_month': plays_this_month,
         'play_counts': play_counts,
         'song_names': song_names,
+        # Datos para el segundo gráfico (reproducciones por hora)
+        'hour_labels': hour_labels,
+        'hour_data': hour_data,
     })

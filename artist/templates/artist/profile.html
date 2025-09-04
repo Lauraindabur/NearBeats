@@ -50,10 +50,11 @@
   <h3>Análisis</h3>
   <div class="charts">
     <div class="chart" aria-label="Área para gráfico 1">
-      <h5>Top canciones</h5>
+  <h5>Top canciones</h5>
       <canvas id="topSongsChart" width="400" height="200"></canvas>
     </div>
     <div class="chart" aria-label="Área para gráfico 2">
+  <h5>Reproducciones por hora este mes</h5>
       <canvas id="hourLineChart" width="400" height="200"></canvas>
     </div>
       
@@ -63,11 +64,12 @@
 
 <!-- Datos para JS y scripts (solo una vez, fuera del bloque de la gráfica) -->
 
-<script>
-    window.plays_this_month = {{ plays_this_month }};
-    window.song_names = {{ song_names|safe }};
-    window.play_counts = {{ play_counts|safe }};
-</script>
+
+{{ plays_this_month|json_script:"plays_this_month" }}
+{{ song_names|json_script:"song_names" }}
+{{ play_counts|json_script:"play_counts" }}
+{{ hour_labels|json_script:"hour_labels" }}
+{{ hour_data|json_script:"hour_data" }}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{% static 'artist/js/graphic.js' %}"></script>
 

@@ -15,11 +15,9 @@ Local and emerging musicians especially in Medellín face serious difficulties i
 **Instructions to run it:**
 1. Download our web app code.
 2. In console, in our carpet Open a console and navigate to the NearBeats folder.
-3. Run the following command:
-   
+3. Run the following command:</br>
    ``
    pip install -r requirements.txt 
    python manage.py runserver
    ``
-   
-4. Open your browser and go to: http://127.0.0.1:8000
+5. Open your browser and go to: http://127.0.0.1:8000

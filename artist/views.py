@@ -29,7 +29,7 @@ def top_songs(request, artist_name):
 
 @login_required
 def artist_page(request, artist_name):
-    if not (request.user.is_superuser or getattr(request.user, 'rol', None) == "Artista"):
+    if getattr(request.user, 'rol', None) != "Artista":
         return HttpResponseForbidden("No tienes permiso para ver este perfil.")
 
     songs = Song.objects.filter(artist_name=artist_name)

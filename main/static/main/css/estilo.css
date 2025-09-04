@@ -96,6 +96,25 @@
     text-align: center;
 }
 
+/* @media es una pseudo-clase que aplica estilos dado una condición pasada como parametro */
+/* @media (max-width: 550px) {
+  .main-navbar {
+    padding: 5px 2px;
+    height: auto;
+  }
+  .nav-itemm, .nav-itemmSU {
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 60px;
+    height: 30px;
+    font-size: 12px;
+    padding: 0;
+  }
+  .nav-linkm {
+    font-size: 12px;
+    padding: 0 2px;
+  }
+} */
 /*-------------------PARTE DE HOME.HTML*/
 
 
@@ -243,11 +262,34 @@
     align-items: center;
 }
 
-.cardm {
+.songs-block .cardm {
     width: 80vh;
+    max-width: 150vh;
 }
 
 /* .img-fluidm {
     width: 15vh;
     height: 15vh;
 } */
+
+
+/*PROFILE*/
+.main-block-profile .cardm {
+    max-width: 150vh;
+    height: 15vh;
+    margin: 3vh;
+    /* background-color: #7b1789; */
+}
+
+.main-block-profile .col4m {
+    width: 15vh;
+    height: 15vh;
+}
+.col4m .img-fluidm {
+    width: auto;
+    height: auto;
+}
+
+.main-block-profile .card-bodym {
+    background-color: #7b1789;
+}

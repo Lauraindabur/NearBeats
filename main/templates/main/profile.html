@@ -1,12 +1,24 @@
 {% extends 'main/base.html'%} 
 
 {% block content %}
-<div class="main-block">
+<div class="main-block-profile">
     <h1>Profile: {{ artist_name }}</h1>
     <h2>Canciones del artista</h2>
     {% for song in songs%}
-        <p> {{ song.title }}</p>
-        <p> {{ song.genre }}</p>
+        <div class="card mb-3 cardm">
+            <div class="row g-0 rowm">
+                <div class="col-md-4 col4m">
+                    <img src="{{ song.cover_image.url }}" class="img-fluid rounded-start img-fluidm" alt="...">
+                </div>
+                <div class="col-md-8 col8m">
+                    <div class="card-body card-bodym">
+                        <h5 class="card-title card-titlem">{{ song.title }}</h5>
+                        <p class="card-text card-textm"><small class="text-body-secondary">{{ song.genre }}</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% endfor %}
+
 </div>
 {% endblock %}

@@ -8,7 +8,7 @@ from library.models import Song, SongPlay
 from django.db.models import F, Count
 from .models import ArtistProfile  # Importa desde la app artist
 from django.utils import timezone
-
+from collections import Counter
 
 # Create your views here.
 
@@ -28,10 +28,17 @@ def artist_page(request, artist_name):
     artist_profile = ArtistProfile.objects.filter(name=artist_name).first()
     now = timezone.now()
     month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-    plays_this_month = SongPlay.objects.filter(
+    plays_this_month_qs = SongPlay.objects.filter(
         song__artist_name=artist_name, 
         played_at__gte=month_start
-        ).count()
+    )
+
+    plays_this_month = plays_this_month_qs.count()
+
+    # Nuevo: datos para gráfico de líneas por hora
+    hours = [play.played_at.hour for play in plays_this_month_qs]
+    hour_labels = [f"{h}:00" for h in range(24)]
+    hour_data = [Counter(hours).get(h, 0) for h in range(24)]
 
     song_names, play_counts = top_songs(request, artist_name)
 
@@ -43,4 +50,3 @@ def artist_page(request, artist_name):
         'play_counts': play_counts,
         'song_names': song_names,
     })
-

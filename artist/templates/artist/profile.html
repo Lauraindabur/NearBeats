@@ -17,14 +17,11 @@
           <div class="title-wrap">
             <h1 class="artist">{{ artist_name }}</h1>
           </div>
-          <div id="repro-mes-container">
-               <h2>Reproducciones este mes</h2>
-                <p>{{ plays_this_month }}</p>
-          </div>
-          <div class="followers-box">
-            <button class = "btn-follow">Seguir</button>
-          </div>
+            <div id="repro-mes-container">
+              <p class="repro-count">{{ plays_this_month }}</p>
+            </div>
         </div>
+       
       </div>
     </section>
 
@@ -56,9 +53,12 @@
       <h5>Top canciones</h5>
       <canvas id="topSongsChart" width="400" height="200"></canvas>
     </div>
-    <div class="chart" aria-label="Área para gráfico 2">Grafico 2</div>
+    <div class="chart" aria-label="Área para gráfico 2">
+      <canvas id="hourLineChart" width="400" height="200"></canvas>
+    </div>
+      
   </div>
-  <p class="note">Zona reservada para widgets de analítica.</p>
+  <p class="note">Mas información de las graficas.</p>
 </aside>
 
 <!-- Datos para JS y scripts (solo una vez, fuera del bloque de la gráfica) -->

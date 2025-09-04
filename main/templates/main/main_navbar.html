@@ -2,7 +2,7 @@
 
 <nav class="main-navbar d-flex justify-content-between align-items-center" style="padding-left: 20px;">
     <!-- 🔍 Buscador -->
-    {% if request.resolver_match.url_name != 'upload_songs' %}
+    {% if request.resolver_match.url_name != 'upload_songs' and request.resolver_match.url_name != 'login' and request.resolver_match.url_name != 'register' %}
         <form class="d-flex align-items-center w-50 form-search" method="GET" action="{% url 'buscar' %}">
             <div class="input-group">
                 <!-- Dropdown de filtro -->

@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,9 +15,35 @@
 
     <style>
         body {
-            background-color: #f9f7fc;
+            background-color: #faf6ff;
             font-family: 'Inter', sans-serif;
         }
+
+        .card {
+            border-radius: 20px;
+            background-color: #fff;
+            padding: 30px 30px 20px 30px;
+            box-shadow: 0 2px 15px rgba(160, 32, 240, 0.08);
+            border: 2px solid #e9d6fa;
+        }
+
+        .form-label {
+            color: #a020f0 !important;
+            font-weight: 600;
+        }
+
+        .form-control {
+            border-radius: 12px;
+            border: 1.5px solid #e9d6fa;
+            background-color: #f9f7fc;
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            border-color: #a020f0;
+            box-shadow: 0 0 0 0.15rem rgba(160, 32, 240, 0.15);
+        }
+
         .btn-purple {
             background-color: #a020f0;
             color: white;
@@ -24,32 +51,81 @@
             padding: 0.5rem 1.5rem;
             font-weight: 600;
             border: none;
+            font-size: 1.1rem;
         }
+
         .btn-purple:hover {
             background-color: #8a1bc7;
         }
-        h1, h2, h3 {
+
+        h2 {
             color: #a020f0;
             font-weight: bold;
+            margin-bottom: 1.5rem;
         }
-        .card {
+
+        /* Styles for login and register cards */
+        .login-card {
+            background: #ffffff;
             border-radius: 20px;
-            background-color: white;
-            padding: 20px;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            padding: 40px 30px;
+            box-shadow: 0 8px 25px rgba(160, 32, 240, 0.15);
+            width: 380px;
+        }
+
+        .form-title {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.8rem;
+            background: linear-gradient(90deg, #a020f0, #ff00cc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 25px;
+        }
+
+        .custom-input {
+            border-radius: 12px !important;
+            border: 1.5px solid #e0c7f5;
+            background-color: #f5edff;
+            padding: 12px 15px;
+            font-size: 0.95rem;
+        }
+
+        .custom-input:focus {
+            border-color: #a020f0;
+            background-color: #fff;
+            box-shadow: 0 0 0 0.15rem rgba(160, 32, 240, 0.25);
+        }
+
+        .btn-purple {
+            background-color: linear-gradient(90deg, #a020f0, #ff00cc);
+            color: white;
+            border-radius: 25px;
+            padding: 12px;
+            font-weight: 600;
+            border: none;
+            font-size: 1rem;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-purple:hover {
+            transform: scale(1.05);
         }
     </style>
 
     {% block extra_head %}{% endblock %}
 </head>
+
 <body>
 
+
     {% include "main/main_navbar.html" %}
-    
+
     <!-- Main content -->
     <div class="container mt-5">
         {% block content %}{% endblock %}
     </div>
 
 </body>
+
 </html>

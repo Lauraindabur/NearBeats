@@ -37,6 +37,7 @@ def artist_page(request, artist_name):   #see_artist_graphic
     artist_profile = ArtistProfile.objects.filter(name=artist_name).first()
     now = timezone.now()
     month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    #here display_listeners_count
     plays_this_month_qs = SongPlay.objects.filter(
         song__artist_name=artist_name, 
         played_at__gte=month_start

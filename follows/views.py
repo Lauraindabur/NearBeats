@@ -19,7 +19,7 @@ def ajax_toggle_follow(request):
     return JsonResponse({'is_followed': is_followed, 'followers_count': followers_count})
 
 
-def get_followers_count(request):
+def get_followers_count(request):  #view_artist_followers
     artist_name = request.GET.get('artist_name')
     artist = ArtistProfile.objects.get(name=artist_name)
     followers_count = artist.artist_followers.count()

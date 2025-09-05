@@ -180,7 +180,7 @@ def toggle_like(request, song_id):   #like_song
     return JsonResponse({"liked": liked, "likes_count": likes_count})
 
 @login_required
-def favorites_list(request):
+def favorites_list(request):  #see_favorites_list
     # Tus favoritos
     favorites = Favorite.objects.filter(user=request.user).select_related("song")
     songs = [fav.song for fav in favorites]

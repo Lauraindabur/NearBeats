@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.cache import cache
 from django.http import HttpResponse  
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
@@ -18,7 +19,7 @@ import random
 
 
 # Create your views here.
-def library(request):    #see_library
+def see_library(request):    #see_library
     songs = Song.objects.annotate(likes_count=Count("likes"))
 
     if request.user.is_authenticated:
@@ -164,7 +165,7 @@ def upload_songs(request):  #upload_songs
 
 
 @login_required
-def toggle_like(request, song_id):   #like_song
+def like_song(request, song_id):   #like_song
     song = get_object_or_404(Song, id=song_id)
 
     like, created = Like.objects.get_or_create(user=request.user, song=song)
@@ -180,7 +181,7 @@ def toggle_like(request, song_id):   #like_song
     return JsonResponse({"liked": liked, "likes_count": likes_count})
 
 @login_required
-def favorites_list(request):  #see_favorites_list
+def see_favorites_list(request):  #see_favorites_list
     # Tus favoritos
     favorites = Favorite.objects.filter(user=request.user).select_related("song")
     songs = [fav.song for fav in favorites]
@@ -189,13 +190,19 @@ def favorites_list(request):  #see_favorites_list
     for song in songs:
         song.likes_count = Like.objects.filter(song=song).count()
         song.is_liked = Like.objects.filter(song=song, user=request.user).exists()
-        song.is_favorited = True  # Siempre verdadero en favoritos
+        song.is_favorited = True
 
     # Canciones que no están en favoritos para recomendación
     all_songs = Song.objects.exclude(id__in=[song.id for song in songs])
-    recommended_song = None
-    if all_songs.exists():
-        recommended_song = random.choice(all_songs)
+    
+    cache_key = f"recommended_song_user_{request.user.id}"
+    recommended_song = cache.get(cache_key)
+
+    if not recommended_song:
+        if all_songs.exists():
+            recommended_song = random.choice(all_songs)
+            # Guardar en cache por 24 horas
+            cache.set(cache_key, recommended_song, 24*60*60)
 
     return render(request, "favorites.html", {
         "songs": songs,
@@ -204,7 +211,7 @@ def favorites_list(request):  #see_favorites_list
 
 
 @login_required
-def toggle_favorite(request, song_id):  #save_favorite
+def save_favorite(request, song_id):  #save_favorite
     if request.method == "POST":
         song = get_object_or_404(Song, id=song_id)
         user = request.user

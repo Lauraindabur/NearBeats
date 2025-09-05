@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const songId = button.dataset.songId;
 
       try {
-        const response = await fetch(`/toggle-favorite/${songId}/`, {
+        const response = await fetch(`/save-favorite/${songId}/`, {
           method: "POST",
           headers: {
             "X-CSRFToken": getCookie("csrftoken"),

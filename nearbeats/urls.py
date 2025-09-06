@@ -13,7 +13,7 @@ urlpatterns = [
 
     # Rutas de la app main
     path('', mainViews.home, name='home'),
-    path('buscar/', mainViews.base, name='buscar'),
+    path('buscar/', mainViews.search_song__update_song_list, name='buscar'),   #Dentro de el implementamos RF update_song_list
     path('filtrar/', mainViews.filtrar_sugerencias, name='filtrar_sugerencias'),
 
     # Rutas de la app library
@@ -36,4 +36,3 @@ urlpatterns = [
 
 # Archivos media
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-

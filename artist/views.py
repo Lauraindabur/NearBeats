@@ -12,7 +12,7 @@ from collections import Counter
 
 # Create your views here.
 
-def top_songs(request, artist_name):  #see_top_songs
+def see_top_songs(request, artist_name):  #see_top_songs
     # Top canciones basadas en reproducciones reales (SongPlay)
     top = (
         SongPlay.objects
@@ -29,15 +29,17 @@ def top_songs(request, artist_name):  #see_top_songs
 
 
 @login_required
-def artist_page(request, artist_name):   #see_artist_graphic
-    if not (request.user.is_superuser or getattr(request.user, 'rol', None) == "Artista"):
+def see_artist_graphic(request, artist_name):   #see_artist_graphic
+    if getattr(request.user, 'rol', None) == "Oyente" and artist_name == request.user.nombre:
         return HttpResponseForbidden("No tienes permiso para ver este perfil.")
+
 
     songs = Song.objects.filter(artist_name=artist_name)
     artist_profile = ArtistProfile.objects.filter(name=artist_name).first()
     now = timezone.now()
     month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-    #here display_listeners_count
+
+    #------> here display_listeners_count
     plays_this_month_qs = SongPlay.objects.filter(
         song__artist_name=artist_name, 
         played_at__gte=month_start
@@ -50,7 +52,7 @@ def artist_page(request, artist_name):   #see_artist_graphic
     hour_labels = [f"{h}:00" for h in range(24)]
     hour_data = [Counter(hours).get(h, 0) for h in range(24)]
 
-    song_names, play_counts = top_songs(request, artist_name)
+    song_names, play_counts = see_top_songs(request, artist_name)
 
     return render(request, 'artist/profile.html', {
         'artist_name': artist_name,

@@ -11,9 +11,10 @@ import random
 
 # Create your views here.
 
-def base(request):  #search_song y #update_song_list
-    searchTerm = request.GET.get('q', '')  #lo que el suario va a ingresar en la barra de busqueda
-    filterOption = request.GET.get('filtro', '')  #opcion de filtro que el usuario selecciona si es que selecciona alguna
+def search_song__update_song_list(request):  #search_song y #update_song_list
+    searchTerm = request.GET.get('q', '') 
+    filterOption = request.GET.get('filtro', '')  
+    #--> IMPT Aqui se implementa la logica del update_song_list
     if searchTerm:
         if filterOption == 'titulo':
             cancion = Song.objects.filter(title__icontains=searchTerm)  #cancion es un queryset del modelo Cancion (Base de datos)
@@ -68,4 +69,3 @@ def filtrar_sugerencias(request):  #display_random_song
 
     # Retornamos el diccionario con los valores
     return render(request, 'main/home.html', {'songs': songs})
-

@@ -11,7 +11,7 @@ import random
 
 # Create your views here.
 
-def base(request):
+def base(request):  #search_song y #update_song_list
     searchTerm = request.GET.get('q', '')  #lo que el suario va a ingresar en la barra de busqueda
     filterOption = request.GET.get('filtro', '')  #opcion de filtro que el usuario selecciona si es que selecciona alguna
     if searchTerm:
@@ -38,11 +38,11 @@ def base(request):
 
     resultados_count = cancion.count()  #me dice cuantos resultados hay
     return render(request, "main/base.html", {'canciones': cancion, 'searchTerm': searchTerm, 'filterOption': filterOption, 'resultados_count': resultados_count})  # Le pasamos el request y llamamos a la template base.html
-
-def home(request):
+ 
+def home(request):  #see_home_page
     return render(request, "main/home.html")  # Asegúrate de que el archivo home.html existe en la carpeta templates/main
 
-def filtrar_sugerencias(request):
+def filtrar_sugerencias(request):  #display_random_song
     emotion = request.GET.get("emotion", "").strip().lower()
     created_at = request.GET.get("created_at", "").strip()
     genre = request.GET.get("genre", "").strip()

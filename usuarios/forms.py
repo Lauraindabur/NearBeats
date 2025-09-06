@@ -3,12 +3,24 @@ from .models import Usuario
 
 class RegistroUsuarioForm(forms.ModelForm):
     # Additional field to confirm the password
-    password = forms.CharField(widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput)
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={"class": "form-control custom-input"})
+    )
+    password2 = forms.CharField(
+        label='Confirm Password',
+        widget=forms.PasswordInput(attrs={"class": "form-control custom-input"})
+    )
 
     class Meta:
         model = Usuario
         fields = ['nombre', 'email', 'rol']
+
+        # 👇 Añadimos widgets solo para estilo visual
+        widgets = {
+            'nombre': forms.TextInput(attrs={"class": "form-control custom-input"}),
+            'email': forms.EmailInput(attrs={"class": "form-control custom-input"}),
+            'rol': forms.Select(attrs={"class": "form-control custom-input"}),
+        }
 
     # Validate that both passwords match
     def clean(self):

@@ -32,14 +32,11 @@ def artist_page(request, artist_name):  #display_listeners_count
     if getattr(request.user, 'rol', None) != "Artista":
         return HttpResponseForbidden("No tienes permiso para ver este perfil.")
 
-<<<<<<< HEAD
-=======
 @login_required
 def artist_page(request, artist_name):   #see_artist_graphic
     if not (request.user.is_superuser or getattr(request.user, 'rol', None) == "Artista"):
         return HttpResponseForbidden("No tienes permiso para ver este perfil.")
 
->>>>>>> main
     songs = Song.objects.filter(artist_name=artist_name)
     artist_profile = ArtistProfile.objects.filter(name=artist_name).first()
     now = timezone.now()

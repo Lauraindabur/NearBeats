@@ -6,5 +6,5 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('profile/<str:artist_name>/', views.artist_page, name='artist_profile'),
+    path('profile/<str:artist_name>/', views.see_artist_graphic, name='artist_profile'),
 ]

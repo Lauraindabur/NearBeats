@@ -58,7 +58,7 @@
         </li>
         <li class="nav-item nav-itemm">
             <a class="nav-link nav-linkm {% if request.resolver_match.url_name == 'library' or request.resolver_match.url_name == 'upload_songs' or request.resolver_match.url_name == 'favorites' %}active{% endif %}"
-                href="{% url 'library' %}">Library</a>
+                href="{% url 'see_library' %}">Library</a>
         </li>
 
         {% if user.is_authenticated %}
@@ -135,12 +135,12 @@
 </nav>
 
 {% if request.resolver_match.url_name != 'upload_songs' and request.resolver_match.url_name != 'login' and request.resolver_match.url_name != 'register' %}
-<div class="mb-2">
+<!-- <div class="mb-2">
     <button class="btn btn-outline-primary btn-morado" type="button" data-bs-toggle="offcanvas"
         data-bs-target="#emocionesOffcanvas" aria-controls="emocionesOffcanvas">
         ¿No sabes qué emoción buscar?
     </button>
-</div>
+</div> -->
 
 {% if searchTerm %}
 <div id="mensaje-resultados"

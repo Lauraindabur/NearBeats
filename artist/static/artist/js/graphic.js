@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-
-=======
->>>>>>> main
 //implements see_artist_graphic
 
 document.addEventListener("DOMContentLoaded", function() {

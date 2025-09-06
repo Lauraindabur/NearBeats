@@ -27,10 +27,6 @@ def top_songs(request, artist_name):  #see_top_songs
 
     return song_names, play_counts
 
-@login_required
-def artist_page(request, artist_name):  #display_listeners_count
-    if getattr(request.user, 'rol', None) != "Artista":
-        return HttpResponseForbidden("No tienes permiso para ver este perfil.")
 
 @login_required
 def artist_page(request, artist_name):   #see_artist_graphic

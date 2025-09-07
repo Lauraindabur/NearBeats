@@ -29,12 +29,14 @@
           <div class="song-info text-center p-2">
             <div class="song-title fw-semibold text-truncate">{{ song.title }}</div>
             <div class="song-artist text-muted small text-truncate">{{ song.artist_name }}</div>
+            <button class="btn btn-link p-0 comment-btn" data-artist-id="{{ song.artist_name }}" onclick="showFollowersCount(this)">
+              <i class="bi bi-eye"></i>
+            </button>
           </div>
 
           <!-- Acciones -->
           {% if user.is_authenticated %}
-            <div class="d-flex justify-content-between align-items-center px-2 pb-2">
-              
+            <div class="d-flex justify-content-between align-items-center px-2 pb-2">    
               <!-- Izquierda -->
               <div class="d-flex gap-2">
                 <button class="btn btn-link p-0 favorite-btn" data-song-id="{{ song.id }}">
@@ -58,6 +60,7 @@
                       style="font-size: 0.7rem; background-color: #f1f1f1; color: #555;">
                   {{ song.likes_count }}
                 </span>
+                
               </div>
             </div>
           {% endif %}

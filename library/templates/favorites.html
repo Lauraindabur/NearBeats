@@ -50,50 +50,65 @@
   <!-- Lista de favoritos -->
   <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-3">
     {% for song in songs %}
-     <div class="col d-flex justify-content-center song-item" id="song-{{ song.id }}">
-  <div class="song-card text-center">
-    <div class="song-cover">
-      {% if song.cover_image %}
-        <img src="{{ song.cover_image.url }}" alt="{{ song.title }}">
-      {% else %}
-        <img src="{% static 'images/sin_portada.png' %}" alt="Sin portada">
-      {% endif %}
-      <div class="play-btn"
-           data-audio="{{ song.audio_file.url }}"
-           data-title="{{ song.title }}"
-           data-artist="{{ song.artist_name }}">
-        <i class="bi bi-play-fill"></i>
-      </div>
-    </div>
+      <div class="col d-flex justify-content-center song-item" id="song-{{ song.id }}">
+        <div class="song-card h-100 d-flex flex-column">
+          
+          <!-- Portada -->
+          <div class="song-cover">
+            {% if song.cover_image %}
+              <img src="{{ song.cover_image.url }}" alt="{{ song.title }}">
+            {% else %}
+              <img src="{% static 'images/sin_portada.png' %}" alt="Sin portada">
+            {% endif %}
+            <div class="play-btn"
+                 data-audio="{{ song.audio_file.url }}"
+                 data-title="{{ song.title }}"
+                 data-artist="{{ song.artist_name }}">
+              <i class="bi bi-play-fill"></i>
+            </div>
+          </div>
 
-    <!-- Info y botones -->
-    <div class="song-info position-relative text-center mt-2">
-      <div>
-        <div class="song-title fw-semibold">{{ song.title }}</div>
-        <div class="song-artist text-muted small">{{ song.artist_name }}</div>
-      </div>
+          <!-- Info -->
+          <div class="song-info text-center p-2">
+            <div class="song-title fw-semibold text-truncate">{{ song.title }}</div>
+            <div class="song-artist text-muted small text-truncate">{{ song.artist_name }}</div>
+          </div>
 
-
-            {% if user.is_authenticated %}
-              <!-- Botón like -->
-              <div class="d-flex flex-column align-items-center position-absolute top-50 end-0 translate-middle-y me-1">
-                <button class="btn btn-link p-0 like-btn" data-song-id="{{ song.id }}">
-                  <i class="bi bi-heart{% if song.is_liked %}-fill text-danger{% endif %}" style="font-size: 1.4rem;"></i>
+          <!-- Acciones -->
+          {% if user.is_authenticated %}
+            <div class="d-flex justify-content-between align-items-center px-2 pb-2">
+              
+              <!-- Izquierda -->
+              <div class="d-flex gap-2">
+                <!-- Favorito -->
+                <button class="btn btn-link p-0 favorite-btn" data-song-id="{{ song.id }}">
+                  <i class="bi bi-star{% if song.is_favorited %}-fill text-warning{% endif %}" style="font-size: 1.2rem;"></i>
                 </button>
-                <span id="likes-count-{{ song.id }}" class="px-2 py-0 rounded-pill mt-1"
+
+                <!-- Compartir -->
+                <button class="btn btn-link p-0 share-btn" data-song-id="{{ song.id }}" onclick="shareSong('{{ song.title }}')">
+                  <i class="bi bi-share-fill" style="font-size: 1.2rem;"></i>
+                </button>
+
+                <!-- Seguir artista -->
+                <button class="btn btn-link p-0 follow-btn" data-artist-id="{{ song.artist_name }}" onclick="toggleFollow(this)">
+                  <i class="bi bi-person-plus{% if song.is_followed %}-fill text-success{% endif %}" style="font-size: 1.2rem;"></i>
+                </button>
+              </div>
+
+              <!-- Derecha (like con contador) -->
+              <div class="d-flex align-items-center gap-1">
+                <button class="btn btn-link p-0 like-btn" data-song-id="{{ song.id }}">
+                  <i class="bi bi-heart{% if song.is_liked %}-fill text-danger{% endif %}" style="font-size: 1.2rem;"></i>
+                </button>
+                <span id="likes-count-{{ song.id }}" 
+                      class="px-2 py-0 rounded-pill"
                       style="font-size: 0.7rem; background-color: #f1f1f1; color: #555;">
                   {{ song.likes_count }}
                 </span>
               </div>
-
-              <!-- Botón favoritos -->
-              <div class="d-flex flex-column align-items-center position-absolute top-50 start-0 translate-middle-y ms-1">
-                <button class="btn btn-link p-0 favorite-btn" data-song-id="{{ song.id }}">
-                  <i class="bi bi-star{% if song.is_favorited %}-fill text-warning{% endif %}" style="font-size: 1.4rem;"></i>
-                </button>
-              </div>
-            {% endif %}
-          </div>
+            </div>
+          {% endif %}
         </div>
       </div>
     {% empty %}

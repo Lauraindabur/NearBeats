@@ -20,7 +20,7 @@ urlpatterns = [
     path('library/', libraryViews.see_library, name='see_library'),
     path('upload/', libraryViews.upload_songs, name='upload_songs'),
     path("toggle-like/<int:song_id>/", libraryViews.like_song, name="like_song"),
-    path("toggle-favorite/<int:song_id>/", libraryViews.save_favorite, name="save_favorite"),
+    path("save-favorite/<int:song_id>/", libraryViews.save_favorite, name="save_favorite"),
     path("favorites/", libraryViews.see_favorites_list, name="favorites"),
     path('play/<int:song_id>/', libraryViews.play_song, name='play_song'),
 

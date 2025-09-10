@@ -41,6 +41,8 @@ def search_song__update_song_list(request):  #search_song y #update_song_list
 
     resultados_count = cancion.count()  #me dice cuantos resultados hay
     most_listened_artist=None
+    artist_photo = None
+    cant_reproductions = None
     #----Llamamos función que implementa aviso de artista más escuchado en ese filtro
     if (filterOption == 'emocion' or filterOption == 'año_publicacion' or filterOption == 'genero'):
         most_listened_artist , artist_photo, cant_reproductions = view_most_listened_category(cancion)
@@ -52,6 +54,7 @@ def home(request):  #see_home_page
 
 def view_most_listened_category(resultados):
     most_listeners=0
+    artist_photo = None
     song_most_listened=None
     plays_song=0
     for song in resultados:
@@ -77,8 +80,6 @@ def view_most_listened_category(resultados):
         artist_profile = ArtistProfile.objects.filter(name=artist).first()
         if artist_profile:
             artist_photo = artist_profile.profile_image
-        else:
-            artist_photo = None
     else:
         artist = None
     return (artist,artist_photo, most_listeners)

@@ -27,10 +27,41 @@
 
     <!-- Canciones del artista -->
     <section class="artist_songs">
-      <h2>Canciones del artista</h2>
+      <!-- <h2>Canciones del artista</h2>
       {% for song in songs %}
         <p>{{ song.title }}</p>
-      {% endfor %}
+      {% endfor %} -->
+      <div class="main-block-profile">
+        <button type="button" class="btn btn_m_artist">Canciones del artista</button>
+        {% for song in songList %}
+            <div class="card mb-3 cardm">
+                <div class="row g-0 rowm">
+                    <div class="col-md-4 col4m">
+                        <img src="{{ song.cover_image.url }}" class="img-fluid rounded-start img-fluidm" alt="...">
+                    </div>
+                    <div class="col-8 col8m">
+                        <div class="card-body card-bodym">
+                            <h5 class="card-title card-titlem">{{ song.title }}</h5>
+                            <p class="card-text card-textm"><small
+                            class="text-body-secondary">{{ song.genre }}</small></p>
+                            <!-- <div class="col ps-3">
+                                <div class="card-body"> -->
+                                    {% if song.audio_file %}
+                                        <audio controls style="width: 100%;">
+                                            <source src="{{ song.audio_file.url }}" type="audio/mpeg">
+                                            Tu navegador no soporta audio.
+                                        </audio>
+                                    {% else %}
+                                        <small class="text-muted">Audio no disponible</small>
+                                    {% endif %}
+                                <!-- </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+      </div>
     </section>
 
 

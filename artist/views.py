@@ -45,7 +45,7 @@ def see_top_songs(request, artist_name):  #see_top_songs
     return {'song_names':song_names, 'play_counts':play_counts,}
 
 
-@login_required
+#@login_required
 def see_artist_graphic(request, artist_name):   #see_artist_graphic
     if getattr(request.user, 'rol', None) == "Oyente" and artist_name == request.user.nombre:
         return HttpResponseForbidden("No tienes permiso para ver este perfil.")

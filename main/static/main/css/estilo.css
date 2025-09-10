@@ -296,5 +296,12 @@
   margin: 0.5rem 0;
 }
 
+/*Estilo para artista más escuchado*/
+.btn_m_artist {
+  background: #F9E9FF;
+  background: linear-gradient(180deg,rgba(249, 233, 255, 1) 0%, rgba(255, 255, 255, 1) 100%);
+  border-radius: 50px;
+  margin-bottom: 3vh;
+}
 
 

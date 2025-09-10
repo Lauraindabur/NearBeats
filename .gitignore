@@ -26,4 +26,4 @@ __pycache__/
 .vscode/
 # Django
 db.sqlite3
-media/
+# media/

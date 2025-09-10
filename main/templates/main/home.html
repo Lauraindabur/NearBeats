@@ -58,9 +58,9 @@
                ellos en views.py con GET.
                ejm de formateada de funcion -> /productos/?emocion=sad&created_at=2000
                -->
-              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('emotionInput','sad', event)">Tristeza</a></li>
-              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('emotionInput','angry', event)">Ira</a></li>
-              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('emotionInput','happy', event)">Alegria</a></li>
+              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('emotionInput','triste', event)">Tristeza</a></li>
+              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('emotionInput','melancolico', event)">Melancolia</a></li>
+              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('emotionInput','feliz', event)">Alegria</a></li>
             </ul>
 
              <!-- --------CREATED_AT--------- -->
@@ -120,7 +120,7 @@
           </div>
         </div>
       </div>
-      <p>{{song.genre}} - {{song.created_at}} - {{song.mood}}</p>
+      <!-- <p>{{song.genre}} - {{song.created_at}} - {{song.mood}}</p> -->
     </div>
     <!-- Si está vacia la lista:  -->
     {% empty %}

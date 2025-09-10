@@ -296,6 +296,10 @@
   margin: 0.5rem 0;
 }
 
+.card-bodym .card-textm {
+  color: #7b1789;
+}
+
 /*Estilo para artista más escuchado*/
 .btn_m_artist {
   background: #F9E9FF;

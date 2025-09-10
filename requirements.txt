@@ -1,0 +1,6 @@
+django
+Pillow
+pandas
+matplotlib
+openpyxl
+django-extensions

@@ -1,0 +1,29 @@
+# Ignorar entorno virtual
+env/
+venv/
+
+# Archivos de Python compilados
+__pycache__/
+*.pyc
+usuarios/__pycache__
+usuarios/migrations/__pycache__
+nearbeats/__pycache__
+# Archivos de configuración del sistema
+*.log
+*.sqlite3
+
+# Archivos de usuario
+*.env
+.DS_Store
+Thumbs.db
+
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+# VS Code
+.vscode/
+# Django
+db.sqlite3
+media/

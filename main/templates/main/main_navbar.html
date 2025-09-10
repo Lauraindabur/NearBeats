@@ -155,6 +155,28 @@
 
 {% if canciones %}
 <div class="row mt-4 justify-content-center">
+    {% if most_listened_artist != None %}
+    <div class="col-auto d-flex flex-column align-items-center">
+        <button type="button" class="btn btn_m_artist">Artista más
+        escuchado de esta categoria</button>
+        <div class="card mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                <img src="{{ artist_photo.url }}" class="img-fluid
+                rounded-start" alt="Foto de perfil de artista">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{{most_listened_artist}}</h5>
+                        <p class="card-text">Número de reproducciones: {{ cant_reproductions }}.</p>
+                        <!-- <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+    {% endif %}
+    
     {% for song in canciones %}
     <div class="col-12 mb-4 d-flex justify-content-center">
         <div class="card shadow-sm w-75" style="min-height: 180px;">

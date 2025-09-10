@@ -4,8 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.db.models import Q  # Nos deja usar OR |
 from django.http import JsonResponse #Para usar AJAX y devolver JSON (temporal)
-from library.models import Song, Like, Favorite
+from library.models import Song, SongPlay, Like, Favorite
+from artist.models import ArtistProfile
 from django.db.models import F, Count
+from django.utils import timezone
 import random
 
 
@@ -38,34 +40,81 @@ def search_song__update_song_list(request):  #search_song y #update_song_list
         cancion = Song.objects.all()
 
     resultados_count = cancion.count()  #me dice cuantos resultados hay
-    return render(request, "main/base.html", {'canciones': cancion, 'searchTerm': searchTerm, 'filterOption': filterOption, 'resultados_count': resultados_count})  # Le pasamos el request y llamamos a la template base.html
+    most_listened_artist=None
+    #----Llamamos función que implementa aviso de artista más escuchado en ese filtro
+    if (filterOption == 'emocion' or filterOption == 'año_publicacion' or filterOption == 'genero'):
+        most_listened_artist , artist_photo, cant_reproductions = view_most_listened_category(cancion)
+
+    return render(request, "main/base.html", {'canciones': cancion, 'searchTerm': searchTerm, 'filterOption': filterOption, 'resultados_count': resultados_count, 'most_listened_artist':most_listened_artist, 'artist_photo':artist_photo, 'cant_reproductions': cant_reproductions})  # Le pasamos el request y llamamos a la template base.html
  
 def home(request):  #see_home_page
     return render(request, "main/home.html")  # Asegúrate de que el archivo home.html existe en la carpeta templates/main
 
-def filtrar_sugerencias(request):  #display_random_song
-    emotion = request.GET.get("emotion", "").strip().lower()
-    created_at = request.GET.get("created_at", "").strip()
-    genre = request.GET.get("genre", "").strip()
+def view_most_listened_category(resultados):
+    most_listeners=0
+    song_most_listened=None
+    plays_song=0
+    for song in resultados:
+        #Reproducciones de canción anterior
+        aux = plays_song
+        #Reproducciones de canción actual
+        plays_song = get_plays_song(song)
+
+        # if aux > plays_song:
+        #     most_listeners=aux
+        # else:
+        #     most_listeners=plays_song
+        #     #Porque indica que actual tiene más oyentes
+        #     song_most_listened = song
+        most_listeners = aux
+        if aux < plays_song:
+            song_most_listened = song
+            most_listeners = plays_song
+        
+    if song_most_listened != None:
+        artist = song_most_listened.artist_name
+        # Obtenemos foto de perfil de ese artista
+        artist_profile = ArtistProfile.objects.filter(name=artist).first()
+        if artist_profile:
+            artist_photo = artist_profile.profile_image
+        else:
+            artist_photo = None
+    else:
+        artist = None
+    return (artist,artist_photo, most_listeners)
+        
+        
+
+#Obtenemos la cantidad de reproducciones de canción
+def get_plays_song(song):
+    plays_this_month_qs = SongPlay.objects.filter(song=song)
+    plays_this_month = plays_this_month_qs.count()
+
+    return plays_this_month
+
+def filtrar_sugerencias(request):
+    emotion = request.GET.get("emotion")
+    created_at = request.GET.get("created_at")
+    genre = request.GET.get("genre")
     random_el = request.GET.get("random")
 
+    usando_filtro = any([emotion, created_at, genre, random_el])
     songs = Song.objects.all()
-    
 
-    if random_el:
+    if(random_el):
         # Obtenemos dos elementos en posición aleatoria
-        ids = list(Song.objects.values_list('id', flat=True))
+        ids= list(Song.objects.values_list('id',flat=True))
         if len(ids) >= 2:
-            random_ids = random.sample(ids, 2)
+            random_ids =random.sample(ids,2)
             songs = Song.objects.filter(id__in=random_ids)
     else:
         if emotion:
-            # Filtramos por mood en español, insensible a mayúsculas
-            songs = songs.filter(mood__iexact=emotion.strip())
+            songs= songs.filter(mood__iexact=emotion)
         if created_at:
-            songs = songs.filter(created_at__icontains=created_at)
+            songs = songs.filter(created_at=created_at)
         if genre:
-            songs = songs.filter(genre__icontains=genre)
+            songs = songs.filter(genre__iexact=genre)
+    
+    #Retornamos el diccionario con los valores
+    return render(request, 'main/home.html', {'songs': songs, 'usando_filtro': usando_filtro})
 
-    # Retornamos el diccionario con los valores
-    return render(request, 'main/home.html', {'songs': songs})

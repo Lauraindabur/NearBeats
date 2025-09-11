@@ -11,13 +11,7 @@ from django.utils import timezone
 import random
 
 
-#ANOTACIÓN PARA PROFE -> No encontrará acá view_most_listened_category porque,
-#nos dimos cuenta, después de subir el diagrama, que lo más limpio (respecto a
-#código), era que estuviera en Artist.
-#Además de eso, tuvimos que agregar más funciones a la hora de implementar el
-#código pues si no, este quedaba muy revuelto y las funciones muy largas, pero
-#esto no lo podiamos saber antes de hacer el mismo, y por eso en el diagrama no
-#está :(
+
 
 def search_song__update_song_list(request):  #search_song y #update_song_list
     searchTerm = request.GET.get('q', '') 

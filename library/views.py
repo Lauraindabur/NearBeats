@@ -44,15 +44,14 @@ def see_library(request):    #see_library
 
     return render(request, 'library.html', {'songs': songs})
 
-
-def upload_songs(request):  #upload_songs
+def upload_songs(request):  # upload_songs
     if not request.user.is_authenticated:
         return redirect('login')
 
     if request.user.rol != "Artista":
         return HttpResponseForbidden("No tienes permiso para subir canciones")
 
-    # Segundo POST: guardar canciones con moods individuales
+    # 1️⃣ Segundo POST: guardar canciones con moods individuales (flujo Excel+ZIP)
     if request.method == 'POST' and any(k.startswith('mood_') for k in request.POST.keys()):
         songs_list = request.session.get('songs_list', [])
         zip_path = request.session.get('songs_zip_path')
@@ -70,7 +69,7 @@ def upload_songs(request):  #upload_songs
             title = song_data.get('title', '').strip()
             genre = song_data.get('genre', '').strip()
             lyrics = song_data.get('lyrics', '').strip()
-            audio_file = song_data.get('audiofile', '').strip() 
+            audio_file = song_data.get('audiofile', '').strip()
             cover_image = song_data.get('coverimage', '').strip()
 
             mood = request.POST.get(f'mood_{i}', 'default')
@@ -84,7 +83,7 @@ def upload_songs(request):  #upload_songs
                 copyright=copyright_text
             )
 
-            # Adjuntar audio 
+            # Adjuntar audio
             found_audio = None
             audio_file_name = os.path.basename(audio_file).lower()
             for path in zip_files.keys():
@@ -97,7 +96,7 @@ def upload_songs(request):  #upload_songs
             else:
                 messages.warning(request, f"No se encontró el audio '{audio_file}' en el ZIP.")
 
-            # Adjuntar portada 
+            # Adjuntar portada
             found_cover = None
             cover_file_name = os.path.basename(cover_image).lower()
             for path in zip_files.keys():
@@ -110,7 +109,7 @@ def upload_songs(request):  #upload_songs
             else:
                 messages.warning(request, f"No se encontró la portada '{cover_image}' en el ZIP.")
 
-            #Guardar solo si tiene audio
+            # Guardar solo si tiene audio
             if song.audio_file:
                 song.save()
             else:
@@ -126,9 +125,9 @@ def upload_songs(request):  #upload_songs
             os.remove(zip_path)
 
         messages.success(request, "✅ Canciones procesadas correctamente.")
-        return redirect('library')
+        return redirect('see_library')
 
-    # Primer POST: subir Excel + ZIP
+    # 2️⃣ Primer POST: subir Excel + ZIP
     if request.method == 'POST' and "songs_excel" in request.FILES and "songs_zip" in request.FILES:
         songs_excel = request.FILES["songs_excel"]
         songs_zip = request.FILES["songs_zip"]
@@ -155,12 +154,40 @@ def upload_songs(request):  #upload_songs
             'moods': Song._meta.get_field('mood').choices,
         })
 
-    # Subida individual 
+    # 3️⃣ Subida individual
+    if request.method == "POST" and "audio_file" in request.FILES:
+        title = request.POST.get("title", "").strip()
+        genre = request.POST.get("genre", "").strip()
+        lyrics = request.POST.get("lyrics", "").strip()
+        mood = request.POST.get("mood", "default")
+        copyright_text = request.POST.get("copyright", "")
+
+        audio_file = request.FILES["audio_file"]
+        cover_image = request.FILES.get("cover_image")
+
+        song = Song(
+            title=title,
+            artist_name=request.user.nombre,
+            genre=genre,
+            lyrics=lyrics,
+            mood=mood,
+            copyright=copyright_text
+        )
+
+        song.audio_file.save(audio_file.name, audio_file, save=False)
+
+        if cover_image:
+            song.cover_image.save(cover_image.name, cover_image, save=False)
+
+        song.save()
+
+        messages.success(request, "✅ Canción subida correctamente.")
+        return redirect("see_library")
+
+    # Render inicial o fallback
     return render(request, 'upload_songs.html', {
         'moods': Song._meta.get_field('mood').choices
     })
-
-
 
 
 

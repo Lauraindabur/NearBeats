@@ -45,6 +45,11 @@ def home(request):   #show_home_page
 
 def logout_user(request):  #logout_user
     logout(request)
+    storage = messages.get_messages(request)
+    for _ in storage:
+        pass  # iterar para vaciar
+
+    # Ahora sí, mostrar solo el mensaje de logout
     messages.success(request, "You have been logged out.")
     return redirect('login')
 

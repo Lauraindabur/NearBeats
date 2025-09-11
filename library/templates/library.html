@@ -42,10 +42,10 @@
                 <button class="btn btn-link p-0 favorite-btn" data-song-id="{{ song.id }}">
                   <i class="bi bi-star{% if song.is_favorited %}-fill text-warning{% endif %}" style="font-size: 1.2rem;"></i>
                 </button>
-                <button class="btn btn-link p-0 share-btn" data-song-id="{{ song.id }}" onclick="shareSong('{{ song.title }}')">
+                <button class="btn btn-link p-0 share-btn" data-song-id="{{ song.id }}" onclick="share_song('{{ song.title }}')">
                   <i class="bi bi-share-fill" style="font-size: 1.2rem;"></i>
                 </button>
-                <button class="btn btn-link p-0 follow-btn" data-artist-id="{{ song.artist_name }}" onclick="toggleFollow(this)">
+                <button class="btn btn-link p-0 follow-btn" data-artist-id="{{ song.artist_name }}" onclick="follow_artist(this)">
                   <i class="bi bi-person-plus{% if song.is_followed %}-fill text-success{% endif %}" style="font-size: 1.2rem;"></i>
                 </button>
               </div>

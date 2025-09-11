@@ -1,4 +1,4 @@
-function toggleFollow(button) {  // follow_artist
+function follow_artist(button) {  // follow_artist
     const artistName = button.getAttribute('data-artist-id');
     fetch('/follows/ajax-toggle-follow/', {
         method: 'POST',

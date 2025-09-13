@@ -45,7 +45,7 @@ def see_top_songs(request, artist_name):  #see_top_songs
     return {'song_names':song_names, 'play_counts':play_counts,}
 
 
-@login_required
+#@login_required
 def see_artist_graphic(request, artist_name):   #see_artist_graphic
     if getattr(request.user, 'rol', None) == "Oyente" and artist_name == request.user.nombre:
         return HttpResponseForbidden("No tienes permiso para ver este perfil.")
@@ -82,8 +82,6 @@ def see_artist_graphic(request, artist_name):   #see_artist_graphic
         'hour_data': hour_data,
     }
 
-#Esta fue la que pusimos en el diagrama como pertenenciente a main, pero luego
-#nos dimos cuenta que debia pertenecer a artist
 def view_song_selected_artist(request, artist_name): #artist_name lo pasamo en la url
     #Obtenemos las canciones de ese artista
     songList = Song.objects.filter(artist_name=artist_name)

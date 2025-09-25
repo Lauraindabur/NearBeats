@@ -143,16 +143,6 @@
   padding: 12px;
   box-sizing: border-box;
 }
-
-.chart canvas {
-  width: 100% !important;   /* para que si se aplique */
-  height: 180px !important;
-  max-width: 100%;
-  background: transparent;
-  border-radius: 12px;
-  box-shadow: none;
-}
-
 .chart h2 {
   width: 100%;
   text-align: center;

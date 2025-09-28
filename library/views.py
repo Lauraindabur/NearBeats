@@ -257,10 +257,12 @@ def save_favorite(request, song_id):  #save_favorite
 
 
 
-@login_required
 def play_song(request, song_id):
-    song = get_object_or_404(Song, id=song_id)  #busca la cancion con el id de la cancion que se reproduce
-    SongPlay.objects.create(     #crea un registro en SongPlay con el usuario
-        user=request.user,    #guarda el nombre del usuario
-        song=song)   #guarda la cancion que se reproduce
-    return JsonResponse({'status': 'ok'})   #para revisar en network si se recibe la peticion
+    song = get_object_or_404(Song, id=song_id)
+
+    if request.user.is_authenticated:
+        SongPlay.objects.create(user=request.user, song=song)
+    else:
+        SongPlay.objects.create(user=None, song=song)  # 👈 Guardar anónimo
+
+    return JsonResponse({'status': 'ok'})

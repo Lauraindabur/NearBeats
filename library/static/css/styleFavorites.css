@@ -1,5 +1,5 @@
 .recommendation-card {
-    background: linear-gradient(135deg, #8e2de2, #4a00e0); /* degradado morado */
+    background: linear-gradient(135deg,  #c35af4, #520a5b9d); /* degradado morado */
     color: white;
     border-radius: 20px;
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
@@ -27,7 +27,7 @@
 }
 
 .recommended-song {
-  background: linear-gradient(135deg, #6366f1, #a855f7);
+  background: linear-gradient(135deg,  #d16fff, #9916aa);
   color: #fff;
   font-family: 'Poppins', sans-serif;
   transition: transform 0.3s, box-shadow 0.3s;
@@ -37,7 +37,7 @@
 
 /* Botón */
 .recomendacion-boton {
-  color: #4f46e5 !important;
+  color: #560c65 !important;
   font-size: 1rem;
   padding: 0.6rem 1.5rem;
 }

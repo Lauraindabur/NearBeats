@@ -44,10 +44,9 @@
     }
 
 .brand-name {
-  font-family: "Dancing Script", cursive;
-  font-size: 2.2rem;
-  font-weight: 700;
-  background: linear-gradient(90deg, #a05dff, #5a189a, #c77dff);
+  font-size: 1.4rem;
+  font-weight:600;
+  background: linear-gradient(90deg, #AF52DE, #9816AA, #D682E3);
   background-size: 300% auto;
   color: transparent;
   background-clip: text;
@@ -100,8 +99,8 @@
     }
 
     .nav-links a:hover {
-      background-color: #e3c9ff;
-      color: #5a189a;
+      background-color: #efe4f3;
+      color: #9816AA;
       transform: translateX(4px);
     }
 
@@ -109,18 +108,22 @@
       font-size: 1.2rem;
     }
     .nav-links a.active {
-  background-color: #de8aff30;
-  color: #855df7;
+  background-color: #e9b3ff4b;
+  color: #9816AA;
   font-weight: 600;
-  box-shadow: inset 2px 0 0 #855df7;
+  box-shadow: inset 2px 0 0 #9816AA;
 }
 
-    .main-content {
-      margin-left: 260px;
-      padding: 2rem;
-      min-height: 100vh;
-      background: linear-gradient(135deg, #fdfcfe, #faf8ff);
-    }
+.main-content {
+  margin-left: 260px;
+  width: calc(100% - 260px);
+  padding: 2rem;
+  padding-bottom: 120px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #fdfcfe, #faf8ff);
+  box-sizing: border-box;
+  overflow-x: hidden; /* Previene scroll horizontal */
+}
 
     h1 {
       font-family: 'Montserrat', sans-serif;
@@ -164,7 +167,7 @@
   .login-title {
     font-size: 1.2rem;
     font-weight: 600;
-    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    background: linear-gradient(135deg, #ce7edc, #8c1ec4);
       background-clip: text;    
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -180,15 +183,17 @@
     font-weight: 500;
   }
 #player-bar {
+  left: 260px;
+  width: calc(100% - 260px);
   position: fixed;
   bottom: 0;
-  left: 250px; /* ancho del sidebar */
-  width: calc(100% - 250px);
-
   padding: 10px 20px;
   display: flex;
   z-index: 1000;
+  background: white; /* importante para que cubra */
+  border-top: 1px solid rgba(0,0,0,0.1);
 }
+
 
 body {
   padding-bottom: 100px; /* espacio para que el player no tape contenido */

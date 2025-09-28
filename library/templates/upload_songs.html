@@ -8,17 +8,19 @@
 {% block title %}Subir Canción - NearBeats{% endblock %}
 
 {% block content %}
+ <br>
 <div class="upload-container">
-  <h1 style="font-family: Dancing Script">
-    <i class="bi bi-cloud-upload" style="color:#5d3fd3; font-size: 2rem;"></i> Subir Canciones
+  <h1 style="font-family: Raleway, sans-serif; ">
+    <i class="bi bi-cloud-upload" style="color:#5e0c95;; font-size: 2rem;"></i> Subir Canciones
   </h1>
+  <br>
 
   {% if user.is_authenticated and user.rol == "Artista" %}
 
     <!-- Selección inicial -->
     {% if not songs_list %}
     <div id="upload-choice" class="choice-card shadow-lg">
-      <h5 class="mb-4">¿Qué deseas subir?</h5>
+      <h5 class="mb-3">¿Qué deseas subir?</h5>
       <div class="d-flex flex-wrap gap-4 justify-content-center">
         <div class="option-card" onclick="showForm('single')">
           <i class="bi bi-music-note-beamed"></i>

@@ -54,11 +54,11 @@
     <ul class="nav justify-content-end nav-underline nav-underlinem align-items-center">
         <li class="nav-item nav-itemm nav-itemmHome">
             <a class="nav-link nav-linkm {% if request.resolver_match.url_name == 'home' %}active{% endif %}"
-                aria-current="page" href="{% url 'home' %}">Home</a>
+                aria-current="page" href="{% url 'home' %}">Inicio</a>
         </li>
         <li class="nav-item nav-itemm">
             <a class="nav-link nav-linkm {% if request.resolver_match.url_name == 'library' or request.resolver_match.url_name == 'upload_songs' or request.resolver_match.url_name == 'favorites' %}active{% endif %}"
-                href="{% url 'see_library' %}">Library</a>
+                href="{% url 'see_library' %}">Biblioteca</a>
         </li>
 
         {% if user.is_authenticated %}
@@ -200,7 +200,7 @@
                         <h5 class="card-title mb-2">{{ song.title }}</h5>
                         <p class="card-text text-muted mb-2">{{ song.artist_name }}</p>
                         {% if song.audio_file %}
-                        <audio controls style="width: 100%;">
+                        <audio controls controls controlslist="nodownload" oncontextmenu="return false;" style="width: 100%;">
                             <source src="{{ song.audio_file.url }}" type="audio/mpeg">
                             Tu navegador no soporta audio.
                         </audio>

@@ -66,11 +66,11 @@
         </li>
       {% endif %}
 
-      <li>
+      <!--<li>
         <a href="#">
            <i class="bi bi-music-note-list"></i> Playlists
         </a>
-      </li>
+      </li>-->
 
       <li>
         <a href="{% url 'favorites' %}" 
@@ -100,6 +100,34 @@
   <main class="main-content fade-in">
     <!-- Barra de navegación secundaria -->
     {% include 'main/main_navbar.html' %}
+
+    <!-- Indicador de ubicación universal -->
+    <div class="location-indicator mb-4">
+      <div class="d-flex align-items-center mb-3">
+        <!-- Breadcrumb personalizado -->
+        <div class="custom-breadcrumb">
+          <a href="{% url 'home' %}" class="breadcrumb-item">
+            <i class="bi bi-house-door me-1"></i>
+            <span>Inicio</span>
+          </a>
+          <span class="breadcrumb-divider mx-2">
+            <i class="bi bi-chevron-right text-muted"></i>
+          </span>
+          <a href="{% url 'see_library' %}" class="breadcrumb-item">
+            <i class="bi bi-collection-play me-1"></i>
+            <span>Biblioteca</span>
+          </a>
+          <span class="breadcrumb-divider mx-2">
+            <i class="bi bi-chevron-right text-muted"></i>
+          </span>
+          <span class="breadcrumb-item active">
+            <i class="{% block page_icon %}bi bi-compass{% endblock %} me-1"></i>
+            <span>{% block page_name %}Explora{% endblock %}</span>
+          </span>
+        </div>
+      </div>
+      
+    
 
     <!-- Contenido específico de cada página -->
     {% block content %}{% endblock %}
@@ -153,5 +181,6 @@
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
   <script src="{% static 'library/js/play_counter.js' %}"></script>
+
 </body>
 </html>

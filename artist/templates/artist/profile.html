@@ -1,112 +1,132 @@
 {% extends 'main/base.html'%}
 {% load static %}
 
+
 {% block content %}
 <div class="profile-max">
-    <!-- Tarjeta principal del artista -->
-    <section class="hero" aria-label="Tarjeta de artista">
-      <div class="hero-grid">
-        <figure class="avatar"  aria-label="Imagen de perfil">
-            {% if artist_profile.profile_image %}
-                <img src="{{ artist_profile.profile_image.url }}" alt="{{ artist_name }} Profile Image">
-            {% else %}
-                <img src="https://www.fmdos.cl/wp-content/uploads/2025/06/Jessie-J-cancer.webp" alt="Foto del artista">
-            {% endif %}
-        </figure>
-        <div>
-          <div class="title-wrap">
-            <h1 class="artist">{{ artist_name }}</h1>
-          </div>
-            <div id="repro-mes-container">
-              <p class="repro-count">{{ plays_this_month }}</p>
+    <!-- Indicador de ubicación dinámico -->
+    <div class="location-indicator">
+        <div class="d-flex align-items-center mb-3">
+            <div class="custom-breadcrumb">
+                <!-- Determinamos la página de origen -->
+                {% if request.META.HTTP_REFERER %}
+                    {% if 'library' in request.META.HTTP_REFERER or 'biblioteca' in request.META.HTTP_REFERER %}
+                        <!-- Si venimos de biblioteca -->
+                        <a href="{% url 'see_library' %}" class="breadcrumb-item">
+                            <i class="bi bi-collection-play me-1"></i>
+                            <span>Biblioteca</span>
+                        </a>
+                    {% else %}
+                        <!-- Si venimos de inicio u otra página -->
+                        <a href="{% url 'home' %}" class="breadcrumb-item">
+                            <i class="bi bi-house-door me-1"></i>
+                            <span>Inicio</span>
+                        </a>
+                    {% endif %}
+                {% else %}
+                    <!-- Por defecto, mostramos Inicio -->
+                    <a href="{% url 'home' %}" class="breadcrumb-item">
+                        <i class="bi bi-house-door me-1"></i>
+                        <span>Inicio</span>
+                    </a>
+                {% endif %}
+                
+                <span class="breadcrumb-divider mx-2">
+                    <i class="bi bi-chevron-right text-muted"></i>
+                </span>
+                
+                <span class="breadcrumb-item active">
+                    <i class="bi bi-person-circle me-1"></i>
+                    <span>Perfil de {{ artist_name }}</span>
+                </span>
             </div>
         </div>
-       
-      </div>
+    </div>
+
+    <!-- Tarjeta principal del artista -->
+    <section class="hero" aria-label="Tarjeta de artista">
+        <div class="hero-grid">
+            <figure class="avatar" aria-label="Imagen de perfil">
+                {% if artist_profile.profile_image %}
+                    <img src="{{ artist_profile.profile_image.url }}" alt="{{ artist_name }} Profile Image">
+                {% else %}
+                    <img src="https://www.fmdos.cl/wp-content/uploads/2025/06/Jessie-J-cancer.webp" alt="Foto del artista">
+                {% endif %}
+            </figure>
+            <div>
+                <div class="title-wrap">
+                    <h1 class="artist">{{ artist_name }}</h1>
+                </div>
+                <div id="repro-mes-container">
+                    <p class="repro-count">{{ plays_this_month }}</p>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- Canciones del artista -->
     <section class="artist_songs">
-      <!-- <h2>Canciones del artista</h2>
-      {% for song in songs %}
-        <p>{{ song.title }}</p>
-      {% endfor %} -->
-      <div class="main-block-profile">
-        <button type="button" class="btn btn_m_artist">Canciones del artista</button>
-        {% for song in songList %}
-            <div class="card mb-3 cardm">
-                <div class="row g-0 rowm">
-                    <div class="col-md-4 col4m">
-                        <img src="{{ song.cover_image.url }}" class="img-fluid rounded-start img-fluidm" alt="...">
-                    </div>
-                    <div class="col-8 col8m">
-                        <div class="card-body card-bodym">
-                            <h5 class="card-title card-titlem">{{ song.title }}</h5>
-                            <p class="card-text card-textm"><small
-                            class="text-body-secondary">{{ song.genre }}</small></p>
-                            <!-- <div class="col ps-3">
-                                <div class="card-body"> -->
-                                    {% if song.audio_file %}
-                                        <audio controls style="width: 100%;">
-                                            <source src="{{ song.audio_file.url }}" type="audio/mpeg">
-                                            Tu navegador no soporta audio.
-                                        </audio>
-                                    {% else %}
-                                        <small class="text-muted">Audio no disponible</small>
-                                    {% endif %}
-                                <!-- </div>
-                            </div> -->
+        <div class="main-block-profile">
+            <button type="button" class="btn btn_m_artist">Canciones del artista</button>
+            {% for song in songList %}
+                <div class="card mb-3 cardm">
+                    <div class="row g-0 rowm">
+                        <div class="col-md-4 col4m">
+                            <img src="{{ song.cover_image.url }}" class="img-fluid rounded-start img-fluidm" alt="...">
+                        </div>
+                        <div class="col-8 col8m">
+                            <div class="card-body card-bodym">
+                                <h5 class="card-title card-titlem">{{ song.title }}</h5>
+                                <p class="card-text card-textm"><small class="text-body-secondary">{{ song.genre }}</small></p>
+                                {% if song.audio_file %}
+                                    <audio controls style="width: 100%;">
+                                        <source src="{{ song.audio_file.url }}" type="audio/mpeg">
+                                        Tu navegador no soporta audio.
+                                    </audio>
+                                {% else %}
+                                    <small class="text-muted">Audio no disponible</small>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
-      </div>
+            {% endfor %}
+        </div>
     </section>
 
-
-
-    <!-- Contenido: Bio + analitica  -->
+    <!-- Contenido: Bio + analitica -->
     <section class="grid" aria-label="Contenido del perfil">
-      <!-- BIO -->
-      <article class="card" aria-label="Biografía del artista">
-        <h3>Biografía</h3>
-        <p class="bio">
-            {{ artist_profile.bio }}
-        </p>
-      </article>
+        <article class="card" aria-label="Biografía del artista">
+            <h3>Biografía</h3>
+            <p class="bio">
+                {{ artist_profile.bio }}
+            </p>
+        </article>
 
-      <!-- Analítica para insertar gráficos -->
-<aside class="card" aria-label="Analítica del artista">
-  <h3>Análisis</h3>
-  <div class="charts">
-    <div class="chart" aria-label="Área para gráfico 1">
-  <h5>Top canciones</h5>
-      <canvas id="topSongsChart" width="400" height="200"></canvas>
-    </div>
-    <div class="chart" aria-label="Área para gráfico 2">
-  <h5>Reproducciones por hora este mes</h5>
-      <canvas id="hourLineChart" width="400" height="200"></canvas>
-    </div>
-      
-  </div>
-  <p class="note">Mas información de las graficas.</p>
-</aside>
+        <aside class="card" aria-label="Analítica del artista">
+            <h3>Análisis</h3>
+            <div class="charts">
+                <div class="chart" aria-label="Área para gráfico 1">
+                    <h5>Top canciones</h5>
+                    <canvas id="topSongsChart" width="400" height="200"></canvas>
+                </div>
+                <div class="chart" aria-label="Área para gráfico 2">
+                    <h5>Reproducciones por hora este mes</h5>
+                    <canvas id="hourLineChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+            <p class="note">Mas información de las graficas.</p>
+        </aside>
+    </section>
 
-<!-- Datos para JS y scripts (solo una vez, fuera del bloque de la gráfica) -->
-
-
-{{ plays_this_month|json_script:"plays_this_month" }}
-{{ song_names|json_script:"song_names" }}
-{{ play_counts|json_script:"play_counts" }}
-{{ hour_labels|json_script:"hour_labels" }}
-{{ hour_data|json_script:"hour_data" }}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="{% static 'artist/js/graphic.js' %}"></script>
-
-
-
-
+    <!-- Datos para JS y scripts -->
+    {{ plays_this_month|json_script:"plays_this_month" }}
+    {{ song_names|json_script:"song_names" }}
+    {{ play_counts|json_script:"play_counts" }}
+    {{ hour_labels|json_script:"hour_labels" }}
+    {{ hour_data|json_script:"hour_data" }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{% static 'artist/js/graphic.js' %}"></script>
 </div>
 
 {% endblock %}

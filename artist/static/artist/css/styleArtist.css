@@ -358,131 +358,42 @@
 .main-block-profile .btn_m_artist {
   font-size: larger;
   font-weight: 450;
-}
+} 
 
-/* Estilos para la biografía */
-.bio-section {
-    margin: 2rem 0;
-}
-
-.bio-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border: 1px solid #e5e7eb;
-}
-
-.bio-card h3 {
-    color: #8b5cf6;
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    font-weight: 600;
-}
-
-.bio {
-    color: #6b7280;
-    line-height: 1.6;
-    font-size: 0.95rem;
-}
-
-/* Estilos para la sección de análisis */
-.analytics-section {
-    margin: 2rem 0;
-}
-
-.analytics-section h3 {
-    color: #8b5cf6;
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
-    font-weight: 600;
-    text-align: center;
-}
-
-.charts-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    margin-bottom: 1rem;
-}
-
-.chart-item {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border: 1px solid #e5e7eb;
-}
-
-.chart-item h5 {
-    color: #4b5563;
-    font-size: 1rem;
-    margin-bottom: 1rem;
-    text-align: center;
-    font-weight: 500;
-}
-
-.note {
-    text-align: center;
-    color: #9ca3af;
-    font-style: italic;
-    font-size: 0.9rem;
-    margin-top: 1rem;
-}
-
-/* Estilos para las canciones */
-.artist_songs {
-    margin: 2rem 0;
-}
-
-/* Comentado para mantener el estilo original
-.artist_songs .main-block-profile {
-    background: white;
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border: 1px solid #e5e7eb;
-}
-
-.btn_m_artist {
-    background: #8b5cf6;
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
-    font-weight: 500;
-    margin-bottom: 1.5rem;
-    font-size: 1.1rem;
-}
-*/
-
-/* Responsive design */
-@media (max-width: 768px) {
-    .charts-container {
-        grid-template-columns: 1fr;
-        gap: 1rem;
+ .custom-breadcrumb {
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 12px;
+      padding: 8px 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border: 1px solid #e9ecef;
     }
     
-    .chart-item {
-        padding: 1rem;
+    .breadcrumb-item {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: #6c757d;
+      font-weight: 500;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: all 0.3s ease;
     }
     
-    .bio-card {
-        padding: 1.5rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .bio-card {
-        padding: 1rem;
+    .breadcrumb-item:hover {
+      color: #6f42c1;
+      background-color: rgba(111, 66, 193, 0.1);
+      transform: translateY(-1px);
     }
     
-    .chart-item {
-        padding: 0.75rem;
+    .breadcrumb-item.active {
+      color: #6f42c1;
+      font-weight: 600;
+      background-color: rgba(111, 66, 193, 0.15);
     }
     
-    .analytics-section h3,
-    .bio-card h3 {
-        font-size: 1.25rem;
+    .breadcrumb-divider {
+      color: #adb5bd;
     }
-}
+    

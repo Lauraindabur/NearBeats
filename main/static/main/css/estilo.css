@@ -259,7 +259,7 @@
   height: 36px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #5a70ff;
+  border: 2px solid #d852f6;
   transition: transform 0.2s;
 }
 
@@ -273,7 +273,7 @@
   height: 70px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #5a70ff;
+  border: 3px solid #ef5aff;
   box-shadow: 0 4px 8px rgba(156, 39, 176, 0.3);
 }
 

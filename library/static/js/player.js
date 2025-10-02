@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   const playButtons = document.querySelectorAll(".play-btn");
-  const recomendacionBtn = document.querySelector(".play-recomendacion");
+  const recomendacionBtn = document.querySelector(".btn-play-recommendation"); 
 
   const audioPlayer = document.getElementById("audio-player");
   const playPauseBtn = document.getElementById("playpause-btn");
@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const songUrl = this.getAttribute("data-audio");
       const songTitle = this.getAttribute("data-title");
       const songArtist = this.getAttribute("data-artist");
-      const songCover = this.closest(".recommended-song")?.querySelector("img")?.src
+      const songCover = this.closest(".recommendation-song")?.querySelector("img")?.src
         || "{% static 'images/sin_portada.png' %}";
       playSong(songUrl, songTitle, songArtist, songCover);
     });

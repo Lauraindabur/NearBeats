@@ -2,50 +2,71 @@
 {% load static %}
 
 {% block title %}NearBeats - Favoritos{% endblock %}
+{% block page_icon %}bi bi-star-fill{% endblock %}
+{% block page_name %}Favoritos{% endblock %}
 
 {% block content %}
+<br>
+
 <div class="container-fluid mt-4">
-  <h1 class="favorites-title mb-4" style="font-family: 'Dancing Script', cursive; text-align: center;">
-    ⭐ Mis Favoritos
+  
+  <h1 class="favorites-title mb-3" >
+     Mis Favoritos
   </h1>
-
-  {% if recommended_song %}
-  <div class="recommended-song mb-4 shadow-lg d-flex align-items-center">
-    <!-- Lado izquierdo: mensaje con brillo y botón -->
-    <div class="recomendacion-info flex-grow-1 text-start me-4">
-      <div class="recomendacion-titulo">
-        🎧 Tu recomendación del día
-      </div>
-      <a 
-        class="btn btn-light btn-sm fw-bold px-4 py-2 rounded-pill shadow-sm recomendacion-boton play-recomendacion"
-        data-audio="{{ recommended_song.audio_file.url }}"
-        data-title="{{ recommended_song.title }}"
-        data-artist="{{ recommended_song.artist_name }}">
-        <i class="bi bi-play-fill"></i>
-        Escuchar ahora
-      </a>
-    </div>
-
-    <!-- Lado derecho: portada, título y artista -->
-    <div class="recomendacion-datos d-flex align-items-center">
-      <div class="recomendacion-portada">
-        {% if recommended_song.cover_image %}
-          <img src="{{ recommended_song.cover_image.url }}" alt="{{ recommended_song.title }}" class="img-fluid rounded-3 shadow-sm">
-        {% else %}
-          <img src="{% static 'images/sin_portada.png' %}" alt="Sin portada" class="img-fluid rounded-3 shadow-sm">
-        {% endif %}
-      </div>
-      <div class="recomendacion-texto ms-3">
-        <div class="recomendacion-titulo-cancion">
-          {{ recommended_song.title }}
+  <br>
+  
+  <div class="favorites-header-section mb-4">
+    <!-- Banner contextual para Favoritos -->
+    <div class="favorites-banner">
+      <div class="banner-content">
+        <div class="banner-icon">
+          <i class="bi bi-stars"></i>
         </div>
-        <div class="recomendacion-artista">
-          {{ recommended_song.artist_name }}
+        <div class="banner-text">
+          <h3>Tu espacio personal</h3>
+          <p>Todas tus canciones favoritas en un solo lugar</p>
+        </div>
+        <div class="banner-stats">
+          <div class="stat">
+            <span class="number">{{ songs|length }}</span>
+            <span class="label">Canciones guardadas</span>
+          </div>
         </div>
       </div>
+      
+      <!-- Recomendación integrada en el banner -->
+      {% if recommended_song %}
+      <div class="recommendation-container">
+        <div class="recommendation-content">
+          <div class="recommendation-badge">
+            <i class="bi bi-lightning-fill"></i>
+            Recomendación del día
+          </div>
+          <div class="recommendation-song">
+            <div class="song-cover-small">
+              {% if recommended_song.cover_image %}
+                <img src="{{ recommended_song.cover_image.url }}" alt="{{ recommended_song.title }}">
+              {% else %}
+                <img src="{% static 'images/sin_portada.png' %}" alt="Sin portada">
+              {% endif %}
+            </div>
+            <div class="song-details">
+              <div class="song-title">{{ recommended_song.title }}</div>
+              <div class="song-artist">{{ recommended_song.artist_name }}</div>
+            </div>
+            <button class="btn-play-recommendation"
+                    data-audio="{{ recommended_song.audio_file.url }}"
+                    data-title="{{ recommended_song.title }}"
+                    data-artist="{{ recommended_song.artist_name }}">
+              <i class="bi bi-play-fill"></i>
+              Escuchar
+            </button>
+          </div>
+        </div>
+      </div>
+      {% endif %}
     </div>
   </div>
-  {% endif %}
 
   <!-- Lista de favoritos -->
   <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-3">
@@ -60,7 +81,7 @@
             {% else %}
               <img src="{% static 'images/sin_portada.png' %}" alt="Sin portada">
             {% endif %}
-            <div class="play-btn"
+            <div class="play-"
                  data-audio="{{ song.audio_file.url }}"
                  data-title="{{ song.title }}"
                  data-artist="{{ song.artist_name }}">
@@ -112,8 +133,19 @@
         </div>
       </div>
     {% empty %}
-      <p>No tienes canciones favoritas aún.</p>
+      <div class="col-12 text-center py-5">
+        <i class="bi bi-star" style="font-size: 3rem; color: #ccc;"></i>
+        <h4 class="mt-3 text-muted">Aún no tienes favoritos</h4>
+        <p class="text-muted">Las canciones que marques como favoritas aparecerán aquí</p>
+        <a href="{% url 'see_library' %}" class="btn btn-primary mt-2">
+          <i class="bi bi-music-note-list"></i>
+          Explorar canciones
+        </a>
+      </div>
     {% endfor %}
   </div>
 </div>
+
+
+
 {% endblock %}

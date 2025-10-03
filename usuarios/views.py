@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import RegistroUsuarioForm
 from .models import Usuario
+from artist.models import ArtistProfile
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -9,13 +10,24 @@ def create_user_account(request):   #create_user_account
     if request.method == 'POST':
         form = RegistroUsuarioForm(request.POST)
         if form.is_valid():
-            # Create the user but don't save yet
             usuario = form.save(commit=False)
-            # Set the hashed password using set_password
             usuario.set_password(form.cleaned_data['password'])
             usuario.save()
+            # Si el nuevo usuario es un Artista entonces se crea en la base de datos de Artist
+            try:
+                if usuario.rol == 'Artista':
+                    # Crear o get un ArtistProfile con el mismo nombre
+                    ArtistProfile.objects.get_or_create(
+                        name=usuario.nombre,
+                        defaults={
+                            'bio': 'Proyecto musical que busca conectar con las emociones y experiencias de la vida a través de sonidos auténticos y letras sinceras. Con un estilo que mezcla influencias de distintos géneros, su propuesta refleja una identidad versátil y en constante evolución',
+                            'profile_image': 'artists/profiles/artist_foto.jpg'
+                        }
+                    )
+            except Exception as e:
+                messages.warning(request, f"Advertencia al crear perfil de artista: {e}")
             messages.success(request, "User registered successfully.")
-            return redirect('login')  # Redirect to login view
+            return redirect('login')  # Redirigir al login por si las moscas
     else:
         form = RegistroUsuarioForm()
 

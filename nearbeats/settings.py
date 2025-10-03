@@ -104,3 +104,21 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'usuarios.Usuario'
 LOGIN_URL = 'login'
 LOGOUT_REDIRECT_URL = 'login/' 
+
+# Logging configuration to reduce noise from broken pipe errors during development
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.server': {
+            'handlers': ['console'],
+            'level': 'INFO',  # Change to 'ERROR' to hide broken pipe messages
+            'propagate': False,
+        },
+    },
+}

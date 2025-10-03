@@ -10,7 +10,7 @@
 
 <div class="container-fluid mt-4">
   
-  <h1 class="favorites-title mb-3" >
+  <h1 class="favorites-title mb-3">
      Mis Favoritos
   </h1>
   <br>
@@ -81,7 +81,7 @@
             {% else %}
               <img src="{% static 'images/sin_portada.png' %}" alt="Sin portada">
             {% endif %}
-            <div class="play-"
+            <div class="play-btn"
                  data-audio="{{ song.audio_file.url }}"
                  data-title="{{ song.title }}"
                  data-artist="{{ song.artist_name }}">
@@ -145,7 +145,5 @@
     {% endfor %}
   </div>
 </div>
-
-
 
 {% endblock %}

@@ -1,6 +1,5 @@
-{% extends 'main/base.html'%}
+{% extends 'main/base.html' %}
 {% load static %}
-
 
 {% block content %}
 <div class="profile-max">
@@ -8,23 +7,19 @@
     <div class="location-indicator">
         <div class="d-flex align-items-center mb-3">
             <div class="custom-breadcrumb">
-                <!-- Determinamos la página de origen -->
                 {% if request.META.HTTP_REFERER %}
                     {% if 'library' in request.META.HTTP_REFERER or 'biblioteca' in request.META.HTTP_REFERER %}
-                        <!-- Si venimos de biblioteca -->
                         <a href="{% url 'see_library' %}" class="breadcrumb-item">
                             <i class="bi bi-collection-play me-1"></i>
                             <span>Biblioteca</span>
                         </a>
                     {% else %}
-                        <!-- Si venimos de inicio u otra página -->
                         <a href="{% url 'home' %}" class="breadcrumb-item">
                             <i class="bi bi-house-door me-1"></i>
                             <span>Inicio</span>
                         </a>
                     {% endif %}
                 {% else %}
-                    <!-- Por defecto, mostramos Inicio -->
                     <a href="{% url 'home' %}" class="breadcrumb-item">
                         <i class="bi bi-house-door me-1"></i>
                         <span>Inicio</span>
@@ -48,7 +43,7 @@
         <div class="hero-grid">
             <figure class="avatar" aria-label="Imagen de perfil">
                 {% if artist_profile.profile_image %}
-                    <img src="{{ artist_profile.profile_image.url }}" alt="{{ artist_name }} Profile Image">
+                    <img src="{{ artist_profile.profile_image.url }}" alt="Imagen de {{ artist_name }}">
                 {% else %}
                     <img src="https://www.fmdos.cl/wp-content/uploads/2025/06/Jessie-J-cancer.webp" alt="Foto del artista">
                 {% endif %}
@@ -59,6 +54,7 @@
                 </div>
                 <div id="repro-mes-container">
                     <p class="repro-count">{{ plays_this_month }}</p>
+                    <small>Reproducciones este mes</small>
                 </div>
             </div>
         </div>
@@ -72,7 +68,7 @@
                 <div class="card mb-3 cardm">
                     <div class="row g-0 rowm">
                         <div class="col-md-4 col4m">
-                            <img src="{{ song.cover_image.url }}" class="img-fluid rounded-start img-fluidm" alt="...">
+                            <img src="{{ song.cover_image.url }}" class="img-fluid rounded-start img-fluidm" alt="{{ song.title }}">
                         </div>
                         <div class="col-8 col8m">
                             <div class="card-body card-bodym">
@@ -81,7 +77,7 @@
                                 {% if song.audio_file %}
                                     <audio controls style="width: 100%;">
                                         <source src="{{ song.audio_file.url }}" type="audio/mpeg">
-                                        Tu navegador no soporta audio.
+                                        Tu navegador no soporta reproducción de audio.
                                     </audio>
                                 {% else %}
                                     <small class="text-muted">Audio no disponible</small>
@@ -90,32 +86,32 @@
                         </div>
                     </div>
                 </div>
+            {% empty %}
+                <p class="text-muted">Este artista aún no tiene canciones disponibles.</p>
             {% endfor %}
         </div>
     </section>
 
-    <!-- Contenido: Bio + analitica -->
+    <!-- Contenido: Biografía + Analítica -->
     <section class="grid" aria-label="Contenido del perfil">
         <article class="card" aria-label="Biografía del artista">
             <h3>Biografía</h3>
-            <p class="bio">
-                {{ artist_profile.bio }}
-            </p>
+            <p class="bio">{{ artist_profile.bio }}</p>
         </article>
 
         <aside class="card" aria-label="Analítica del artista">
-            <h3>Análisis</h3>
+            <h3>Analítica</h3>
             <div class="charts">
-                <div class="chart" aria-label="Área para gráfico 1">
+                <div class="chart" aria-label="Gráfico de Top canciones">
                     <h5>Top canciones</h5>
                     <canvas id="topSongsChart" width="400" height="200"></canvas>
                 </div>
-                <div class="chart" aria-label="Área para gráfico 2">
+                <div class="chart" aria-label="Gráfico de reproducciones por hora">
                     <h5>Reproducciones por hora este mes</h5>
                     <canvas id="hourLineChart" width="400" height="200"></canvas>
                 </div>
             </div>
-            <p class="note">Mas información de las graficas.</p>
+            <p class="note">Más información sobre las gráficas.</p>
         </aside>
     </section>
 
@@ -128,5 +124,4 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{% static 'artist/js/graphic.js' %}"></script>
 </div>
-
 {% endblock %}

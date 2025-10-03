@@ -48,6 +48,29 @@
     border-radius: 9%;
     margin-right: 25px;
 }
+.main-navbar .nav-itemmSU {
+    background-color: rgb(249,172,255); 
+    height: 40px;
+    width: 100px;
+    border-radius: 9%;
+    margin-right: 25px;
+    transition: background-color 0.3s ease; /* Agrega transición */
+}
+
+.main-navbar .nav-itemmSU:hover {
+    background-color: rgb(240, 108, 250);
+    transition: background-color 0.3s ease;
+}
+
+
+.main-navbar .nav-itemmSU a.nav-link.nav-linkm,
+.main-navbar .nav-itemmSU a.nav-link.nav-linkm:hover,
+.main-navbar .nav-itemmSU a.nav-link.nav-linkm:focus,
+.main-navbar .nav-itemmSU a.nav-link.nav-linkm:active {
+    text-decoration: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+}
 
 
 .btn-search {

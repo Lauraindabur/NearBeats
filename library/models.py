@@ -22,31 +22,30 @@ class Song(models.Model):
 
     mood = models.CharField(
     max_length=50,
-    choices=[
-        ("feliz", "Feliz"),
-        ("triste", "Triste"),
-        ("energetico", "Energetico"),
-        ("calmado", "Calmado"),
-        ("romantico", "Romantico"),
-        ("melancolico", "Melancolico"),
-        ("enojado", "Enojado"),
-        ("esperanzado", "Esperanzado"),
-        ("nostalgico", "Nostalgico"),
-        ("relajado", "Relajado"),
-        ("oscuro", "Oscuro"),
-        ("inspirador", "Inspirador"),
-        ("epico", "Epico"),
-        ("sonador", "Sonador"),
-        ("solitario", "Solitario"),
-        ("sensual", "Sensual"),
-        ("seguro", "Seguro"),
-        ("ruptura", "Ruptura"),
-        ("sarcastico", "Sarcastico"),
-        ("empoderado", "Empoderado"),
-        ("rebelde", "Rebelde"),
-
-     
+    choices= [
+    ("feliz", "Feliz"),
+    ("triste", "Triste"),
+    ("energetico", "Enérgico"),
+    ("calmado", "Calmado"),
+    ("romantico", "Romántico"),
+    ("melancolico", "Melancólico"),
+    ("enojado", "Enojado"),
+    ("esperanzado", "Esperanzado"),
+    ("nostalgico", "Nostálgico"),
+    ("relajado", "Relajado"),
+    ("oscuro", "Oscuro"),
+    ("inspirador", "Inspirador"),
+    ("epico", "Épico"),
+    ("sonador", "Soñador"),
+    ("solitario", "Solitario"),
+    ("sensual", "Sensual"),
+    ("seguro", "Seguro"),
+    ("ruptura", "Ruptura"),
+    ("sarcastico", "Sarcástico"),
+    ("empoderado", "Empoderado"),
+    ("rebelde", "Rebelde"),
     ],
+
     blank=True
 )
 

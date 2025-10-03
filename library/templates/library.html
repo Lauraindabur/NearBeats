@@ -15,7 +15,7 @@
       <span class="feature-badge">
         <i class="bi bi-heart me-1"></i>Disfruta
       </span>
-        <span class="feature-badge">
+      <span class="feature-badge">
         <i class="bi bi-star me-1"></i>Colecciona
       </span>
       <span class="feature-badge">
@@ -24,13 +24,12 @@
     </div>
     <p class="intro-description text-muted mx-auto mb-0">
       Tu espacio personal para explorar canciones únicas, seguir artistas emergentes 
-      y construir tu colección musical que refleje tu estilo. .
+      y construir tu colección musical que refleje tu estilo.
     </p>
   </div>
 </div>
 
 <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-3">
-  
   {% for song in songs %}
     <div class="col">
       <div class="song-card h-100 d-flex flex-column">
@@ -51,11 +50,11 @@
           </div>
         </div>
 
-        <!-- Info -->
+        <!-- Información -->
         <div class="song-info text-center p-2">
           <div class="song-title fw-semibold text-truncate">{{ song.title }}</div>
           <div class="song-artist text-muted small text-truncate">{{ song.artist_name }}</div>
-          <button class="btn btn-link p-0 comment-btn" data-artist-id="{{ song.artist_name }}" onclick="showFollowersCount(this)">
+          <button class="btn btn-link p-0 comment-btn" data-artist-id="{{ song.artist_name }}" onclick="showFollowersCount(this)" title="Ver seguidores">
             <i class="bi bi-eye"></i>
           </button>
         </div>
@@ -65,20 +64,20 @@
           <div class="d-flex justify-content-between align-items-center px-2 pb-2">    
             <!-- Izquierda -->
             <div class="d-flex gap-2">
-              <button class="btn btn-link p-0 favorite-btn" data-song-id="{{ song.id }}">
+              <button class="btn btn-link p-0 favorite-btn" data-song-id="{{ song.id }}" title="Agregar a favoritos">
                 <i class="bi bi-star{% if song.is_favorited %}-fill text-warning{% endif %}" style="font-size: 1.2rem;"></i>
               </button>
-              <button class="btn btn-link p-0 share-btn" data-song-id="{{ song.id }}" onclick="share_song('{{ song.title }}')">
+              <button class="btn btn-link p-0 share-btn" data-song-id="{{ song.id }}" onclick="share_song('{{ song.title }}')" title="Compartir canción">
                 <i class="bi bi-share-fill" style="font-size: 1.2rem;"></i>
               </button>
-              <button class="btn btn-link p-0 follow-btn" data-artist-id="{{ song.artist_name }}" onclick="follow_artist(this)">
+              <button class="btn btn-link p-0 follow-btn" data-artist-id="{{ song.artist_name }}" onclick="follow_artist(this)" title="Seguir artista">
                 <i class="bi bi-person-plus{% if song.is_followed %}-fill text-success{% endif %}" style="font-size: 1.2rem;"></i>
               </button>
             </div>
 
             <!-- Derecha  -->
             <div class="d-flex align-items-center gap-1">
-              <button class="btn btn-link p-0 like-btn" data-song-id="{{ song.id }}">
+              <button class="btn btn-link p-0 like-btn" data-song-id="{{ song.id }}" title="Me gusta">
                 <i class="bi bi-heart{% if song.is_liked %}-fill text-danger{% endif %}" style="font-size: 1.2rem;"></i>
               </button>
               <span id="likes-count-{{ song.id }}" 
@@ -93,6 +92,5 @@
     </div>
   {% endfor %}
 </div>
-
 
 {% endblock %}

@@ -3,54 +3,57 @@ from .forms import RegistroUsuarioForm
 from .models import Usuario
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
 
-def create_user_account(request):   #create_user_account
+# Registro de usuario
+def create_user_account(request):
+    next_page = request.GET.get('next')  # Para redirección después del registro
     if request.method == 'POST':
         form = RegistroUsuarioForm(request.POST)
         if form.is_valid():
-            # Create the user but don't save yet
             usuario = form.save(commit=False)
-            # Set the hashed password using set_password
+            # Guardamos la contraseña hasheada
             usuario.set_password(form.cleaned_data['password'])
             usuario.save()
-            messages.success(request, "User registered successfully.")
-            return redirect('login')  # Redirect to login view
+            messages.success(request, "Usuario registrado con éxito.")
+            # Redirige a login respetando next_page
+            if next_page:
+                return redirect(f"/login/?next={next_page}")
+            return redirect('login')
     else:
         form = RegistroUsuarioForm()
 
-    return render(request, 'usuarios/registro.html', {'form': form})
+    return render(request, 'usuarios/registro.html', {'form': form, 'next': next_page})
 
-def login_user(request):  # login_user
-    # If the user submits the form
+# Login de usuario
+def login_user(request):
+    next_page = request.GET.get('next') or request.POST.get('next')
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-        # Try to authenticate the user
         user = authenticate(request, email=email, password=password)
 
         if user is not None:
             login(request, user)
-            return redirect('home')  # Redirect to a protected page after login
+            messages.success(request, f"¡Bienvenid@ de nuevo, {user.email}!")
+            return redirect(next_page if next_page else 'home')
         else:
-            messages.error(request, 'Invalid email or password.')
+            messages.error(request, 'Email o contraseña inválidos.')
 
-    # Render the login form
-    return render(request, 'usuarios/login.html')
+    return render(request, 'usuarios/login.html', {'next': next_page})
 
-def home(request):   #show_home_page
-    # Show the home page after login or just as a landing page
+# Página de inicio
+def home(request):
     return render(request, 'usuarios/home.html')
 
-def logout_user(request):  #logout_user
+# Logout
+def logout_user(request):
     logout(request)
     storage = messages.get_messages(request)
     for _ in storage:
-        pass  # iterar para vaciar
+        pass  # iterar para vaciar mensajes antiguos
 
-    # Ahora sí, mostrar solo el mensaje de logout
-    messages.success(request, "You have been logged out.")
+    messages.success(request, "Has cerrado sesión correctamente.")
     return redirect('login')
 
 

@@ -4,10 +4,11 @@ from .models import Usuario
 class RegistroUsuarioForm(forms.ModelForm):
     # Additional field to confirm the password
     password = forms.CharField(
+        label='Contraseña',
         widget=forms.PasswordInput(attrs={"class": "form-control custom-input"})
     )
     password2 = forms.CharField(
-        label='Confirm Password',
+        label='Confirmar Contraseña',
         widget=forms.PasswordInput(attrs={"class": "form-control custom-input"})
     )
 
@@ -29,6 +30,6 @@ class RegistroUsuarioForm(forms.ModelForm):
         password2 = cleaned_data.get('password2')
 
         if password and password2 and password != password2:
-            raise forms.ValidationError("Passwords do not match")
+            raise forms.ValidationError("Las contraseñas no coinciden.")
         
         return cleaned_data

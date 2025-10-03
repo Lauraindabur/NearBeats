@@ -7,6 +7,7 @@
 <div class="d-flex justify-content-center align-items-center" style="min-height: 70vh;">
     <div class="login-card">
         <h2 class="form-title">Inicia sesión</h2>
+        
         {% if messages %}
         {% for message in messages %}
         <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}">
@@ -14,17 +15,24 @@
         </div>
         {% endfor %}
         {% endif %}
+        
         <form method="POST">
             {% csrf_token %}
+            
+            <!-- Input oculto para redirección dinámica -->
+            {% if next %}
+                <input type="hidden" name="next" value="{{ next }}">
+            {% endif %}
+            
             <div class="form-group mb-3">
                 <label class="form-label">Email</label>
                 <input type="email" name="email" class="form-control custom-input" required>
             </div>
             <div class="form-group mb-3">
-                <label class="form-label">Password</label>
+                <label class="form-label">Contraseña</label>
                 <input type="password" name="password" class="form-control custom-input" required>
             </div>
-            <button type="submit" class="btn btn-purple w-100">Login</button>
+            <button type="submit" class="btn btn-purple w-100">Acceder</button>
         </form>
     </div>
 </div>

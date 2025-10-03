@@ -71,7 +71,7 @@
            <i class="bi bi-music-note-list"></i> Playlists
         </a>
       </li>-->
-
+      {% if user.is_authenticated %}
       <li>
         <a href="{% url 'favorites' %}" 
            class="{% if request.resolver_match.url_name == 'favorites' %}active{% endif %}">
@@ -79,6 +79,7 @@
         </a>
       </li>
     </ul>
+    {% endif %}
 
     <!-- Si el usuario NO está logueado -->
     <div class="bottom-buttons mt-auto p-2">

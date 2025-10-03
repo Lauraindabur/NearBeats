@@ -120,3 +120,41 @@ def display_random_song(request):
     #Retornamos el diccionario con los valores
     return render(request, 'main/home.html', {'songs': songs, 'usando_filtro': usando_filtro})
 
+def suggested_songs_api(request):   #Api de devuelve 3 canciones aletorias para el navbar 
+    try:
+        ids = list(Song.objects.values_list('id', flat=True))
+        if not ids:
+            return JsonResponse({'songs': []})
+        sample_ids = random.sample(ids, min(3, len(ids)))
+        qs = Song.objects.filter(id__in=sample_ids)
+        result = []
+        for s in qs:
+            result.append({
+                'id': s.id,
+                'title': s.title,
+                'artist': s.artist_name,
+                'cover': s.cover_image.url if s.cover_image else None,
+            })
+        return JsonResponse({'songs': result})
+    except Exception:
+        return JsonResponse({'songs': []})
+
+
+def suggested_songs_context(request):
+    try:
+        ids = list(Song.objects.values_list('id', flat=True))
+        if not ids:
+            return {'suggested_songs': []}
+        sample_ids = random.sample(ids, min(3, len(ids)))
+        qs = Song.objects.filter(id__in=sample_ids)
+        result = []
+        for s in qs:
+            result.append({
+                'id': s.id,
+                'title': s.title,
+                'artist': s.artist_name,
+                'cover': s.cover_image.url if s.cover_image else None,
+            })
+        return {'suggested_songs': result}
+    except Exception:
+        return {'suggested_songs': []}

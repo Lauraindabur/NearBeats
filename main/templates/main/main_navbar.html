@@ -11,7 +11,7 @@
     <!-- 🔍 Buscador -->
     {% if request.resolver_match.url_name != 'upload_songs' and request.resolver_match.url_name != 'login' and request.resolver_match.url_name != 'register' %}
     <form class="d-flex align-items-center w-50 form-search" method="GET" action="{% url 'buscar' %}">
-        <div class="input-group">
+    <div class="input-group position-relative">
             <!-- Dropdown de filtro -->
             <div class="btn-group me-2">
                 <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown"
@@ -37,14 +37,35 @@
             <input type="hidden" name="filtro" id="inputFiltro" value="{{ filterOption }}">
             <!-- Campo de texto -->
             <input type="search" class="form-control" name="q" id="busqueda" placeholder="¿Qué quieres escuchar hoy?"
-                value="{{ searchTerm }}">
-            <!-- Lista de búsquedas recientes -->
-            <div id="recent-searches-list" class="w-100 mt-2 d-none"></div>
+                value="{{ searchTerm }}" autocomplete="off">
+            <!-- Lista de búsquedas recientes / sugerencias de canciones -->
+             <div id="recent-searches-list" class="recent-searches position-absolute bg-white border rounded shadow-sm d-none"
+              style="z-index:2000; top:100%; left:0; right:0; max-width:600px;">
+                 {# suggested_songs ahora viene desde main.views.suggested_songs_context en settings.py #}
+             {% if suggested_songs %}
+                    <div class="list-group list-group-flush">
+                        <div class="px-3 py-2 border-bottom"><strong>Sugerencias</strong></div>
+                        {% for s in suggested_songs %}
+                        <a href="#" class="list-group-item list-group-item-action d-flex align-items-center suggestion-item"
+                           data-title="{{ s.title }}">
+                            <img src="{% if s.cover %}{{ s.cover }}{% else %}{% static 'images/sin_portada.png' %}{% endif %}" alt="portada" style="width:48px;height:48px;object-fit:cover;border-radius:6px;margin-right:10px;">
+                            <div class="flex-grow-1">
+                                <div class="fw-semibold">{{ s.title }}</div>
+                                <div class="text-muted small">{{ s.artist }}</div>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="p-3 text-muted">No hay sugerencias disponibles</div>
+                {% endif %}
+            </div>
             <!-- Botón buscar -->
             <button type="submit" class="btn btn-search" aria-label="Buscar">
                 <i class="bi bi-search" aria-hidden="true"></i>
                 <span class="visually-hidden">Buscar</span>
             </button>
+            
         </div>
     </form>
     {% else %}
@@ -201,7 +222,7 @@
                         <h5 class="card-title mb-2">{{ song.title }}</h5>
                         <p class="card-text text-muted mb-2">{{ song.artist_name }}</p>
                         {% if song.audio_file %}
-                        <audio controls controls controlslist="nodownload" oncontextmenu="return false;" style="width: 100%;">
+                        <audio controls controlslist="nodownload" oncontextmenu="return false;" style="width: 100%;">
                             <source src="{{ song.audio_file.url }}" type="audio/mpeg">
                             Tu navegador no soporta audio.
                         </audio>
@@ -263,7 +284,7 @@
 
 {% endif %}
 
-<!-- Offcanvas/lista para seleccionar algunos moods -->
+<!-- Offcanvas para seleccionar algunos moods -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="emocionesOffcanvas" aria-labelledby="emocionesOffcanvasLabel">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="emocionesOffcanvasLabel">Elige una emoción</h5>
@@ -273,39 +294,11 @@
         <div class="list-group">
             <button type="button" class="list-group-item list-group-item-action" data-emotion="Feliz">😊 Feliz</button>
             <button type="button" class="list-group-item list-group-item-action" data-emotion="Triste">😢 Triste</button>
-            <button type="button" class="list-group-item list-group-item-action" data-emotion="Energetico">⚡
-                Energético</button>
-            <button type="button" class="list-group-item list-group-item-action" data-emotion="Calmado">🌿 Calmado</button>
-            <button type="button" class="list-group-item list-group-item-action" data-emotion="Romantico">❤️
-                Romántico</button>
-            <button type="button" class="list-group-item list-group-item-action" data-emotion="Melancolico">🌅
-                Melancólico</button>
-            <button type="button" class="list-group-item list-group-item-action" data-emotion="Epico">😰 Épico</button>
-            <button type="button" class="list-group-item list-group-item-action" data-emotion="Relajado">😌
-                Relajado</button>
-            <button type="button" class="list-group-item list-group-item-action" data-emotion="Empoderado">💪
-                Empoderado</button>
-            <button type="button" class="list-group-item list-group-item-action" data-emotion="Enojado">😠
-                Enojado</button>
-            <button type="button" class="list-group-item list-group-item-action" data-emotion="Ruptura">💔
-                Ruptura</button>
-            <button type="button" class="list-group-item list-group-item-action" data-emotion="Sensual">💋
-                Sensual</button>
-            <button type="button" class="list-group-item list-group-item-action" data-emotion="Oscuro">🌑
-                Oscuro</button>
-            <button type="button" class="list-group-item list-group-item-action" data-emotion="Esperanzado">💚
-                Esperanzado</button>
-            <button type="button" class="list-group-item list-group-item-action" data-emotion="Nostalgico">💭
-                Nostálgico</button>
-            <button type="button" class="list-group-item list-group-item-action" data-emotion="Inspirador">🌟
-                Inspirador</button>
-            <button type="button" class="list-group-item list-group-item-action" data-emotion="Solitario">🧑‍🤝‍🧑
-                Solitario</button>
-            <button type="button" class="list-group-item list-group-item-action" data-emotion="Seguro">🛡️
-                Seguro</button>
-            <button type="button" class="list-group-item list-group-item-action" data-emotion="Sonador">💫
-                Soñador</button>
-            
+            <button type="button" class="list-group-item list-group-item-action" data-emotion="Romantico">❤️Romántico</button>
+            <button type="button" class="list-group-item list-group-item-action" data-emotion="Melancolico">🌅 Melancólico</button>
+            <button type="button" class="list-group-item list-group-item-action" data-emotion="Ruptura">💔  Ruptura</button>
+            <button type="button" class="list-group-item list-group-item-action" data-emotion="Nostalgico">💭Nostálgico</button>
+            <button type="button" class="list-group-item list-group-item-action" data-emotion="Solitario">🧑‍🤝‍🧑Solitario</button>
         </div>
     </div>
 </div>

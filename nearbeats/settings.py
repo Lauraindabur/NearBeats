@@ -59,6 +59,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+                'main.views.suggested_songs_context',
                 'django.contrib.messages.context_processors.messages',
             ],
         },

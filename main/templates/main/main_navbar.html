@@ -219,36 +219,48 @@
 {% endif %}
 {% endif %}
 
+{% if user.is_authenticated %}
+<!-- contenedor de notificaciones -->
+<div id="notification-toast-container" style="position:fixed; top:80px; right:20px; z-index:2000;"></div>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var dropdownItems = document.querySelectorAll('.dropdown-menu .dropdown-item');
-        var filtroSeleccionado = document.getElementById('filtroSeleccionado');
-        var inputFiltro = document.getElementById('inputFiltro');
-        var offcanvas = document.getElementById('emocionesOffcanvas');
+        document.addEventListener('DOMContentLoaded', function () {
+                var dropdownItems = document.querySelectorAll('.dropdown-menu .dropdown-item');
+                var filtroSeleccionado = document.getElementById('filtroSeleccionado');
+                var inputFiltro = document.getElementById('inputFiltro');
+                var offcanvas = document.getElementById('emocionesOffcanvas');
 
-        dropdownItems.forEach(function (item) {
-            item.addEventListener('click', function (e) {
-                e.preventDefault();
-                filtroSeleccionado.textContent = item.textContent;
-                inputFiltro.value = item.getAttribute('data-value');
-                // Abre el offcanvas si selecciona "Emoción"
-                if (item.getAttribute('data-value') === 'emocion') {
-                    var bsOffcanvas = new bootstrap.Offcanvas(offcanvas);
-                    bsOffcanvas.show();
+                dropdownItems.forEach(function (item) {
+                        item.addEventListener('click', function (e) {
+                                e.preventDefault();
+                                filtroSeleccionado.textContent = item.textContent;
+                                inputFiltro.value = item.getAttribute('data-value');
+                                // Abre el offcanvas si selecciona "Emoción"
+                                if (item.getAttribute('data-value') === 'emocion') {
+                                        var bsOffcanvas = new bootstrap.Offcanvas(offcanvas);
+                                        bsOffcanvas.show();
+                                }
+                        });
+                });
+
+                // Logout seguro
+                const logoutLink = document.getElementById("logout-link");
+                if (logoutLink) {
+                        logoutLink.addEventListener("click", function (e) {
+                                e.preventDefault();
+                                document.getElementById("logout-form").submit();
+                        });
                 }
-            });
         });
-
-        // Logout seguro
-        const logoutLink = document.getElementById("logout-link");
-        if (logoutLink) {
-            logoutLink.addEventListener("click", function (e) {
-                e.preventDefault();
-                document.getElementById("logout-form").submit();
-            });
-        }
-    });
 </script>
+
+<script>
+    window.NOTIFS_URL = "{% url 'notifications_unread' %}";
+    window.MARK_URL = "{% url 'notifications_mark_read' %}";
+</script>
+<script src="{% static 'main/js/notifications.js' %}"></script>
+
+{% endif %}
 
 <!-- Offcanvas/lista para seleccionar algunos moods -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="emocionesOffcanvas" aria-labelledby="emocionesOffcanvasLabel">

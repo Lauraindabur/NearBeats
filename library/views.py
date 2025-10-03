@@ -7,7 +7,7 @@ from django.db.models import Q  # Nos deja usar OR |
 from django.http import JsonResponse #Para usar AJAX y devolver JSON (temporal)
 from library.models import Song, Like, Favorite, SongPlay
 from django.db.models import F, Count
-from follows.models import Follow
+from follows.models import Follow, Notification
 from artist.models import ArtistProfile
 import io, os
 import zipfile
@@ -65,6 +65,9 @@ def upload_songs(request):  # upload_songs
         with zipfile.ZipFile(zip_path) as z:
             zip_files = {name: z.read(name) for name in z.namelist()}
 
+        # collect created Song instances to notify followers later
+        created_songs = []
+
         for i, song_data in enumerate(songs_list, start=1):
             title = song_data.get('title', '').strip()
             genre = song_data.get('genre', '').strip()
@@ -112,9 +115,34 @@ def upload_songs(request):  # upload_songs
             # Guardar solo si tiene audio
             if song.audio_file:
                 song.save()
+                created_songs.append(song)
             else:
                 messages.error(request, f"La canción '{title}' no se guardó porque no tiene archivo de audio.")
 
+        #--------------NUEVO-------------------
+        try:
+            artist = ArtistProfile.objects.get(name=request.user.nombre)
+        except ArtistProfile.DoesNotExist:
+            artist = None
+
+        if artist and created_songs:
+            created_song_ids = [s.id for s in created_songs]
+            count = len(created_song_ids)
+            deliver_at = timezone.now()  # o timezone.now() + timedelta(hours=1)
+
+            followers = Follow.objects.filter(artist=artist).select_related('user')
+            for f in followers:
+                Notification.objects.create(
+                    user=f.user,
+                    artist_name=str(artist.name),
+                    message=f"{artist.name} ha subido {count} nueva(s) canción(es)",
+                    data={'count': count, 'song_ids': created_song_ids},
+                    deliver_at=deliver_at,
+                    sent=False,
+                )
+        # --- FIN BLOQUE DE NOTIFICACIONES ---
+
+        
         # Limpiar sesión
         request.session.pop('songs_list', None)
         request.session.pop('songs_zip_path', None)
@@ -179,7 +207,24 @@ def upload_songs(request):  # upload_songs
         if cover_image:
             song.cover_image.save(cover_image.name, cover_image, save=False)
 
-        song.save()
+            song.save()
+            # Seccion para notificar a seguidores
+            try:
+                artist = ArtistProfile.objects.get(name=request.user.nombre)
+            except ArtistProfile.DoesNotExist:
+                artist = None
+
+            if artist:
+                followers = Follow.objects.filter(artist=artist).select_related('user')
+                for f in followers:
+                    Notification.objects.create(
+                        user=f.user,
+                        artist_name=str(artist.name),
+                        message=f"{artist.name} ha subido 1 nueva canción",
+                        data={'count': 1, 'song_ids': [song.id]},
+                        deliver_at=timezone.now(),
+                        sent=False,
+                    )
 
         messages.success(request, "✅ Canción subida correctamente.")
         return redirect("see_library")

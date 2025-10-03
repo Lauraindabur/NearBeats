@@ -14,6 +14,7 @@ urlpatterns = [
     # Rutas de la app main
     path('', mainViews.home, name='home'),
     path('buscar/', mainViews.search_song__update_song_list, name='buscar'),   #Dentro de el implementamos RF update_song_list
+    path('buscar/suggested/', mainViews.suggested_songs_api, name='buscar_suggested'),
     path('filtrar/', mainViews.display_random_song, name='display_random_song'),
 
     # Rutas de la app library

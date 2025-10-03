@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import RegistroUsuarioForm
 from .models import Usuario
+from artist.models import ArtistProfile
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 
@@ -14,6 +15,25 @@ def create_user_account(request):
             # Guardamos la contraseña hasheada
             usuario.set_password(form.cleaned_data['password'])
             usuario.save()
+
+            # Si el usuario se registró como Artista, crear (o obtener) su perfil
+            try:
+                if usuario.rol == 'Artista':
+                    ArtistProfile.objects.get_or_create(
+                        name=usuario.nombre,
+                        defaults={
+                            'bio': (
+                                "Proyecto musical que busca conectar con las emociones y "
+                                "experiencias de la vida a través de sonidos auténticos y letras sinceras. "
+                                "Con un estilo versátil en constante evolución."
+                            ),
+                            'profile_image': 'artists/profiles/artist_foto.avif'
+                        }
+                    )
+            except Exception as e:
+                # No bloquear el registro por un fallo en creación de perfil, pero avisar
+                messages.warning(request, f"Advertencia al crear perfil de artista: {e}")
+
             messages.success(request, "Usuario registrado con éxito.")
             # Redirige a login respetando next_page
             if next_page:
@@ -55,5 +75,3 @@ def logout_user(request):
 
     messages.success(request, "Has cerrado sesión correctamente.")
     return redirect('login')
-
-

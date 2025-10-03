@@ -4,7 +4,7 @@
 
     {% if request.resolver_match.url_name == 'login' or request.resolver_match.url_name == 'register' %}
     <a href="{% url 'home' %}" class="navbar-brand d-inline-flex align-items-center">
-        <img src="{% static 'images/NearBeatsLogo.png' %}" alt="NearBeats Logo" style="max-height: 150px;">
+        <img src="{% static 'images/NearBeatsLogo.png' %}" alt="NearBeats Logo" style="max-height: 160px;">
     </a>
     {% endif %}
 
@@ -47,26 +47,19 @@
         </div>
     </form>
     {% else %}
-    <div class="w-40"></div>
+    <div class="w-50"></div>
     {% endif %}
 
     <!-- 🔹 Navegación -->
     <ul class="nav justify-content-end nav-underline nav-underlinem align-items-center">
-    <li class="nav-item nav-itemm nav-itemmHome">
-        <a class="nav-link nav-linkm {% if request.resolver_match.url_name == 'home' %}active{% endif %}"
-            aria-current="page" href="{% url 'home' %}">
-            <i class="bi bi-house-door me-2"></i>Inicio
-        </a>
-    </li>
-    {% if request.resolver_match.url_name != 'see_library' %}
-    <li class="nav-item nav-itemm">
-        <a class="nav-link nav-linkm {% if request.resolver_match.url_name == 'library' or request.resolver_match.url_name == 'upload_songs' or request.resolver_match.url_name == 'favorites' %}active{% endif %}"
-            href="{% url 'see_library' %}">
-            <i class="bi bi-collection-play me-2"></i>Biblioteca
-        </a>
-    </li>
-    {% endif %}
-
+        <li class="nav-item nav-itemm nav-itemmHome">
+            <a class="nav-link nav-linkm {% if request.resolver_match.url_name == 'home' %}active{% endif %}"
+                aria-current="page" href="{% url 'home' %}">Inicio</a>
+        </li>
+        <li class="nav-item nav-itemm">
+            <a class="nav-link nav-linkm {% if request.resolver_match.url_name == 'library' or request.resolver_match.url_name == 'upload_songs' or request.resolver_match.url_name == 'favorites' %}active{% endif %}"
+                href="{% url 'see_library' %}">Biblioteca</a>
+        </li>
 
         {% if user.is_authenticated %}
         <!-- Perfil de usuario -->
@@ -134,19 +127,14 @@
             {% csrf_token %}
         </form>
         {% else %}
-            <li class="nav-item nav-itemm">
-              <a class="btn btn-light border border-light-subtle text-dark nav-linkm"
-                href="{% url 'login' %}?next={% url request.resolver_match.url_name %}">
-                    Inicia sesión
-            </a>
-
-            </li>
-            <li class="nav-item nav-itemmSU">
-                <a class="nav-link nav-linkm "
-                href="{% url 'register' %}?next={% url request.resolver_match.url_name %}">
-                    Regístrate
-                </a>
-            </li>
+        <li class="nav-item nav-itemm">
+            <a class="nav-link nav-linkm {% if request.resolver_match.url_name == 'login' %}active{% endif %}"
+                href="{% url 'login' %}">Log in</a>
+        </li>
+        <li class="nav-item nav-itemmSU">
+            <a class="nav-link nav-linkm {% if request.resolver_match.url_name == 'register' %}active{% endif %}"
+                href="{% url 'register' %}">Sign up</a>
+        </li>
         {% endif %}
     </ul>
 </nav>
@@ -231,36 +219,48 @@
 {% endif %}
 {% endif %}
 
+{% if user.is_authenticated %}
+<!-- contenedor de notificaciones -->
+<div id="notification-toast-container" style="position:fixed; top:80px; right:20px; z-index:2000;"></div>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var dropdownItems = document.querySelectorAll('.dropdown-menu .dropdown-item');
-        var filtroSeleccionado = document.getElementById('filtroSeleccionado');
-        var inputFiltro = document.getElementById('inputFiltro');
-        var offcanvas = document.getElementById('emocionesOffcanvas');
+        document.addEventListener('DOMContentLoaded', function () {
+                var dropdownItems = document.querySelectorAll('.dropdown-menu .dropdown-item');
+                var filtroSeleccionado = document.getElementById('filtroSeleccionado');
+                var inputFiltro = document.getElementById('inputFiltro');
+                var offcanvas = document.getElementById('emocionesOffcanvas');
 
-        dropdownItems.forEach(function (item) {
-            item.addEventListener('click', function (e) {
-                e.preventDefault();
-                filtroSeleccionado.textContent = item.textContent;
-                inputFiltro.value = item.getAttribute('data-value');
-                // Abre el offcanvas si selecciona "Emoción"
-                if (item.getAttribute('data-value') === 'emocion') {
-                    var bsOffcanvas = new bootstrap.Offcanvas(offcanvas);
-                    bsOffcanvas.show();
+                dropdownItems.forEach(function (item) {
+                        item.addEventListener('click', function (e) {
+                                e.preventDefault();
+                                filtroSeleccionado.textContent = item.textContent;
+                                inputFiltro.value = item.getAttribute('data-value');
+                                // Abre el offcanvas si selecciona "Emoción"
+                                if (item.getAttribute('data-value') === 'emocion') {
+                                        var bsOffcanvas = new bootstrap.Offcanvas(offcanvas);
+                                        bsOffcanvas.show();
+                                }
+                        });
+                });
+
+                // Logout seguro
+                const logoutLink = document.getElementById("logout-link");
+                if (logoutLink) {
+                        logoutLink.addEventListener("click", function (e) {
+                                e.preventDefault();
+                                document.getElementById("logout-form").submit();
+                        });
                 }
-            });
         });
-
-        // Logout seguro
-        const logoutLink = document.getElementById("logout-link");
-        if (logoutLink) {
-            logoutLink.addEventListener("click", function (e) {
-                e.preventDefault();
-                document.getElementById("logout-form").submit();
-            });
-        }
-    });
 </script>
+
+<script>
+    window.NOTIFS_URL = "{% url 'notifications_unread' %}";
+    window.MARK_URL = "{% url 'notifications_mark_read' %}";
+</script>
+<script src="{% static 'main/js/notifications.js' %}"></script>
+
+{% endif %}
 
 <!-- Offcanvas/lista para seleccionar algunos moods -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="emocionesOffcanvas" aria-labelledby="emocionesOffcanvasLabel">
@@ -308,6 +308,3 @@
         </div>
     </div>
 </div>
-
-
-

@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const playButtons = document.querySelectorAll(".play-btn");
-  const recomendacionBtn = document.querySelector(".btn-play-recommendation"); 
+  const playButtons = document.querySelectorAll(".play-btn, .btn-play-recommendation");
 
   const audioPlayer = document.getElementById("audio-player");
   const playPauseBtn = document.getElementById("playpause-btn");
@@ -73,29 +72,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
   playerBar.style.display = 'none';
 
-  // --- Botones normales ---
+  // --- Botones de reproducción universales ---
   playButtons.forEach(btn => {
     btn.addEventListener("click", function () {
       const songUrl = this.getAttribute("data-audio");
       const songTitle = this.getAttribute("data-title");
       const songArtist = this.getAttribute("data-artist");
-      const songCover = this.closest(".song-card")?.querySelector("img")?.src 
-        || "{% static 'images/sin_portada.png' %}";
+
+      // Busca la imagen de portada más cercana
+      const songCover = this.closest("tr")?.querySelector("img")?.src 
+                     || this.closest(".song-card")?.querySelector("img")?.src 
+                     || this.closest(".recommendation-song")?.querySelector("img")?.src
+                     || "{% static 'images/sin_portada.png' %}";
+
       playSong(songUrl, songTitle, songArtist, songCover);
     });
   });
-
-  // --- Botón recomendación ---
-  if (recomendacionBtn) {
-    recomendacionBtn.addEventListener("click", function () {
-      const songUrl = this.getAttribute("data-audio");
-      const songTitle = this.getAttribute("data-title");
-      const songArtist = this.getAttribute("data-artist");
-      const songCover = this.closest(".recommendation-song")?.querySelector("img")?.src
-        || "{% static 'images/sin_portada.png' %}";
-      playSong(songUrl, songTitle, songArtist, songCover);
-    });
-  }
 
   // --- Botón play/pause ---
   playPauseBtn.addEventListener("click", () => {
@@ -123,7 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // --- Barra de progreso con bolita draggable ---
+  // --- Barra de progreso con thumb draggable ---
   function seek(e) {
     const rect = progressBar.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
@@ -133,12 +125,10 @@ document.addEventListener("DOMContentLoaded", function () {
     updateProgress();
   }
 
-  // Click en barra
   progressBar.addEventListener("click", (e) => {
     if (!isDragging) seek(e);
   });
 
-  // Drag del thumb
   progressThumb.addEventListener("mousedown", (e) => {
     isDragging = true;
     function onMouseMove(eMove) {

@@ -61,6 +61,13 @@
     <!-- Formulario canción individual -->
     <div id="upload-single" style="display:none;">
       <div class="form-card shadow-lg">
+        <!-- Botón Volver atrás -->
+        <div class="mb-3">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="goBack()">
+            <i class="bi bi-arrow-left me-1"></i> Volver atrás
+          </button>
+        </div>
+        
         <form method="post" enctype="multipart/form-data">
           {% csrf_token %}
           <div class="mb-3">
@@ -115,6 +122,13 @@
     <!-- Formulario lista -->
     <div id="upload-list" style="display:none;">
       <div class="form-card shadow-lg">
+        <!-- Botón Volver atrás -->
+        <div class="mb-3">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="goBack()">
+            <i class="bi bi-arrow-left me-1"></i> Volver atrás
+          </button>
+        </div>
+        
         <form method="post" enctype="multipart/form-data">
           {% csrf_token %}
           <div class="mb-3">
@@ -192,6 +206,13 @@ function showForm(type) {
   } else {
     document.getElementById("upload-list").style.display = "block";
   }
+}
+
+// Función para volver atrás
+function goBack() {
+  document.getElementById("upload-choice").style.display = "block";
+  document.getElementById("upload-single").style.display = "none";
+  document.getElementById("upload-list").style.display = "none";
 }
 </script>
 {% endblock %}

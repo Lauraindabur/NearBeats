@@ -25,26 +25,13 @@ class Song(models.Model):
     choices= [
     ("feliz", "Feliz"),
     ("triste", "Triste"),
-    ("energetico", "Enérgico"),
-    ("calmado", "Calmado"),
     ("romantico", "Romántico"),
     ("melancolico", "Melancólico"),
-    ("enojado", "Enojado"),
-    ("esperanzado", "Esperanzado"),
     ("nostalgico", "Nostálgico"),
-    ("relajado", "Relajado"),
-    ("oscuro", "Oscuro"),
-    ("inspirador", "Inspirador"),
-    ("epico", "Épico"),
-    ("sonador", "Soñador"),
     ("solitario", "Solitario"),
-    ("sensual", "Sensual"),
-    ("seguro", "Seguro"),
     ("ruptura", "Ruptura"),
-    ("sarcastico", "Sarcástico"),
-    ("empoderado", "Empoderado"),
-    ("rebelde", "Rebelde"),
     ],
+   
 
     blank=True
 )
@@ -116,3 +103,39 @@ class SongPlay(models.Model):
         if self.user:
             return f"{self.user} escuchó {self.song.title} en {self.played_at}"
         return f"Anónimo escuchó {self.song.title} en {self.played_at}"
+    
+class Playlist(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,  
+        on_delete=models.CASCADE,
+        related_name="playlists"
+    )
+    songs = models.ManyToManyField('Song', through='PlaylistSong', related_name='playlists')
+    cover_image = models.ImageField(
+        upload_to='playlist_covers/',
+        blank=True,
+        null=True,
+        help_text="Portada personalizada de la playlist"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['-created_at']
+        unique_together = ['name', 'user']  
+
+
+class PlaylistSong(models.Model):
+    playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE)
+    song = models.ForeignKey('Song', on_delete=models.CASCADE)
+    order = models.PositiveIntegerField(default=0)
+    added_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['order']
+        unique_together = ('playlist', 'song')  # Evitar duplicados en la misma playlist

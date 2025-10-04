@@ -1,0 +1,315 @@
+
+    :root {
+        --primary-purple: #d16fff;
+        --light-purple: #e19cff;
+        --dark-purple: #9916aa;
+        --accent-purple: #c14dff;
+        --background-light: #fdf7ff;
+        --card-hover: #f8f0ff;
+    }
+    
+    body {
+        background-color: var(--background-light);
+    }
+    
+    .user-banner {
+        background: linear-gradient(135deg, var(--primary-purple), var(--dark-purple));
+        color: white;
+        border-radius: 15px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 10px 20px rgba(209, 111, 255, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .user-banner::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 200px;
+        height: 200px;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 50%;
+        transform: translate(30%, -30%);
+    }
+    
+    .user-banner h2 {
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .user-banner p {
+        opacity: 0.9;
+        margin-bottom: 0;
+    }
+    
+    .btn-primary {
+        background-color: var(--primary-purple);
+        border-color: var(--primary-purple);
+    }
+    
+    .btn-primary:hover {
+        background-color: var(--dark-purple);
+        border-color: var(--dark-purple);
+    }
+    
+    .btn-outline-primary {
+        color: var(--primary-purple);
+        border-color: var(--primary-purple);
+    }
+    
+    .btn-outline-primary:hover {
+        background-color: var(--primary-purple);
+        border-color: var(--primary-purple);
+    }
+    
+    .btn-random {
+        background-color: var(--accent-purple);
+        border-color: var(--accent-purple);
+        color: white;
+    }
+    
+    .btn-random:hover {
+        background-color: var(--light-purple);
+        border-color: var(--light-purple);
+        color: white;
+    }
+    
+    .playlist-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(209, 111, 255, 0.15);
+        transition: all 0.3s ease;
+        overflow: hidden;
+        background: white;
+        position: relative;
+    }
+    
+    .playlist-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 25px rgba(209, 111, 255, 0.25);
+        background-color: var(--card-hover);
+    }
+    
+    .playlist-card .card-body {
+        padding: 1.5rem;
+    }
+    
+    .playlist-card .card-title {
+        color: var(--dark-purple);
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        padding-right: 50px;
+    }
+    
+    .playlist-card .card-text {
+        color: #262627;
+        margin-bottom: 1rem;
+    }
+    
+    .playlist-card .card-footer {
+        background-color: rgba(209, 111, 255, 0.08);
+        border-top: 1px solid rgba(209, 111, 255, 0.15);
+        padding: 0.75rem 1.5rem;
+    }
+    
+    /* Estilos para la imagen de portada */
+    .playlist-cover {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        border-bottom: 1px solid rgba(209, 111, 255, 0.15);
+    }
+    
+    .playlist-cover-default {
+        background: linear-gradient(135deg, var(--primary-purple), var(--dark-purple));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 3rem;
+        border-bottom: 1px solid rgba(209, 111, 255, 0.15);
+    }
+    
+    /* Estilos específicos para el dropdown de playlists */
+    .playlist-actions {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        z-index: 20;
+    }
+    
+    .playlist-actions .dropdown-toggle {
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(209, 111, 255, 0.3);
+        border-radius: 8px;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--dark-purple);
+        transition: all 0.2s ease;
+        cursor: pointer;
+        z-index: 25;
+    }
+    
+    .playlist-actions .dropdown-toggle:hover {
+        background: white;
+        border-color: var(--primary-purple);
+        color: var(--primary-purple);
+        box-shadow: 0 2px 8px rgba(209, 111, 255, 0.3);
+    }
+    
+    .playlist-actions .dropdown-toggle::after {
+        display: none;
+    }
+    
+    .playlist-actions .dropdown-menu {
+        border: none;
+        box-shadow: 0 5px 20px rgba(209, 111, 255, 0.2);
+        border-radius: 12px;
+        overflow: hidden;
+        padding: 0.5rem 0;
+        min-width: 160px;
+        border: 1px solid rgba(209, 111, 255, 0.15);
+        z-index: 30;
+    }
+    
+    .playlist-actions .dropdown-item {
+        padding: 0.6rem 1rem;
+        transition: all 0.2s ease;
+        color: #555;
+        font-size: 0.9rem;
+        cursor: pointer;
+        text-decoration: none;
+        display: block;
+        border: none;
+        background: none;
+        width: 100%;
+        text-align: left;
+    }
+    
+    .playlist-actions .dropdown-item:hover {
+        background-color: rgba(209, 111, 255, 0.1);
+        color: var(--dark-purple);
+    }
+    
+    .playlist-actions .dropdown-item.text-danger {
+        color: #dc3545;
+    }
+    
+    .playlist-actions .dropdown-item.text-danger:hover {
+        background-color: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+    }
+    
+    .playlist-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        height: 100%;
+        cursor: pointer;
+    }
+    
+    .playlist-link:hover {
+        color: inherit;
+        text-decoration: none;
+    }
+    
+    .empty-state {
+        background: white;
+        border-radius: 15px;
+        padding: 3rem 2rem;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(209, 111, 255, 0.1);
+    }
+    
+    .empty-state i {
+        color: var(--accent-purple);
+        font-size: 4rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .empty-state h4 {
+        color: var(--dark-purple);
+        margin-bottom: 1rem;
+    }
+    
+    .empty-state p {
+        color: #6c757d;
+        margin-bottom: 2rem;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-bottom: 2rem;
+    }
+    
+    .song-count {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--primary-purple);
+        font-weight: 500;
+    }
+    
+    /* Estilos para el formulario de eliminación */
+    .delete-form {
+        display: inline;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .delete-btn {
+        background: none;
+        border: none;
+        padding: 0;
+        width: 100%;
+        text-align: left;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+    
+    /* Estilos para el botón de cambiar imagen */
+    .change-image-btn {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 10;
+    }
+    
+    .playlist-card:hover .change-image-btn {
+        opacity: 1;
+    }
+    
+    .change-image-btn:hover {
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+    }
+    
+    @media (max-width: 576px) {
+        .action-buttons {
+            flex-direction: column;
+        }
+        
+        .action-buttons .btn {
+            width: 100%;
+        }
+        
+        .playlist-cover {
+            height: 150px;
+        }
+    }

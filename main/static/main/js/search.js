@@ -1,4 +1,3 @@
-console.log('search.js cargado');
 
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form.form-search');

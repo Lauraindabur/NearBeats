@@ -1,13 +1,18 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_http_methods
 from django.core.cache import cache
 from django.http import HttpResponse  
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.db.models import Q  # Nos deja usar OR |
 from django.http import JsonResponse #Para usar AJAX y devolver JSON (temporal)
-from library.models import Song, Like, Favorite, SongPlay
-from django.db.models import F, Count
+from library.models import Song, Like, Favorite, SongPlay, Playlist, PlaylistSong
 from follows.models import Follow, Notification
+from django.contrib import messages
+from django.db.models import F, Count
+from django.db import models
+from django.db import IntegrityError
+from follows.models import Follow
 from artist.models import ArtistProfile
 import io, os
 import zipfile
@@ -16,6 +21,9 @@ import pandas as pd
 from django.contrib import messages
 from django.utils import timezone
 import random
+
+
+
 
 
 # Create your views here.
@@ -311,3 +319,177 @@ def play_song(request, song_id):
         SongPlay.objects.create(user=None, song=song)  # 👈 Guardar anónimo
 
     return JsonResponse({'status': 'ok'})
+
+@login_required
+def playlists(request):
+    """Ver todas las playlists del usuario"""
+    user_playlists = Playlist.objects.filter(user=request.user).prefetch_related('songs')
+    return render(request, 'playlists.html', {'playlists': user_playlists})
+
+@login_required
+
+
+
+
+def create_playlist(request):
+    """Crear una nueva playlist"""
+    context = {}
+    
+    if request.method == 'POST':
+        name = request.POST.get('name', '').strip()
+        description = request.POST.get('description', '').strip()
+        cover_image = request.FILES.get('cover_image')
+        
+        # Guardar los valores en el contexto para rellenar el formulario
+        context['name'] = name
+        context['description'] = description
+        
+        # Validaciones
+        if not name:
+            context['error'] = "El nombre de la playlist es obligatorio."
+            return render(request, 'create_playlist.html', context)
+        
+        # Verificar si ya existe una playlist con el mismo nombre para este usuario
+        if Playlist.objects.filter(name=name, user=request.user).exists():
+            context['error'] = f"Ya existe una playlist con el nombre '{name}'. Por favor, elige un nombre diferente."
+            return render(request, 'create_playlist.html', context)
+        
+        # Validar tamaño de imagen si se subió una
+        if cover_image:
+            if cover_image.size > 5 * 1024 * 1024:  # 5MB
+                context['error'] = "La imagen es demasiado grande. El tamaño máximo permitido es 5MB."
+                return render(request, 'create_playlist.html', context)
+            
+            # Validar tipo de archivo
+            allowed_types = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg']
+            if cover_image.content_type not in allowed_types:
+                context['error'] = "Formato de imagen no válido. Use JPG, PNG o WEBP."
+                return render(request, 'create_playlist.html', context)
+        
+        try:
+            # Crear la playlist
+            playlist = Playlist.objects.create(
+                name=name,
+                description=description,
+                user=request.user
+            )
+            
+            # Asignar la imagen si se proporcionó
+            if cover_image:
+                playlist.cover_image = cover_image
+                playlist.save()
+            
+            # Usar mensaje de éxito general solo para éxito
+            from django.contrib import messages
+            messages.success(request, f"Playlist '{name}' creada exitosamente!")
+            return redirect('playlist_detail', playlist_id=playlist.id)
+            
+        except IntegrityError:
+            context['error'] = f"Ya existe una playlist con el nombre '{name}'. Por favor, elige un nombre diferente."
+            return render(request, 'create_playlist.html', context)
+        except Exception as e:
+            context['error'] = f"Error al crear la playlist: {str(e)}"
+            return render(request, 'create_playlist.html', context)
+    
+    return render(request, 'create_playlist.html', context)
+
+@login_required
+def playlist_detail(request, playlist_id):
+    """Ver detalles de una playlist específica"""
+    playlist = get_object_or_404(Playlist, id=playlist_id, user=request.user)
+    playlist_songs = playlist.playlistsong_set.select_related('song').all()
+    
+    # Obtener todas las canciones para agregar a la playlist
+    all_songs = Song.objects.all()
+    
+    # Obtener géneros únicos para el filtro
+    genres = Song.objects.values_list('genre', flat=True).distinct()
+    
+    # Obtener choices de mood para el filtro
+    mood_choices = Song._meta.get_field('mood').choices
+    
+    # 👇 Lista de IDs ya en la playlist
+    existing_song_ids = list(playlist_songs.values_list('song_id', flat=True))
+    
+    return render(request, 'playlist_detail.html', {
+        'playlist': playlist,
+        'playlist_songs': playlist_songs,
+        'all_songs': all_songs,
+        'genres': genres,
+        'mood_choices': mood_choices,
+        'existing_song_ids': existing_song_ids,  # 👈 se pasa al template
+    })
+
+
+@login_required
+def add_song_to_playlist(request, playlist_id):
+    if request.method == 'POST':
+        playlist = get_object_or_404(Playlist, id=playlist_id, user=request.user)
+        song_id = request.POST.get('song_id')
+
+        if not song_id:
+            return JsonResponse({"success": False, "error": "No se especificó la canción."}, status=400)
+
+        song = get_object_or_404(Song, id=song_id)
+
+        # Verificar si ya está en la playlist
+        if PlaylistSong.objects.filter(playlist=playlist, song=song).exists():
+            return JsonResponse({
+                "success": False, 
+                "already_added": True,  # ← AÑADE ESTA LÍNEA
+                "error": f"'{song.title}' ya está en la playlist."
+            })
+
+        # Calcular el orden
+        last_order = PlaylistSong.objects.filter(playlist=playlist).aggregate(
+            models.Max('order')
+        )['order__max'] or 0
+
+        PlaylistSong.objects.create(
+            playlist=playlist,
+            song=song,
+            order=last_order + 1
+        )
+
+        return JsonResponse({
+            "success": True,
+            "message": f"'{song.title}' agregada a la playlist.",
+            "song_id": song.id,
+            "song_title": song.title
+        })
+
+    return JsonResponse({"success": False, "error": "Método no permitido"}, status=405)
+
+
+@login_required
+def remove_song_from_playlist(request, playlist_id, song_id):
+    """Remover canción de playlist"""
+    playlist = get_object_or_404(Playlist, id=playlist_id, user=request.user)
+    song = get_object_or_404(Song, id=song_id)
+    
+    playlist_song = get_object_or_404(PlaylistSong, playlist=playlist, song=song)
+    playlist_song.delete()
+    
+    messages.success(request, f"Canción removida de la playlist.")
+    return redirect('playlist_detail', playlist_id=playlist_id)
+
+
+@require_http_methods(["GET", "POST"])
+def delete_playlist(request, playlist_id):
+    try:
+        playlist = Playlist.objects.get(id=playlist_id, user=request.user)
+        
+        if request.method == 'POST':
+            # Si viene por POST (formulario)
+            playlist.delete()
+            messages.success(request, 'Playlist eliminada correctamente')
+            return redirect('playlists')
+        else:
+            # Si viene por GET (enlace)
+            playlist.delete()
+            messages.success(request, 'Playlist eliminada correctamente')
+            return redirect('playlists')
+            
+    except Playlist.DoesNotExist:
+        messages.error(request, 'La playlist no existe')
+        return redirect('playlists')

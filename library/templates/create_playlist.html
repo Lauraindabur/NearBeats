@@ -1,0 +1,134 @@
+{% extends "base_library.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/style_createplaylists.css' %}">
+{% endblock %}
+
+{% block title %}Crear Playlist - NearBeats{% endblock %}
+{% block page_icon %}bi bi-plus-circle{% endblock %}
+{% block page_name %}Crear Playlist{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card create-playlist-card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="bi bi-plus-circle me-2"></i>Nueva Playlist
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" class="playlist-form" id="playlistForm" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Sección de imagen -->
+                        <div class="mb-4 text-center">
+                            <div class="image-upload-container">
+                                <div class="image-preview mb-3" id="imagePreview">
+                                    <img src="{% static 'img/default-playlist.png' %}" 
+                                         alt="Vista previa" 
+                                         class="img-thumbnail" 
+                                         id="previewImage"
+                                         style="max-width: 200px; max-height: 200px; object-fit: cover;">
+                                </div>
+                                <label for="cover_image" class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-image me-1"></i> Elegir Imagen
+                                </label>
+                                <input type="file" 
+                                       class="form-control d-none" 
+                                       id="cover_image" 
+                                       name="cover_image" 
+                                       accept="image/*">
+                                <div class="form-text">
+                                    Formatos: JPG, PNG, WEBP. Tamaño máximo: 5MB.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="name" class="form-label">Nombre de la Playlist *</label>
+                            <input type="text" class="form-control {% if error %}is-invalid{% endif %}" 
+                                   id="name" name="name" 
+                                   required maxlength="255" 
+                                   placeholder="Mi playlist favorita..."
+                                   value="{% if name %}{{ name }}{% endif %}">
+                            <div class="form-text">El nombre debe ser único entre tus playlists.</div>
+                            {% if error %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="description" class="form-label">Descripción</label>
+                            <textarea class="form-control" id="description" name="description" 
+                                      rows="4" placeholder="Describe tu playlist... (opcional)">{% if description %}{{ description }}{% endif %}</textarea>
+                            <div class="form-text">Puedes añadir una descripción para recordar el propósito de tu playlist.</div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a href="{% url 'playlists' %}" class="btn btn-secondary me-md-2">
+                                <i class="bi bi-arrow-left me-1"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary" id="submitBtn">
+                                <i class="bi bi-check-circle me-1"></i> Crear Playlist
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const nameInput = document.getElementById('name');
+    const form = document.getElementById('playlistForm');
+    const coverImageInput = document.getElementById('cover_image');
+    const previewImage = document.getElementById('previewImage');
+    
+    // Limpiar estado de error cuando el usuario empiece a escribir
+    nameInput.addEventListener('input', function() {
+        if (this.classList.contains('is-invalid')) {
+            this.classList.remove('is-invalid');
+            const alert = document.querySelector('.alert-danger');
+            if (alert) {
+                alert.style.display = 'none';
+            }
+        }
+    });
+    
+    // Vista previa de imagen
+    coverImageInput.addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            
+            reader.addEventListener('load', function() {
+                previewImage.setAttribute('src', this.result);
+            });
+            
+            reader.readAsDataURL(file);
+        }
+    });
+    
+    // Validación de tamaño de archivo
+    coverImageInput.addEventListener('change', function() {
+        const file = this.files[0];
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        
+        if (file && file.size > maxSize) {
+            alert('La imagen es demasiado grande. El tamaño máximo permitido es 5MB.');
+            this.value = '';
+            previewImage.setAttribute('src', "{% static 'img/default-playlist.png' %}");
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -10,13 +10,9 @@ from library.models import Song, Like, Favorite, SongPlay, Playlist, PlaylistSon
 from follows.models import Follow, Notification
 from django.contrib import messages
 from django.db.models import F, Count
-<<<<<<< HEAD
-from follows.models import Follow, Notification
-=======
 from django.db import models
 from django.db import IntegrityError
 from follows.models import Follow
->>>>>>> origin
 from artist.models import ArtistProfile
 import io, os
 import zipfile

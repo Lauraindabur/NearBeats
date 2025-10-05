@@ -4,10 +4,6 @@ from django.contrib.auth.decorators import login_required
 from artist.models import ArtistProfile
 from .models import Follow, Notification
 from django.utils import timezone
-<<<<<<< HEAD
-=======
-
->>>>>>> origin
 
 @require_POST
 @login_required
@@ -32,10 +28,6 @@ def view_artist_followers(request):  #view_artist_followers
 
 @login_required
 def notifications_unread(request):
-<<<<<<< HEAD
-    # Defensive: if not authenticated, return empty list to avoid anonymous user errors
-=======
->>>>>>> origin
     if not request.user.is_authenticated:
         return JsonResponse({'notifications': []})
 

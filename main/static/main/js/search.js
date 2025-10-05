@@ -1,5 +1,3 @@
-console.log('search.js cargado');
-
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form.form-search');
     const input = document.getElementById('busqueda');
@@ -10,11 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const maxRecent = 3;
 
     if (!form || !input) return;
-    // Helpers de localStorage
     function getRecents() { try { return JSON.parse(localStorage.getItem('recentSearches') || '[]'); } catch(e){ return []; } }
     function saveRecents(arr) { try { localStorage.setItem('recentSearches', JSON.stringify(arr)); } catch(e){} }
-
-    // Comportamiento del dropdown de filtro (sin cambios)
     dropdownItems.forEach(function(item) {
         item.addEventListener('click', function(e) {
             e.preventDefault();
@@ -53,7 +48,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.appendChild(popup);
         return popup;
     }
-
     function positionPopup(p){
         const rect = input.getBoundingClientRect();
         const left = rect.left + window.scrollX;
@@ -68,12 +62,15 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         let html = '<div class="list-group list-group-flush"><div class="px-3 py-2 border-bottom"><strong>Sugerencias</strong></div>';
-        songs.forEach((s, idx) => {
-            const cover = s.cover || '/static/images/sin_portada.png';
-            html += `<a href="#" class="list-group-item list-group-item-action d-flex align-items-center suggestion-item" data-title="${s.title}" data-index="${idx}">` +
-                    `<img src="${cover}" alt="portada" style="width:48px;height:48px;object-fit:cover;border-radius:6px;margin-right:10px;">` +
-                    `<div class="flex-grow-1"><div class="fw-semibold">${s.title}</div><div class="text-muted small">${s.artist || ''}</div></div></a>`;
-        });
+    songs.forEach((s, idx) => {
+        const cover = s.cover || '/static/images/sin_portada.png';
+        // construir href directo a la búsqueda  sin eso no nos dejaba buscar
+        const filtroParam = inputFiltro && inputFiltro.value ? '&filtro=' + encodeURIComponent(inputFiltro.value) : '';
+        const href = '/buscar/?q=' + encodeURIComponent(s.title) + filtroParam;
+        html += `<a href="${href}" class="list-group-item list-group-item-action d-flex align-items-center suggestion-item" data-title="${s.title}" data-index="${idx}">` +
+            `<img src="${cover}" alt="portada" style="width:48px;height:48px;object-fit:cover;border-radius:6px;margin-right:10px;">` +
+            `<div class="flex-grow-1"><div class="fw-semibold">${s.title}</div><div class="text-muted small">${s.artist || ''}</div></div></a>`;
+    });
         html += '</div>';
         p.innerHTML = html;
     }
@@ -106,32 +103,23 @@ document.addEventListener('DOMContentLoaded', function() {
         items.forEach((item, idx) => {
             item.setAttribute('role','option');
             item.tabIndex = -1;
-            item.addEventListener('click', function(e){
-                e.preventDefault();
-                // Buscar del dataset canciones por titulo
-                let title = this.dataset.title && this.dataset.title.trim();
-                if (!title) {
-                    const titleNode = this.querySelector('.fw-semibold');
-                    title = titleNode ? titleNode.textContent.trim() : this.textContent.trim();
-                }
-                // Rellenar el input y asegurarse de que tiene foco para que el usuario vea la informarción
-                input.value = title;
-                try { input.focus(); input.select(); } catch(e){}
-                try { input.classList.add('nb-input-copied'); setTimeout(()=> input.classList.remove('nb-input-copied'), 600); } catch(e){}
-                // guardar recientes 
-                let recents = getRecents();
-                recents = recents.filter(v => v.toLowerCase() !== title.toLowerCase());
-                recents.unshift(title);
-                if (recents.length > maxRecent) recents = recents.slice(0, maxRecent);
-                saveRecents(recents);
-                // Esconder popup y el envio con delay para evitar errores
-                hidePopup();
-                setTimeout(function(){
-                    try { form.submit(); } catch(e) { /* fallback: dispatch submit event */
-                        form.dispatchEvent(new Event('submit', {bubbles:true,cancelable:true}));
+            item.addEventListener('mousedown', function(e){
+                try {
+                    const href = this.getAttribute && this.getAttribute('href');
+                    if (href) {
+                        window.location.href = href;
                     }
-                }, 30);
+                } catch(err){}
             });
+            item.addEventListener('touchstart', function(e){
+                try {
+                    const href = this.getAttribute && this.getAttribute('href');
+                    if (href) {
+                        window.location.href = href;
+                    }
+                } catch(err){}
+            });
+            
         });
 
         let active = -1;
@@ -179,7 +167,6 @@ document.addEventListener('DOMContentLoaded', function() {
         hidePopup();
     });
 
-    // Elementos del campo de búsqueda
     input.addEventListener('focus', function(){ showPopup(); });
     input.addEventListener('blur', function(){ hideTimeout = setTimeout(hidePopup, 150); });
 
@@ -192,15 +179,22 @@ document.addEventListener('DOMContentLoaded', function() {
             if (recents.length > maxRecent) recents = recents.slice(0, maxRecent);
             saveRecents(recents);
         }
+        const recentList = document.getElementById('recent-searches-list');
+        if (recentList) {
+            recentList.style.display = 'none';
+            recentList.innerHTML = '';
+        }
+        if (typeof hidePopup === 'function') hidePopup();
     });
 
     function bindStaticSuggestionItems(){
+        const recentList = document.getElementById('recent-searches-list');
         document.querySelectorAll('#recent-searches-list .suggestion-item').forEach(item => {
-            // evitar doble enlace si ya está enlazado
             if (item._nb_bound) return;
             item._nb_bound = true;
             item.addEventListener('click', function(e){
                 e.preventDefault();
+                e.stopPropagation && e.stopPropagation();
                 let title = this.dataset.title && this.dataset.title.trim();
                 if (!title) {
                     const titleNode = this.querySelector('.fw-semibold');
@@ -214,6 +208,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 recents.unshift(title);
                 if (recents.length > maxRecent) recents = recents.slice(0, maxRecent);
                 saveRecents(recents);
+                // Ocultar sugerencias tras seleccionar
+                if (recentList) recentList.style.display = 'none';
                 // enviar formulario
                 setTimeout(function(){
                     try { form.submit(); } catch(e){ form.dispatchEvent(new Event('submit', {bubbles:true,cancelable:true})); }
@@ -224,5 +220,25 @@ document.addEventListener('DOMContentLoaded', function() {
     // actualizar al recargar la página
     bindStaticSuggestionItems();
 
+    input.addEventListener('focus', function(){
+        if (typeof showPopup === 'function') showPopup();
+    });
+    // Ocultar popup solo tras enviar
+    let submitInProgress = false;
+    input.addEventListener('blur', function(){
+        setTimeout(function(){
+            if (!submitInProgress && typeof hidePopup === 'function') hidePopup();
+        }, 200);
+    });
+    form.addEventListener('submit', function(){
+        submitInProgress = true;
+        if (typeof hidePopup === 'function') hidePopup();
+        setTimeout(function(){ submitInProgress = false; }, 500);
+    });
+
 
 });
+
+
+
+

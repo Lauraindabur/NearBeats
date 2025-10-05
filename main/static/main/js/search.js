@@ -1,3 +1,5 @@
+
+
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form.form-search');
     const input = document.getElementById('busqueda');

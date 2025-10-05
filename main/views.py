@@ -121,7 +121,6 @@ def display_random_song(request):
     #Retornamos el diccionario con los valores
     return render(request, 'main/home.html', {'songs': songs, 'usando_filtro': usando_filtro})
 
-
 def suggested_songs_api(request):   #Api de devuelve 3 canciones aletorias para el navbar 
     try:
         ids = list(Song.objects.values_list('id', flat=True))

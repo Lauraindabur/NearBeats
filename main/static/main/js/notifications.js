@@ -10,7 +10,10 @@
       const data = await res.json();
       const notifs = data.notifications || [];
       if(notifs.length === 0) return;
+<<<<<<< HEAD
       // show all unread notifications (each will be ignored if already rendered)
+=======
+>>>>>>> origin
       notifs.forEach(n => showToast(n));
     }catch(e){ /* para ignorar */ }
   }

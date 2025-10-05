@@ -1,0 +1,337 @@
+{% extends "base_library.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/styleplaylists.css' %}">
+{% endblock %}
+
+{% block title %}{{ playlist.name }} - NearBeats{% endblock %}
+{% block page_icon %}bi bi-music-note-list{% endblock %}
+{% block page_name %}{{ playlist.name }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Información de la playlist -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-start justify-content-between">
+                        <div class="flex-grow-1">
+                            <h4 class="card-title mb-2">{{ playlist.name }}</h4>
+                            {% if playlist.description %}
+                            <p class="text-muted mb-2">{{ playlist.description }}</p>
+                            {% endif %}
+                            <p class="text-muted mb-0" id="playlist-info">
+                                <i class="bi bi-music-note-list me-1"></i>
+                                <span id="playlist-song-count">{{ playlist_songs|length }}</span> canción{{ playlist_songs|length|pluralize:"es" }} • 
+                                <i class="bi bi-calendar me-1 ms-2"></i>
+                                Creada: {{ playlist.created_at|date:"d/m/Y" }}
+                            </p>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSongModal" id="openModalBtn">
+                                    <i class="bi bi-plus-circle"></i> Agregar Canciones
+                                </button>
+                                <a href="{% url 'playlists' %}" class="btn btn-outline-secondary">
+                                    <i class="bi bi-arrow-left"></i> Volver
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de canciones -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm" id="playlist-songs-container">
+                <div class="card-header bg-transparent d-flex justify-content-between align-items-center py-3">
+                    <h5 class="card-title mb-0 fw-bold">
+                        <i class="bi bi-music-note-beamed me-2"></i>Canciones en la Playlist
+                    </h5>
+                    <span class="badge bg-primary fs-6">{{ playlist_songs|length }} canciones</span>
+                </div>
+                <div class="card-body p-0">
+                    {% if playlist_songs %}
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th width="50" class="ps-4">#</th>
+                                        <th>Título</th>
+                                        <th>Artista</th>
+                                        <th>Género</th>
+                                        <th>Estado de Ánimo</th>
+                                        <th width="100" class="text-center">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for playlist_song in playlist_songs %}
+                                    <tr id="song-{{ playlist_song.song.id }}" class="song-item">
+                                        <td class="text-muted ps-4">{{ forloop.counter }}</td>
+
+                                        <!-- Título + Botón play integrado -->
+                                        <td>
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="d-flex align-items-center">
+                                            <!-- Imagen -->
+                                            {% if playlist_song.song.cover_image %}
+                                                <img src="{{ playlist_song.song.cover_image.url }}" 
+                                                    alt="{{ playlist_song.song.title }}" 
+                                                    class="rounded me-3" width="40" height="40" 
+                                                    style="object-fit: cover;">
+                                            {% else %}
+                                                <div class="bg-secondary rounded d-flex align-items-center justify-content-center me-3" 
+                                                    style="width: 40px; height: 40px;">
+                                                <img src="{% static 'images/sin_portada.png' %}" alt="{{ playlist.name }}" class="playlist-cover">
+                                                </div>
+                                            {% endif %}
+
+                                            <!-- Título y género -->
+                                            <div class="me-3">
+                                                <div class="fw-bold text-dark">{{ playlist_song.song.title }}</div>
+                                                <small class="text-muted">{{ playlist_song.song.genre }}</small>
+                                            </div>
+
+                                            <!-- Botón play -->
+                                            <a href="javascript:void(0);" 
+                                                class="btn btn-outline-primary btn-sm ms-3 btn-play-recommendation"
+                                                style="padding: 0.35rem 0.5rem; display: inline-flex; align-items: center; justify-content: center; color: #41085d;"
+                                                data-audio="{{ playlist_song.song.audio_file.url }}"
+                                                data-title="{{ playlist_song.song.title }}"
+                                                data-artist="{{ playlist_song.song.artist_name }}"
+                                                title="Reproducir">
+                                                <i class="bi bi-play-fill" style="font-size: 1rem;"></i>
+                                            </a>
+                                            </div>
+                                        </div>
+                                        </td>
+
+                                        <!-- Artista -->
+                                        <td>{{ playlist_song.song.artist_name }}</td>
+
+                                        <!-- Género -->
+                                        <td><span class="badge bg-secondary">{{ playlist_song.song.genre }}</span></td>
+
+                                        <!-- Estado de ánimo -->
+                                        <td>
+                                        {% if playlist_song.song.mood %}
+                                        <span class="badge mood-badge" data-mood="{{ playlist_song.song.mood }}">
+                                            {{ playlist_song.song.get_mood_display }}
+                                        </span>
+                                        {% else %}
+                                        <span class="badge bg-light text-muted">Sin estado</span>
+                                        {% endif %}
+                                        </td>
+
+                                        <!-- Acciones -->
+                                        <td class="text-center">
+                                    
+
+                                        <!-- Botón eliminar -->
+                                        <a href="{% url 'remove_song_from_playlist' playlist.id playlist_song.song.id %}" 
+                                            class="btn btn-outline-danger btn-sm"
+                                            onclick="return confirm('¿Estás seguro de que quieres remover esta canción de la playlist?')"
+                                            title="Eliminar de la playlist">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="bi bi-music-note-beamed display-1 text-muted opacity-50"></i>
+                            <h4 class="mt-3 text-muted">Playlist vacía</h4>
+                            <p class="text-muted mb-4">Agrega algunas canciones para empezar a disfrutar tu playlist.</p>
+                            <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#addSongModal">
+                                <i class="bi bi-plus-circle"></i> Agregar Canciones
+                            </button>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal profesional para agregar canciones - VERSIÓN CORREGIDA -->
+<!-- Modal profesional para agregar canciones - VERSIÓN POSICIÓN FIJA -->
+<div class="modal fade" id="addSongModal" tabindex="-1" aria-labelledby="addSongModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg" style="max-height: 95vh;">
+            <div class="modal-header bg-primary text-white py-3">
+                <h5 class="modal-title fw-bold" id="addSongModalLabel">
+                    <i class="bi bi-plus-circle me-2"></i>Agregar Canciones a "{{ playlist.name }}"
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Barra de búsqueda y filtros -->
+            <div class="border-bottom bg-light">
+                <div class="p-3">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="search-box position-relative">
+                                <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                                <input type="text" 
+                                       id="songSearch" 
+                                       class="form-control ps-5" 
+                                       placeholder="Buscar canciones por título, artista o género..."
+                                       aria-label="Buscar canciones">
+                                <div class="search-clear position-absolute top-50 end-0 translate-middle-y me-3 d-none">
+                                    <button type="button" class="btn btn-sm btn-link text-muted p-0" id="clearSearch">
+                                        <i class="bi bi-x-lg"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <select id="genreFilter" class="form-select">
+                                <option value="">Todos los géneros</option>
+                                {% for genre in genres %}
+                                    <option value="{{ genre }}">{{ genre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select id="moodFilter" class="form-select">
+                                <option value="">Todos los estados de ánimo</option>
+                                {% for mood_value, mood_label in mood_choices %}
+                                    <option value="{{ mood_value }}">{{ mood_label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Contadores y info -->
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <span id="visibleCount">0</span> de <span id="totalCount">0</span> canciones mostradas
+                                </small>
+                                <small class="text-muted">
+                                    <span id="selectedCount">0</span> seleccionadas
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista de canciones -->
+            <div class="modal-body p-0" style="flex: 1; min-height: 200px; overflow-y: auto;">
+                {% if all_songs %}
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th width="50" class="ps-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="selectAll">
+                                        </div>
+                                    </th>
+                                    <th>Título</th>
+                                    <th>Artista</th>
+                                    <th>Género</th>
+                                    <th>Estado de Ánimo</th>
+                                    <th width="100" class="text-center pe-3">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody id="songsTableBody">
+                                {% for song in all_songs %}
+                                <tr class="song-row align-middle" 
+                                    data-title="{{ song.title|lower }}" 
+                                    data-artist="{{ song.artist_name|lower }}"
+                                    data-genre="{{ song.genre|lower }}"
+                                    data-mood="{{ song.mood|lower }}">
+                                    <td class="ps-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input song-checkbox" type="checkbox" value="{{ song.id }}">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            {% if song.cover_image %}
+                                                <img src="{{ song.cover_image.url }}" alt="{{ song.title }}" 
+                                                     class="rounded me-3" width="45" height="45" style="object-fit: cover;">
+                                            {% else %}
+                                                <div class="bg-secondary rounded d-flex align-items-center justify-content-center me-3" 
+                                                     style="width: 45px; height: 45px;">
+                                                    <i class="bi bi-music-note-beamed text-white fs-5"></i>
+                                                </div>
+                                            {% endif %}
+                                            <div>
+                                                <div class="fw-bold text-dark song-title">{{ song.title }}</div>
+                                                <small class="text-muted">{{ song.genre }}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="song-artist">{{ song.artist_name }}</td>
+                                    <td>
+                                        <span class="badge bg-light text-dark border song-genre">{{ song.genre }}</span>
+                                    </td>
+                                    <td>
+                                        {% if song.mood %}
+                                        <span class="badge mood-badge" data-mood="{{ song.mood }}">
+                                            {{ song.get_mood_display }}
+                                        </span>
+                                        {% else %}
+                                        <span class="badge bg-light text-muted">Sin estado</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-center pe-3">
+                                        <button type="button" 
+                                                class="btn btn-success btn-sm add-single-btn" 
+                                                data-song-id="{{ song.id }}"
+                                                title="Agregar a playlist">
+                                            <i class="bi bi-plus-lg"></i> Agregar
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="bi bi-music-note-beamed display-4 text-muted opacity-50"></i>
+                        <h5 class="mt-3 text-muted">No hay canciones disponibles</h5>
+                        <p class="text-muted">Sube algunas canciones primero para poder agregarlas a playlists.</p>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="modal-footer bg-light">
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <button type="button" class="btn btn-outline-primary" id="addSelectedBtn" disabled>
+                        <i class="bi bi-plus-circle me-1"></i>
+                        Agregar <span id="selectedNumber">0</span> seleccionadas
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-check-circle"></i> Listo
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+    {{ existing_song_ids|json_script:"songs-in-playlist" }}
+    <script>
+        const csrftoken = "{{ csrf_token }}";
+        const addSongUrl = "{% url 'add_song_to_playlist' playlist.id %}";
+    </script>
+    <script src="{% static 'js/playlist.js' %}"></script>
+{% endblock %}

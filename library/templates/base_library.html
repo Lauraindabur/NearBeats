@@ -7,25 +7,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>{% block title %}NearBeats{% endblock %}</title>
   
+  <!-- Bootstrap FIRST -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   
-  
-  <!-- Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"/>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
-
   <!-- Estilos -->
   <link rel="icon" href="{% static 'images/NearBeats_SF.png' %}" type="image/png" />
   <link rel="stylesheet" href="{% static 'css/style_BaseLibrary.css' %}?v=1">
   <link rel="stylesheet" href="{% static 'css/styleLibrary.css' %}?v=1">
-   <link rel="stylesheet" href="{% static 'css/styleFavorites.css' %}?v=1">
+  <link rel="stylesheet" href="{% static 'css/styleFavorites.css' %}?v=1">
   <link rel="stylesheet" href="{% static 'main/css/estilo.css' %}?v=1">
 
   {% block extra_css %}{% endblock %}
+<<<<<<< HEAD
 
   <!-- Scripts -->
   <script src="{% static 'js/player.js' %}"></script>
@@ -35,6 +35,8 @@
   <script src="{% static 'js/follows.js' %}"></script>
   
 
+=======
+>>>>>>> origin
 </head>
 
 <body>
@@ -65,19 +67,22 @@
         </li>
       {% endif %}
 
-      <!--<li>
-        <a href="#">
-           <i class="bi bi-music-note-list"></i> Playlists
-        </a>
-      </li>-->
-
+    
+      {% if user.is_authenticated %}
       <li>
         <a href="{% url 'favorites' %}" 
            class="{% if request.resolver_match.url_name == 'favorites' %}active{% endif %}">
            <i class="bi bi-star-fill"></i> Favoritos
         </a>
       </li>
+        <li>
+        <a href="{% url 'playlists' %}">
+           <i class="bi bi-music-note-list"></i> Playlists
+        </a>
+      </li>
+       {% endif %}
     </ul>
+   
 
     <!-- Si el usuario NO está logueado -->
     <div class="bottom-buttons mt-auto p-2">
@@ -101,9 +106,10 @@
     {% include 'main/main_navbar.html' %}
 
     <!-- Indicador de ubicación universal -->
+        <!-- Indicador de ubicación universal -->
     <div class="location-indicator mb-4">
       <div class="d-flex align-items-center mb-3">
-        <!-- Breadcrumb personalizado -->
+        <!-- Breadcrumb personalizado DINÁMICO -->
         <div class="custom-breadcrumb">
           <a href="{% url 'home' %}" class="breadcrumb-item">
             <i class="bi bi-house-door me-1"></i>
@@ -116,15 +122,60 @@
             <i class="bi bi-collection-play me-1"></i>
             <span>Biblioteca</span>
           </a>
-          <span class="breadcrumb-divider mx-2">
-            <i class="bi bi-chevron-right text-muted"></i>
-          </span>
-          <span class="breadcrumb-item active">
-            <i class="{% block page_icon %}bi bi-compass{% endblock %} me-1"></i>
-            <span>{% block page_name %}Explora{% endblock %}</span>
-          </span>
+          
+          {% comment %} Lógica para Playlists {% endcomment %}
+          {% if 'playlist' in request.resolver_match.url_name %}
+            {% if request.resolver_match.url_name == 'playlists' %}
+              {% comment %} Estamos en la página principal de playlists - solo mostrar como activo {% endcomment %}
+              <span class="breadcrumb-divider mx-2">
+                <i class="bi bi-chevron-right text-muted"></i>
+              </span>
+              <span class="breadcrumb-item active">
+                <i class="bi bi-music-note-list me-1"></i>
+                <span>Mis Playlists</span>
+              </span>
+            {% else %}
+              {% comment %} Estamos en una subpágina de playlists - mostrar enlace + página actual {% endcomment %}
+              <span class="breadcrumb-divider mx-2">
+                <i class="bi bi-chevron-right text-muted"></i>
+              </span>
+              <a href="{% url 'playlists' %}" class="breadcrumb-item">
+                <i class="bi bi-music-note-list me-1"></i>
+                <span>Mis Playlists</span>
+              </a>
+              
+              {% comment %} Página actual específica {% endcomment %}
+              {% if request.resolver_match.url_name == 'create_playlist' %}
+              <span class="breadcrumb-divider mx-2">
+                <i class="bi bi-chevron-right text-muted"></i>
+              </span>
+              <span class="breadcrumb-item active">
+                <i class="bi bi-plus-circle me-1"></i>
+                <span>Crear Playlist</span>
+              </span>
+              {% elif request.resolver_match.url_name == 'playlist_detail' %}
+              <span class="breadcrumb-divider mx-2">
+                <i class="bi bi-chevron-right text-muted"></i>
+              </span>
+              <span class="breadcrumb-item active">
+                <i class="bi bi-info-circle me-1"></i>
+                <span>Detalles Playlist</span>
+              </span>
+              {% endif %}
+            {% endif %}
+          {% else %}
+            {% comment %} No estamos en páginas de playlists - usar blocks normales {% endcomment %}
+            <span class="breadcrumb-divider mx-2">
+              <i class="bi bi-chevron-right text-muted"></i>
+            </span>
+            <span class="breadcrumb-item active">
+              <i class="{% block page_icon %}bi bi-compass{% endblock %} me-1"></i>
+              <span>{% block page_name %}Explora{% endblock %}</span>
+            </span>
+          {% endif %}
         </div>
       </div>
+    </div>
       
     
 
@@ -162,25 +213,35 @@
   <audio id="audio-player"></audio>
 </div>
 
-              <div class="modal fade" id="followersModal" tabindex="-1" aria-labelledby="followersModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="followersModalLabel">Seguidores del artista</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                    </div>
-                    <div class="modal-body text-center">
-                      <span id="followers-count" style="font-size:2rem;"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+  <div class="modal fade" id="followersModal" tabindex="-1" aria-labelledby="followersModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="followersModalLabel">Seguidores del artista</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body text-center">
+          <span id="followers-count" style="font-size:2rem;"></span>
+        </div>
+      </div>
+    </div>
+  </div>
 
- 
-  <!-- Bootstrap JS -->
+  <!-- Bootstrap JS FIRST -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Tus scripts después de Bootstrap -->
+  <script src="{% static 'main/js/search.js' %}"></script>
+  <script src="{% static 'js/player.js' %}"></script>
+  <script src="{% static 'js/like.js' %}"></script>
+  <script src="{% static 'js/favorite.js' %}"></script>
+  <script src="{% static 'js/share.js' %}"></script>
+  <script src="{% static 'js/follows.js' %}"></script>
   <script src="{% static 'library/js/play_counter.js' %}"></script>
   <script src="{% static 'main/js/search.js' %}?v=2"></script>
+
+
+  {% block extra_js %}{% endblock %}
 
 </body>
 </html>

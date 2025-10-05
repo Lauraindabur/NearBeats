@@ -1,0 +1,186 @@
+/* styleplaylists.css - Estilos para crear y editar playlists */
+
+:root {
+    --primary-purple: #d16fff;
+    --light-purple: #e19cff;
+    --dark-purple: #9916aa;
+    --accent-purple: #c14dff;
+    --background-light: #fdf7ff;
+    --card-hover: #f8f0ff;
+    --border-light: rgba(209, 111, 255, 0.2);
+}
+
+body {
+    background-color: var(--background-light);
+}
+
+/* Estilos para la tarjeta del formulario */
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(209, 111, 255, 0.15);
+    overflow: hidden;
+    background: white;
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--primary-purple), var(--dark-purple));
+    color: white;
+    border-bottom: none;
+    padding: 1.5rem;
+}
+
+.card-header h5 {
+    font-weight: 600;
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+/* Estilos para formularios */
+.form-label {
+    font-weight: 600;
+    color: var(--dark-purple);
+    margin-bottom: 0.5rem;
+}
+
+.form-control {
+    border: 2px solid var(--border-light);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--primary-purple);
+    box-shadow: 0 0 0 0.25rem rgba(209, 111, 255, 0.25);
+}
+
+.form-control::placeholder {
+    color: #adb5bd;
+    opacity: 0.7;
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Botones */
+.btn {
+    border-radius: 10px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background-color: var(--primary-purple);
+    border-color: var(--primary-purple);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--dark-purple);
+    border-color: var(--dark-purple);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(153, 22, 170, 0.3);
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+    background-color: #5a6268;
+    border-color: #545b62;
+    transform: translateY(-2px);
+}
+
+/* Alertas */
+.alert {
+    border: none;
+    border-radius: 10px;
+    padding: 1rem 1.5rem;
+}
+
+.alert-success {
+    background-color: rgba(40, 167, 69, 0.1);
+    color: #155724;
+    border-left: 4px solid #28a745;
+}
+
+.alert-danger {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #721c24;
+    border-left: 4px solid #dc3545;
+}
+
+.alert-warning {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #856404;
+    border-left: 4px solid #ffc107;
+}
+
+.alert-info {
+    background-color: rgba(23, 162, 184, 0.1);
+    color: #0c5460;
+    border-left: 4px solid #17a2b8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1.5rem;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .d-md-flex .btn {
+        width: auto;
+    }
+}
+
+@media (max-width: 576px) {
+    .card-body {
+        padding: 1.25rem;
+    }
+    
+    .d-md-flex {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .d-md-flex .btn {
+        width: 100%;
+    }
+}
+
+/* Animaciones suaves */
+.card {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+

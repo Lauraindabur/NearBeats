@@ -38,6 +38,7 @@
             <!-- Campo de texto -->
             <input type="search" class="form-control" name="q" id="busqueda" placeholder="¿Qué quieres escuchar hoy?"
                 value="{{ searchTerm }}" autocomplete="off">
+
             <!-- Botón buscar -->
             <button type="submit" class="btn btn-search" aria-label="Buscar">
                 <i class="bi bi-search" aria-hidden="true"></i>
@@ -47,19 +48,26 @@
         </div>
     </form>
     {% else %}
-    <div class="w-50"></div>
+    <div class="w-40"></div>
     {% endif %}
 
     <!-- 🔹 Navegación -->
-    <ul class="nav justify-content-end nav-underline nav-underlinem align-items-center">
-        <li class="nav-item nav-itemm nav-itemmHome">
-            <a class="nav-link nav-linkm {% if request.resolver_match.url_name == 'home' %}active{% endif %}"
-                aria-current="page" href="{% url 'home' %}">Inicio</a>
-        </li>
-        <li class="nav-item nav-itemm">
-            <a class="nav-link nav-linkm {% if request.resolver_match.url_name == 'library' or request.resolver_match.url_name == 'upload_songs' or request.resolver_match.url_name == 'favorites' %}active{% endif %}"
-                href="{% url 'see_library' %}">Biblioteca</a>
-        </li>
+     <ul class="nav justify-content-end nav-underline nav-underlinem align-items-center">
+    <li class="nav-item nav-itemm nav-itemmHome">
+        <a class="nav-link nav-linkm {% if request.resolver_match.url_name == 'home' %}active{% endif %}"
+            aria-current="page" href="{% url 'home' %}">
+            <i class="bi bi-house-door me-2"></i>Inicio
+        </a>
+    </li>
+    {% if request.resolver_match.url_name != 'see_library' and request.resolver_match.url_name != 'favorites'  and request.resolver_match.url_name != 'upload_songs' and request.resolver_match.url_name != 'playlists' %}
+    <li class="nav-item nav-itemm">
+        <a class="nav-link nav-linkm {% if request.resolver_match.url_name == 'library' or request.resolver_match.url_name == 'upload_songs' or request.resolver_match.url_name == 'favorites' %}active{% endif %}"
+            href="{% url 'see_library' %}">
+            <i class="bi bi-collection-play me-2"></i>Biblioteca
+        </a>
+    </li>
+    {% endif %}
+
 
         {% if user.is_authenticated %}
         <!-- Perfil de usuario -->
@@ -127,14 +135,19 @@
             {% csrf_token %}
         </form>
         {% else %}
-        <li class="nav-item nav-itemm">
-            <a class="nav-link nav-linkm {% if request.resolver_match.url_name == 'login' %}active{% endif %}"
-                href="{% url 'login' %}">Log in</a>
-        </li>
-        <li class="nav-item nav-itemmSU">
-            <a class="nav-link nav-linkm {% if request.resolver_match.url_name == 'register' %}active{% endif %}"
-                href="{% url 'register' %}">Sign up</a>
-        </li>
+            <li class="nav-item nav-itemm">
+              <a class="btn btn-light border border-light-subtle text-dark nav-linkm"
+                href="{% url 'login' %}?next={% url request.resolver_match.url_name %}">
+                    Inicia sesión
+            </a>
+
+            </li>
+            <li class="nav-item nav-itemmSU">
+                <a class="nav-link nav-linkm "
+                href="{% url 'register' %}?next={% url request.resolver_match.url_name %}">
+                    Regístrate
+                </a>
+            </li>
         {% endif %}
     </ul>
 </nav>

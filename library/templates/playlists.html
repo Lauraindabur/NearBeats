@@ -1,0 +1,112 @@
+{% extends "base_library.html" %}
+{% load static %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/style_viewplaylists.css' %}?v=1">
+{% endblock %}
+
+{% block title %}Mis Playlists - NearBeats{% endblock %}
+{% block page_icon %}bi bi-music-note-list{% endblock %}
+{% block page_name %}Mis Playlists{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Banner del usuario -->
+    <div class="user-banner">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h2>¡Hola, {{ request.user.nombre|default:"Usuario" }}!</h2>
+                <p>Gestiona y disfruta de tus playlists personalizadas</p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <div class="d-inline-block bg-white rounded-pill px-3 py-1">
+                    <span class="text-purple fw-bold" style="color: var(--primary-purple) !important;">{{ playlists|length }}</span>
+                    <span class="text-muted"> playlist{{ playlists|length|pluralize:"s" }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="action-buttons">
+        <a href="{% url 'create_playlist' %}" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Crear Nueva Playlist
+        </a>
+    </div>
+
+    <!-- Lista de playlists -->
+    <div class="row">
+        {% if playlists %}
+            {% for playlist in playlists %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card playlist-card h-100">
+                    <!-- Menú de tres puntos - FUERA del enlace -->
+                    <div class="playlist-actions">
+                        <div class="dropdown">
+                            <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"
+                                    onclick="event.preventDefault(); event.stopPropagation();">
+                                <i class="bi bi-three-dots-vertical"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                              
+                                <li>
+                                    <!-- SOLUCIÓN: Enlace directo con prevención completa -->
+                                    <a href="{% url 'delete_playlist' playlist.id %}" 
+                                       class="dropdown-item text-danger delete-btn"
+                                       onclick="event.preventDefault(); event.stopPropagation(); 
+                                               if(confirm('¿Estás seguro de que quieres eliminar la playlist \'{{ playlist.name }}\'?')) { 
+                                                   window.location.href = this.href; 
+                                               }">
+                                        <i class="bi bi-trash me-2"></i> Eliminar
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Contenido clickeable de la playlist -->
+                    <a href="{% url 'playlist_detail' playlist.id %}" class="playlist-link">
+                        <!-- Imagen de portada -->
+                        {% if playlist.cover_image %}
+                            <img src="{{ playlist.cover_image.url }}" alt="{{ playlist.name }}" class="playlist-cover">
+                        {% else %}
+                            <div class="playlist-cover playlist-cover-default">
+                                <img src="{% static 'images/sin_portada.png' %}" alt="{{ playlist.name }}" class="playlist-cover">
+                            </div>
+
+                        {% endif %}
+                        
+                        <div class="card-body">
+                            <h5 class="card-title">{{ playlist.name }}</h5>
+                            {% if playlist.description %}
+                            <p class="card-text">{{ playlist.description|truncatewords:20 }}</p>
+                            {% endif %}
+                            <p class="card-text">
+                                <span class="song-count">
+                                    <i class="bi bi-music-note-beamed"></i>
+                                    {{ playlist.songs.count }} canción{{ playlist.songs.count|pluralize:"es" }}
+                                </span>
+                            </p>
+                        </div>
+                        <div class="card-footer text-muted">
+                            <small><i class="bi bi-calendar me-1"></i> Creada: {{ playlist.created_at|date:"d/m/Y" }}</small>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="empty-state">
+                    <i class="bi bi-music-note-beamed"></i>
+                    <h4>No tienes playlists aún</h4>
+                    <p>Crea tu primera playlist para organizar tu música favorita.</p>
+                    <a href="{% url 'create_playlist' %}" class="btn btn-primary">
+                        Crear Mi Primera Playlist
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

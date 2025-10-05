@@ -6,14 +6,14 @@
 {% block page_name %}Favoritos{% endblock %}
 
 {% block content %}
-<br>
+
 
 <div class="container-fluid mt-4">
   
-  <h1 class="favorites-title mb-3" >
+  <h1 class="favorites-title mb-3">
      Mis Favoritos
   </h1>
-  <br>
+  
   
   <div class="favorites-header-section mb-4">
     <!-- Banner contextual para Favoritos -->
@@ -81,7 +81,7 @@
             {% else %}
               <img src="{% static 'images/sin_portada.png' %}" alt="Sin portada">
             {% endif %}
-            <div class="play-"
+            <div class="play-btn"
                  data-audio="{{ song.audio_file.url }}"
                  data-title="{{ song.title }}"
                  data-artist="{{ song.artist_name }}">
@@ -145,7 +145,5 @@
     {% endfor %}
   </div>
 </div>
-
-
 
 {% endblock %}

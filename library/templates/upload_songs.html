@@ -13,8 +13,8 @@
 <br>
 
 <div class="upload-container">
-  <h1 style="font-family: Raleway, sans-serif; ">
-    <i class="bi bi-cloud-upload" style="color:#5e0c95;; font-size: 2rem;"></i> Subir Canciones
+  <h1 style="font-family: Raleway, sans-serif;">
+    <i class="bi bi-cloud-upload" style="color:#5e0c95; font-size: 2rem;"></i> Subir Canciones
   </h1>
   <br>
   
@@ -26,11 +26,11 @@
       <div class="steps-container">
         <div class="step">
           <span class="step-number">1</span>
-          <span class="step-text">Elige si subes una canción o lista</span>
+          <span class="step-text">Elige si deseas subir una canción o una lista</span>
         </div>
         <div class="step">
           <span class="step-number">2</span>
-          <span class="step-text">Añade tus detalles y tu estilo</span>
+          <span class="step-text">Añade los detalles y estilo de tus canciones</span>
         </div>
         <div class="step">
           <span class="step-number">3</span>
@@ -41,7 +41,6 @@
   </div>
 
   {% if user.is_authenticated and user.rol == "Artista" %}
-    <!-- Tu contenido existente de formularios -->
     {% if not songs_list %}
     <div id="upload-choice" class="choice-card shadow-lg">
       <h5 class="mb-3">¿Qué deseas subir?</h5>
@@ -54,7 +53,7 @@
         <div class="option-card" onclick="showForm('list')">
           <i class="bi bi-collection"></i>
           <h6>Lista</h6>
-          <p>Añade varias canciones a la vez</p>
+          <p>Sube varias canciones a la vez.</p>
         </div>
       </div>
     </div>
@@ -62,6 +61,13 @@
     <!-- Formulario canción individual -->
     <div id="upload-single" style="display:none;">
       <div class="form-card shadow-lg">
+        <!-- Botón Volver atrás -->
+        <div class="mb-3">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="goBack()">
+            <i class="bi bi-arrow-left me-1"></i> Volver atrás
+          </button>
+        </div>
+        
         <form method="post" enctype="multipart/form-data">
           {% csrf_token %}
           <div class="mb-3">
@@ -113,9 +119,16 @@
       </div>
     </div>
 
-    <!-- Formulario lista inicial -->
+    <!-- Formulario lista -->
     <div id="upload-list" style="display:none;">
       <div class="form-card shadow-lg">
+        <!-- Botón Volver atrás -->
+        <div class="mb-3">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="goBack()">
+            <i class="bi bi-arrow-left me-1"></i> Volver atrás
+          </button>
+        </div>
+        
         <form method="post" enctype="multipart/form-data">
           {% csrf_token %}
           <div class="mb-3">
@@ -130,7 +143,7 @@
             <label class="form-label">Archivo ZIP</label>
             <input type="file" name="songs_zip" class="form-control" accept=".zip" required>
             <div class="form-text">
-              Incluye <code>.mp3</code> y portadas mencionadas en el Excel
+              Incluye los archivos <code>.mp3</code> y las portadas mencionadas en el Excel
             </div>
           </div>
 
@@ -150,7 +163,7 @@
     </div>
     {% endif %}
 
-    <!-- Formulario de selección de moods individuales -->
+    <!-- Formulario de selección de moods para canciones existentes -->
     {% if songs_list %}
     <div class="form-card shadow-lg mt-4">
       <h5>Selecciona el estado de ánimo de cada canción</h5>
@@ -185,7 +198,6 @@
 
 </div>
 
-
 <script>
 function showForm(type) {
   document.getElementById("upload-choice").style.display = "none";
@@ -194,6 +206,13 @@ function showForm(type) {
   } else {
     document.getElementById("upload-list").style.display = "block";
   }
+}
+
+// Función para volver atrás
+function goBack() {
+  document.getElementById("upload-choice").style.display = "block";
+  document.getElementById("upload-single").style.display = "none";
+  document.getElementById("upload-list").style.display = "none";
 }
 </script>
 {% endblock %}

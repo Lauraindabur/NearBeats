@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-<div class="profile-max">
+<div class="profile-max artist-profile">
     <!-- Indicador de ubicación dinámico -->
     <div class="location-indicator">
         <div class="d-flex align-items-center mb-3">
@@ -35,44 +35,67 @@
         </div>
     </div>
 
-    <!-- Tarjeta principal del artista -->
+    <!-- Bloque principal del artista -->
     <section class="hero" aria-label="Tarjeta de artista">
-        <div class="hero-grid">
-            <figure class="avatar" aria-label="Imagen de perfil">
-                {% if artist_profile.profile_image %}
-                    <img src="{{ artist_profile.profile_image.url }}" alt="Imagen de {{ artist_name }}">
-                {% else %}
-                    <img src="https://www.fmdos.cl/wp-content/uploads/2025/06/Jessie-J-cancer.webp" alt="Foto del artista">
-                {% endif %}
-            </figure>
-            <div>
-                <div class="title-wrap">
-                    <h1 class="artist">{{ artist_name }}</h1>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-12 col-md-auto">
+                    <figure class="avatar" aria-label="Imagen de perfil">
+                        {% if artist_profile.profile_image %}
+                            <img src="{{ artist_profile.profile_image.url }}" alt="Imagen de {{ artist_name }}">
+                        {% else %}
+                            <img src="https://www.fmdos.cl/wp-content/uploads/2025/06/Jessie-J-cancer.webp" alt="Foto del artista">
+                        {% endif %}
+                    </figure>
                 </div>
-                <div id="repro-mes-container">
-                    <p class="repro-count">{{ plays_this_month }}</p>
-                    <small>Reproducciones este mes</small>
+                <div class="col-12 col-md-9">
+                    <div class="title-wrap">
+                        <h1 class="artist">{{ artist_name }}</h1>
+                    </div>
+                    <div id="repro-mes-container" class="mb-2 repro-pill d-inline-flex align-items-center gap-2">
+                        <i class="bi bi-activity"></i>
+                        <span class="repro-label">Reproducciones mensuales</span>
+                        <strong class="repro-count ms-2">{{ plays_this_month }}</strong>
+                    </div>
+                    <div class="artist-bio mt-3">
+                        <p class="bio">{{ artist_profile.bio }}</p>
+                    </div>
+                    <div class="artist-socials mt-3 d-flex align-items-center">
+                        <a href="{{ artist_profile.website|default:'#' }}" target="_blank" rel="noopener" class="social-link me-2" aria-label="Website">
+                            <i class="bi bi-globe"></i>
+                        </a>
+                        <a href="{{ artist_profile.instagram|default:'#' }}" target="_blank" rel="noopener" class="social-link me-2" aria-label="Instagram">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                        <a href="{{ artist_profile.twitter|default:'#' }}" target="_blank" rel="noopener" class="social-link me-2" aria-label="Twitter">
+                            <i class="bi bi-twitter"></i>
+                        </a>
+                    </div>
+                    <div class="mt-3 d-flex align-items-center gap-2">
+                        <button id="play-tracks-btn" class="btn btn-primary view-btn active">Canciones</button>
+                        <button id="stats-btn" class="btn btn-outline-secondary view-btn">Estadísticas</button>
+                        <button id="share-btn" class="btn btn-light ms-2">Share</button>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Canciones del artista -->
-    <section class="artist_songs">
+    <section class="artist_songs" id="tracks-section">
         <div class="main-block-profile">
-            <button type="button" class="btn btn_m_artist">Canciones del artista</button>
             {% for song in songList %}
-                <div class="card mb-3 cardm">
-                    <div class="row g-0 rowm">
-                        <div class="col-md-4 col4m">
-                            <img src="{{ song.cover_image.url }}" class="img-fluid rounded-start img-fluidm" alt="{{ song.title }}">
+                <article class="card mb-3 track-item">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="{{ song.cover_image.url }}" class="img-fluid rounded-start" alt="{{ song.title }}">
                         </div>
-                        <div class="col-8 col8m">
-                            <div class="card-body card-bodym">
-                                <h5 class="card-title card-titlem">{{ song.title }}</h5>
-                                <p class="card-text card-textm"><small class="text-body-secondary">{{ song.genre }}</small></p>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ song.title }}</h5>
+                                <p class="card-text"><small class="text-body-secondary">{{ song.genre }}</small></p>
                                 {% if song.audio_file %}
-                                    <audio controls style="width: 100%;">
+                                    <audio controls class="w-100">
                                         <source src="{{ song.audio_file.url }}" type="audio/mpeg">
                                         Tu navegador no soporta reproducción de audio.
                                     </audio>
@@ -82,35 +105,35 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </article>
             {% empty %}
                 <p class="text-muted">Este artista aún no tiene canciones disponibles.</p>
             {% endfor %}
         </div>
     </section>
 
-    <!-- Contenido: Biografía + Analítica -->
-    <section class="grid" aria-label="Contenido del perfil">
-        <article class="card" aria-label="Biografía del artista">
-            <h3>Biografía</h3>
-            <p class="bio">{{ artist_profile.bio }}</p>
-        </article>
-
+    <!-- Estadísticas  -->
+    <section class="artist-grid d-none" id="stats-section" aria-label="Contenido del perfil">
         <aside class="card" aria-label="Analítica del artista">
             <h3>Analítica</h3>
-            <div class="charts">
-                <div class="chart" aria-label="Gráfico de Top canciones">
-                    <h5>Top canciones</h5>
-                    <canvas id="topSongsChart" width="400" height="200"></canvas>
+            <div class="row charts-row">
+                <div class="col-12 col-md-6 mb-3">
+                    <div class="chart" aria-label="Gráfico de Top canciones">
+                        <h5>Top canciones</h5>
+                        <canvas id="topSongsChart" width="400" height="200"></canvas>
+                    </div>
                 </div>
-                <div class="chart" aria-label="Gráfico de reproducciones por hora">
-                    <h5>Reproducciones por hora este mes</h5>
-                    <canvas id="hourLineChart" width="400" height="200"></canvas>
+                <div class="col-12 col-md-6 mb-3">
+                    <div class="chart" aria-label="Gráfico de reproducciones por hora">
+                        <h5>Reproducciones por hora este mes</h5>
+                        <canvas id="hourLineChart" width="400" height="200"></canvas>
+                    </div>
                 </div>
             </div>
             <p class="note">Más información sobre las gráficas.</p>
         </aside>
     </section>
+
 
     <!-- Datos para JS y scripts -->
     {{ plays_this_month|json_script:"plays_this_month" }}

@@ -1,85 +1,112 @@
-//implements see_artist_graphic
+//implementacion see_artist_graphic
 
 document.addEventListener("DOMContentLoaded", function() {
- // Cargar datos seguros desde las etiquetas json_script
- try {
-   window.plays_this_month = JSON.parse(document.getElementById('plays_this_month').textContent);
-   window.song_names = JSON.parse(document.getElementById('song_names').textContent);
-   window.play_counts = JSON.parse(document.getElementById('play_counts').textContent);
-   window.hour_labels = JSON.parse(document.getElementById('hour_labels').textContent);
-   window.hour_data = JSON.parse(document.getElementById('hour_data').textContent);
- } catch (e) {
-   // Si falla, lo que queremos hacer es maantener valores por defecto
- }
+  // usar solo cuando estemos en la página de perfil del artista
+  const root = document.querySelector('.artist-profile');
+  if (!root) return;
 
- var reproducciones = window.plays_this_month || "0";
-    var html = `
-      <div class="reproducciones-mes">
-        <span class="repro-count">${reproducciones}</span>
-        <span class="repro-label">Reproducciones este mes</span>
-        <span class="music-waves">
-          <svg width="40" height="24" viewBox="0 0 40 24">
-            <rect class="wave" x="2" y="8" width="4" height="8" rx="2"/>
-            <rect class="wave" x="10" y="4" width="4" height="16" rx="2"/>
-            <rect class="wave" x="18" y="12" width="4" height="8" rx="2"/>
-            <rect class="wave" x="26" y="6" width="4" height="12" rx="2"/>
-            <rect class="wave" x="34" y="10" width="4" height="10" rx="2"/>
-          </svg>
-        </span>
-      </div>
-    `;
-    var container = document.getElementById("repro-mes-container");
-    if (container) {
-        container.innerHTML = html;
-    }
+  // Cargar datos  desde las etiquetas json_script dentro del scope
+  try {
+    const playsScript = root.querySelector('#plays_this_month');
+    const namesScript = root.querySelector('#song_names');
+    const countsScript = root.querySelector('#play_counts');
+    const labelsScript = root.querySelector('#hour_labels');
+    const hourDataScript = root.querySelector('#hour_data');
+
+    window.plays_this_month = playsScript ? JSON.parse(playsScript.textContent) : 0;
+    window.song_names = namesScript ? JSON.parse(namesScript.textContent) : [];
+    window.play_counts = countsScript ? JSON.parse(countsScript.textContent) : [];
+    window.hour_labels = labelsScript ? JSON.parse(labelsScript.textContent) : [];
+    window.hour_data = hourDataScript ? JSON.parse(hourDataScript.textContent) : [];
+  } catch (e) {
+    // mantener valores por defecto 
+  }
 
 
-    const ctx = document.getElementById('topSongsChart').getContext('2d');
-    const chart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: window.song_names,
-            datasets: [{
-                label: 'Reproducciones',
-                data: window.play_counts,
-                backgroundColor: 'rgba(54, 162, 235, 0.6)',
-            }]
-        },
-        options: {
-            indexAxis: 'x',
-            scales: {
-                y: { beginAtZero: true }
-            }
-        }
+  
+
+  // Gráfico Top canciones 
+  const topCanvas = root.querySelector('#topSongsChart');
+  const palette = {
+    primary: 'rgba(181,107,240,0.95)',
+    primarySoft: 'rgba(241,198,251,0.9)',
+    accent: 'rgba(214,130,227,0.9)'
+  };
+
+  function createTopChart(){
+    if (window._topChart) return;
+    if (!topCanvas) return;
+    const ctx = topCanvas.getContext('2d');
+    window._topChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: window.song_names,
+        datasets: [{
+          label: 'Reproducciones',
+          data: window.play_counts,
+          backgroundColor: palette.primary,
+          hoverBackgroundColor: palette.accent,
+        }]
+      },
+      options: {
+        indexAxis: 'x',
+        scales: { y: { beginAtZero: true } }
+      }
     });
+  }
 
-  // Segundo grafico se usa para  linea de reproducciones por hora
-  const hourCanvas = document.getElementById('hourLineChart');
-  if (hourCanvas && window.hour_labels && window.hour_data) {
+  // Gráfico reproducciones por hora 
+  const hourCanvas = root.querySelector('#hourLineChart');
+  function createHourChart(){
+    if (window._hourChart) return;
+    if (!hourCanvas || !window.hour_labels || !window.hour_data) return;
     const hourCtx = hourCanvas.getContext('2d');
-    new Chart(hourCtx, {
+    window._hourChart = new Chart(hourCtx, {
       type: 'line',
       data: {
         labels: window.hour_labels,
         datasets: [{
           label: 'Reproducciones por hora',
           data: window.hour_data,
-          borderColor: 'rgba(255, 99, 132, 1)',
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderColor: 'rgba(138,59,224,0.95)',
+          backgroundColor: 'rgba(214,130,227,0.18)',
           tension: 0.3,
           fill: true,
           pointRadius: 2
         }]
       },
-      options: {
-        scales: {
-          y: { beginAtZero: true }
-        },
-        plugins: {
-          legend: { display: true }
-        }
-      }
+      options: { scales: { y: { beginAtZero: true } }, plugins: { legend: { display: true } } }
     });
   }
-    
+
+  const playBtn = root.querySelector('#play-tracks-btn');
+  const statsBtn = root.querySelector('#stats-btn');
+  const tracksSection = root.querySelector('#tracks-section');
+  const statsSection = root.querySelector('#stats-section');
+
+  function showTracks() {
+    playBtn.classList.add('active');
+    statsBtn.classList.remove('active');
+    tracksSection.classList.remove('d-none');
+    statsSection.classList.add('d-none');
+  }
+
+  function showStats() {
+    playBtn.classList.remove('active');
+    statsBtn.classList.add('active');
+    tracksSection.classList.add('d-none');
+    statsSection.classList.remove('d-none');
+    // Crear charts si aún no existen 
+    createTopChart();
+    createHourChart();
+    if (window._topChart) window._topChart.resize();
+    if (window._hourChart) window._hourChart.resize();
+  }
+
+  if (playBtn) playBtn.addEventListener('click', showTracks);
+  if (statsBtn) statsBtn.addEventListener('click', showStats);
+
+  // por defecto-> mostrar tracks
+  showTracks();
+
 });

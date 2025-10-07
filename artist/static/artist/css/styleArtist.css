@@ -1,4 +1,3 @@
-/* tenemos el estilo del perfil de artista, no cambia el fondo global */
 
 .profile-max {   
   max-width: 1200px;
@@ -6,17 +5,29 @@
   padding: 18px 18px 80px;
 }
 
-.hero {   /* donde se encuentra el primer contenedor con el nombre artista  */
-  position: relative;
-  overflow: hidden;
-  border-radius: var(--radius-2xl, 22px);
-  border: 1px solid var(--glass-border, #e0e0e0);
-  background: linear-gradient(135deg, rgba(255,255,255,.85), rgba(255,255,255,.65));
-  box-shadow: var(--shadow, 0 10px 25px rgba(72, 0, 153, 0.15));
-  padding: 48px;
-  margin-bottom: 22px;
+/* Paleta perfil del artista  */
+.artist-profile {
+  --pb-primary: #b56bf0;  
+  --pb-primary-dark: #8a3be0; 
+  --pb-accent: #f1c6fb; 
+  --pb-muted: #f7effb;  
+  --pb-text: #3a2f3f;   
+  --pb-gray: #8b7b8f;   
 }
-.hero::before {
+
+.artist-profile .hero {   
+  position: relative;
+  overflow: visible;
+  border-radius: 12px;
+  border: 1px solid rgba(230,225,235,0.6);
+  background: #fafafa;
+  box-shadow: 0 6px 24px rgba(17,24,39,0.03);
+  padding: 20px 22px;
+  margin-bottom: 18px;
+  color: var(--pb-text);
+  }
+
+.artist-profile .hero::before {
   content: "";
   position: absolute;
   inset: -20%;
@@ -26,7 +37,7 @@
   pointer-events: none;
   z-index: 0;
 }
-.hero-grid {
+.artist-profile .hero-grid {
   /* position: relative; */
   z-index: 1;
   display: grid;
@@ -34,6 +45,10 @@
   gap: 32px;
   align-items: center;
 }
+
+.artist-profile .hero .container { max-width: 100%; padding-left: 0.75rem; padding-right: 0.75rem; }
+.artist-profile .hero .avatar { width: 100%; max-width: 220px; height: 220px; margin: 0; transition: width .18s ease, height .18s ease, transform .18s ease; border-radius: 12px; overflow: hidden; }
+.artist-profile .hero .avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; display: block; }
 .avatar {
   width: 100% ;
   height: 100% ;
@@ -61,14 +76,14 @@
 }
 
 
-.title-wrap {
+.artist-profile .title-wrap {
   display: flex;
   align-items: center;
   gap: 12px;
   justify-content: center !important;
 }
 
-.artist {
+.artist-profile .artist {
   font-family: 'Montserrat', 'Inter', sans-serif;
    text-align: left;
   font-size: 2.5rem;
@@ -82,7 +97,46 @@
 }
 
 
-.note {
+.artist-profile .title-wrap .artist { background: none; color: var(--pb-primary-dark); font-size: 1.5rem; margin-bottom: 4px; }
+.artist-profile #repro-mes-container .repro-count { font-size: 0.95rem; color: var(--pb-gray); margin-bottom: 0; }
+
+/* Iconos de redes socialess sacados de plantilla */
+.artist-profile .artist-socials { margin-top: 8px; display:flex; gap:16px; }
+.artist-profile .artist-socials .social-link { color: var(--pb-gray); font-size: 1.05rem; transition: color .12s ease, transform .12s ease; margin-right:0; }
+.artist-profile .artist-socials .social-link:hover { color: var(--pb-primary); transform: translateY(-2px); }
+
+.artist-profile .repro-pill {
+  background: #fbf5ff; 
+  padding: 6px 10px;
+  border-radius: 999px;
+  gap: 8px;
+  align-items: center;
+  font-size: 0.95rem;
+  color: var(--pb-primary-dark);
+}
+.artist-profile .repro-pill .repro-count { margin-left: 6px; font-weight: 700; }
+.artist-profile .repro-pill .repro-label { color: var(--pb-primary-dark); }
+.artist-profile .repro-pill .repro-updated { display:none; }
+.artist-profile .hero {
+  padding: 32px; border-radius: 12px; 
+  }
+.artist-profile .avatar { border-radius: 8px; overflow: hidden; }
+
+/* Botones de pag principal (Canciones / Estadísticas) */
+.artist-profile .view-btn { padding: 0.45rem 0.9rem; border-radius: 999px; font-size: 0.95rem; border: 1px solid rgba(140,85,210,0.12); background: #fff; color: var(--pb-primary-dark); }
+.artist-profile .view-btn.active { box-shadow: none; background: var(--pb-primary); border-color: var(--pb-primary); color: white; }
+.artist-profile #stats-section { display: block; }
+.artist-profile .d-none { display: none !important; }
+
+
+.artist-profile .track-item { 
+  border-radius: 8px; overflow: hidden; 
+  border: 1px solid rgba(17,24,39,0.04); 
+  background: #fff; 
+}
+
+
+.artist-profile .note {
   margin-top: 12px;
   font-size: 1rem;
   color: #6c6c7a;
@@ -92,19 +146,44 @@
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
+
+.artist-profile .artist-bio .bio {
+  margin: 8px 0 0 0;
+  font-size: 15.5px;
+  color: #3a3a45;
+  line-height: 1.5;
+
+}
+
+/* Cmbio  para las gráficas -> horizontal en pantallas md en adelante */
+.artist-profile .charts-row { display: flex; flex-wrap: wrap; gap: 12px; }
+.artist-profile .charts-row .chart { height: auto; padding: 10px; background: #ffffff; border: 1px solid rgba(17,24,39,0.04); border-radius: 10px; }
+
+@media (min-width: 768px) {
+  .artist-profile .charts-row { flex-wrap: nowrap; }
+  .artist-profile .charts-row .col-md-6 { flex: 0 0 50%; max-width: 50%; }
+  .artist-profile .chart canvas { height: 200px !important; }
+}
+  /* para iniciar a hacerlo responsive */
+@media (max-width: 767px) {
+  .artist-profile .charts-row { flex-direction: column; }
+  .artist-profile .chart { width: 100%; }
+  .artist-profile .chart canvas { height: 160px !important; }
+  .artist-profile .hero .avatar { max-width: 120px; height: 120px; border-radius: 10px; }
+}
+
 @media (max-width: 900px){
-  .hero-grid{ grid-template-columns: 90px 1fr; }
-  .avatar{ width:90px; height:90px; border-radius:18px }
+  .artist-profile .hero-grid{ grid-template-columns: 90px 1fr; }
+  .artist-profile .avatar{ width:90px; height:90px; border-radius:18px }
   .profile-max{ padding: 18px 8px 40px; }
 }
 
 /* Parte de estaditica y bio */
-
 .grid {       
   display: grid;
- grid-template-columns: 1fr 1.1fr;     /*el primero de biografia el segundo de graficas */
-  gap: 18px;
-  margin-top: 18px;
+ grid-template-columns: 1fr 1.1fr;   
+  gap: 14px;
+  margin-top: 14px;
 }
 .card {
   border-radius: var(--radius-2xl, 22px);
@@ -171,13 +250,6 @@
 }
 
 
-
-
-.music-waves svg {
-  display: inline-block;
-  vertical-align: middle;
-}
-
 .followers-box {
   display: flex;
   justify-content: space-between;
@@ -188,23 +260,6 @@
   padding: 8px 18px;
   box-shadow: 0 2px 8px rgba(106,0,244,0.07);
   margin-top: 6px;
-}
-
-
-
-/* animacion de onda */
-.wave {
-  fill: var(--morado-2, #9333ea);
-  animation: waveAnim 1.2s infinite ease-in-out;
-}
-.wave:nth-child(1) { animation-delay: 0s; }
-.wave:nth-child(2) { animation-delay: 0.2s; }
-.wave:nth-child(3) { animation-delay: 0.4s; }
-.wave:nth-child(4) { animation-delay: 0.6s; }
-.wave:nth-child(5) { animation-delay: 0.8s; }
-@keyframes waveAnim {
-  0%, 100% { height: 8px; y: 8; }
-  50% { height: 18px; y: 2; }
 }
 
 

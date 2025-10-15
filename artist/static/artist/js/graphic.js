@@ -1,3 +1,5 @@
+//implements see_artist_graphic
+
 document.addEventListener("DOMContentLoaded", function() {
  // Cargar datos seguros desde las etiquetas json_script
  try {

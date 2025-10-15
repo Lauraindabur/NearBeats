@@ -207,3 +207,9 @@
 }
 
 
+/*Estilo para titulo Canciones*/
+
+.main-block-profile .btn_m_artist {
+  font-size: larger;
+  font-weight: 450;
+} 

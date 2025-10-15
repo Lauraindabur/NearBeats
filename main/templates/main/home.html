@@ -37,7 +37,7 @@
         servidor cuando se clickee boton. 
         Con action={} indicamos a qué ruta se enviarán los datos, la cual debe
         estar definida en urls.py-->
-        <form method="get" action="{% url 'filtrar_sugerencias' %}" id="filterForm">
+        <form method="get" action="{% url 'display_random_song' %}" id="filterForm">
           
           <div class="dropdown mt-3 dropdownm">
             <!-- --------EMOTION--------- -->
@@ -58,9 +58,9 @@
                ellos en views.py con GET.
                ejm de formateada de funcion -> /productos/?emocion=sad&created_at=2000
                -->
-              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('emotionInput','sad', event)">Tristeza</a></li>
-              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('emotionInput','angry', event)">Ira</a></li>
-              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('emotionInput','happy', event)">Alegria</a></li>
+              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('emotionInput','triste', event)">Tristeza</a></li>
+              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('emotionInput','melancolico', event)">Melancolia</a></li>
+              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('emotionInput','feliz', event)">Alegria</a></li>
             </ul>
 
              <!-- --------CREATED_AT--------- -->
@@ -115,12 +115,12 @@
             <h5 class="card-title card-titlem">{{ song.title }}</h5>
             <!-- Lo ponemos como link para implementar R-21 -->
             <!-- Con ese song... insertamos el nombre del artista en la url -->
-            <a class="card-text card-textm" href="{% url 'artist_profile' song.artist_name %}"> {{ song.artist_name}}</a>
+            <a class="card-text card-textm" href="{% url 'get_artist_dashboard' song.artist_name %}"> {{ song.artist_name}}</a>
             <p class="card-text card-textm"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
           </div>
         </div>
       </div>
-      <p>{{song.genre}} - {{song.created_at}} - {{song.mood}}</p>
+      <!-- <p>{{song.genre}} - {{song.created_at}} - {{song.mood}}</p> -->
     </div>
     <!-- Si está vacia la lista:  -->
     {% empty %}

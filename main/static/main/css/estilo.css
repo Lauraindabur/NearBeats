@@ -1,4 +1,5 @@
 /*-------------------PARTE DE BASE.HTML*/
+
 .main-navbar {
     /*background-color: aqua;*/
     /*min-height: 45px; /* Altura mínima para pantallas pequeñas */
@@ -154,13 +155,14 @@
 }
 
 .btnm{
-    background-color: rgb(243,237,247);
+    /* background-color: rgb(243,237,247); */
+    background-color: #E7CBFB;
     margin: 3vh;
     color: rgb(121,116,126);
 }
 
 .btn.btnm:hover, .btn.btnm:focus { /*Para los elementos que tengan AMBAS clases, no que sean hijos*/
-    background-color: rgb(243,237,247);
+    background-color: #E7CBFB;
     color: black;
     border-color: none;
     box-shadow: none;
@@ -271,27 +273,60 @@
     width: 15vh;
     height: 15vh;
 } */
-
-
-/*PROFILE*/
-.main-block-profile .cardm {
-    max-width: 150vh;
-    height: 15vh;
-    margin: 3vh;
-    /* background-color: #7b1789; */
+/* Foto de perfil en el navbar */
+.profile-pic {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #5a70ff;
+  transition: transform 0.2s;
 }
 
-.main-block-profile .col4m {
-    width: 15vh;
-    height: 15vh;
-}
-.col4m .img-fluidm {
-    width: auto;
-    height: auto;
+.profile-toggle:hover .profile-pic {
+  transform: scale(1.08);
 }
 
-.main-block-profile .card-bodym {
-    /* background-color: #7b1789; */
-    width: fit-content;
-    height: fit-content;
+/* Foto grande dentro del dropdown */
+.profile-pic-lg {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #5a70ff;
+  box-shadow: 0 4px 8px rgba(156, 39, 176, 0.3);
 }
+
+/* Dropdown */
+.dropdown-menu {
+  font-size: 0.9rem;
+  background: #fff;
+}
+
+.dropdown-menu .dropdown-item {
+  border-radius: 8px;
+  padding: 10px 14px;
+  transition: background-color 0.2s;
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: #f3e5f5; /* lila suave */
+}
+
+.dropdown-divider {
+  margin: 0.5rem 0;
+}
+
+.card-bodym .card-textm {
+  color: #7b1789;
+}
+
+/*Estilo para artista más escuchado*/
+.btn_m_artist {
+  background: #F9E9FF;
+  background: linear-gradient(180deg,rgba(249, 233, 255, 1) 0%, rgba(255, 255, 255, 1) 100%);
+  border-radius: 50px;
+  margin-bottom: 3vh;
+}
+
+

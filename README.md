@@ -9,5 +9,18 @@
 Local and emerging musicians especially in Medellín face serious difficulties in gaining visibility. The most popular music platforms, such as Spotify or YouTube, use algorithms that tend to favor already positioned artists, leaving lesser-known talents at a disadvantage. This generates a cycle in which many musicians, despite their quality, remain invisible.
 
 
-**NearBeats** is a proposed web-based platform that aims to offer a fairer space for these musicians to be recognized. Instead of relying solely on popularity metrics, the platform provides music recommendations that are more diverse, giving all artists an equal chance to be heard.
+**NearBeats** is a proposed web aplication that aims to offer a fairer space for these musicians to be recognized. Instead of relying solely on popularity metrics, the platform provides music recommendations that are more diverse, giving all artists an equal chance to be heard.
 </div>
+
+**Instructions to run it:**
+1. Download our web app code.
+2. In console, in our carpet Open a console and navigate to the NearBeats folder.
+3. Run the following command:</br>
+   ```
+   pip install -r requirements.txt
+   ```
+   ```
+   python manage.py runserver
+   ```
+
+5. Open your browser and go to: http://127.0.0.1:8000

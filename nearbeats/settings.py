@@ -30,10 +30,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
     'main',       # de main
     'usuarios',   # de registroLogin
-    'artist',
-    'library',
+    'library',    # para biblioteca
+    'artist',     # para perfil de artista
+    'follows',    # para seguir artistas
 ]
 
 MIDDLEWARE = [
@@ -101,3 +103,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Custom user model
 AUTH_USER_MODEL = 'usuarios.Usuario'
 LOGIN_URL = 'login'
+LOGOUT_REDIRECT_URL = 'login/' 

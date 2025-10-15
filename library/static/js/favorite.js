@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const songId = button.dataset.songId;
 
       try {
-        const response = await fetch(`/toggle-favorite/${songId}/`, {
+        const response = await fetch(`/save-favorite/${songId}/`, {
           method: "POST",
           headers: {
             "X-CSRFToken": getCookie("csrftoken"),
@@ -22,16 +22,19 @@ document.addEventListener("DOMContentLoaded", () => {
           icon.classList.remove("bi-star-fill", "text-warning");
           icon.classList.add("bi-star");
 
-          // **Eliminar tarjeta en favoritos**
-          const songItem = document.querySelector(`#song-${songId}`);
-          if (songItem) {
-            songItem.remove();
-          }
+          // --- SOLO si estoy en la página de favoritos ---
+          if (window.location.pathname.includes("/favorites")) {
+            // Eliminar tarjeta
+            const songItem = document.querySelector(`#song-${songId}`);
+            if (songItem) {
+              songItem.remove();
+            }
 
-          // **Mostrar mensaje si la lista queda vacía**
-          if (!document.querySelector(".song-item")) {
-            const container = document.querySelector(".row");
-            container.innerHTML = "<p>No tienes canciones favoritas aún.</p>";
+            // Mostrar mensaje si no queda ninguna
+            if (!document.querySelector(".song-item")) {
+              const container = document.querySelector(".row");
+              container.innerHTML = "<p>No tienes canciones favoritas aún.</p>";
+            }
           }
         }
       } catch (error) {

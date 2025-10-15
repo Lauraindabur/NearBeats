@@ -1,173 +1,38 @@
-<!--Base.html contiene lo que será común en todos mis modulos, por ejm: la barra de menu y todo lo que contiene, el fondo.-->
-{% load static %} <!--Porque usaremos archivos dinamicos (como css, imagenes,etc), es decir, que no cambian con la logica del servidor, sino que siempre se mantienen.-->
+{% load static %}
+<!DOCTYPE html>
 <html lang="es">
-<!--Acá va la metadata-->
 <head> 
     <meta charset="UTF-8">
     <title>NearBeats</title>
-    <!--Usamos bootstrap-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'main/css/estilo.css' %}"> <!--Conectamos a estilo.css-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
-    <script src="{% static 'main/search.js' %}"></script>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"/>
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+    
+    <!-- CSS propio -->
+    <link rel="stylesheet" href="{% static 'main/css/estilo.css' %}">
+    <link rel="stylesheet" href="{% static 'artist/css/styleArtist.css' %}">
+
+    
+    <!-- JS propio -->
+    
+   
 </head>
 
 <body>
-<!--Pendiente: cuando click, que quede en morado-->
-    <nav class="main-navbar d-flex justify-content-between align-items-center" style="padding-left: 20px;"> <!--Se adapata al nav apra unir los botones y el form -->
+    <!-- Navbar (importado) -->
+    {% include 'main/main_navbar.html' %}
 
-    <form class="d-flex align-items-center w-50 form-search" method="GET" action="{% url 'buscar' %}">
-        <div class="input-group">
-      <!-- Dropdown visual para el filtro -->
-                <div class="btn-group me-2">
-                                <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownFiltro" style="background-color: #f3e5f5; min-width: 120px;">
-                                    <span id="filtroSeleccionado">
-                                        {% if filterOption == "titulo" %}Título
-                                        {% elif filterOption == "artista" %}Artista
-                                        {% elif filterOption == "genero" %}Género
-                                        {% elif filterOption == "año_publicacion" %}Año de Publicación
-                                        {% elif filterOption == "emocion" %}Emoción
-                                        {% else %}Todo{% endif %}
-                                    </span>
-                                </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#" data-value="">Todo</a></li>
-                        <li><a class="dropdown-item" href="#" data-value="titulo">Título</a></li>
-                        <li><a class="dropdown-item" href="#" data-value="artista">Artista</a></li>
-                        <li><a class="dropdown-item" href="#" data-value="genero">Género</a></li>
-                        <li><a class="dropdown-item" href="#" data-value="año_publicacion">Año de Publicación</a></li>
-                        <li><a class="dropdown-item" href="#" data-value="emocion">Emoción</a></li>
-                    </ul>
-                </div>
-                <input type="hidden" name="filtro" id="inputFiltro" value="{{ filterOption }}">
-
-
-                <!-- Campo de texto de búsqueda -->
-                <input type="search" class="form-control" name="q" id="busqueda" placeholder="¿Qué quieres escuchar hoy?" value="{{ searchTerm }}">
-
-
-                <!-- Botón de búsqueda -->
-                <button type="submit" class="btn btn-search">
-                    <i class="fas fa-search"></i>
-                </button>
-        </div>
-        
-     </form>
-
-        <ul class="nav justify-content-end nav-underline nav-underlinem">
-            <li class="nav-item nav-itemm nav-itemmHome">
-                <a class="nav-link nav-linkm {% if request.path == '/' %}active{% endif %}" aria-current="page" href="{% url 'home' %}">Home</a>
-            </li>
-            <li class="nav-item nav-itemm">
-                <a class="nav-link nav-linkm {% if request.path == '/library' %}active{% endif %}" href="{% url 'library' %}">Library</a>
-            </li>
-            <li class="nav-item nav-itemm">
-                <a class="nav-link nav-linkm {% if request.path == '/usuarios/login/' %}active{% endif %}" href="{% url 'login' %}">Log in</a>
-            </li>
-            <li class="nav-item nav-itemmSU">
-                <a class="nav-link nav-linkm {% if request.path == '/usuarios/register/' %}active{% endif %}" href="{% url 'register' %}">Sign up</a>
-            </li>
-            <!--
-            <li class="nav-item">
-                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-            </li>-->
-        </ul>
+    <!-- Bloque para contenido dinámico -->
+    <main class="container mt-4">
+        {% block content %}
+        {% endblock %}
+    </main>
     
-    </nav>
-
-
-    <div class="mb-2">
-        <button class="btn btn-outline-primary btn-morado" type="button" data-bs-toggle="offcanvas" data-bs-target="#emocionesOffcanvas" aria-controls="emocionesOffcanvas">
-            ¿No sabes qué emoción buscar?
-        </button>
-     </div>
-
-<!-- Contador de mensajes encontrados según busqueda -->
-{% if searchTerm %}
-        <div id="mensaje-resultados" class="alert {% if resultados_count > 0 %}alert-info{% else %}alert-warning{% endif %} my-3" role="alert">
-            {% if resultados_count > 0 %}
-                Se encontraron {{ resultados_count }} resultados para "{{ searchTerm }}"
-            {% else %}
-                No se encontraron resultados para "{{ searchTerm }}"
-            {% endif %}
-        </div>
-{% endif %}
-
-{% if canciones %}
-<div class="row mt-4 justify-content-center">
-    {% for song in canciones %}
-        <div class="col-12 mb-4 d-flex justify-content-center">
-            <div class="card shadow-sm w-75" style="min-height: 180px;">
-                <div class="row g-0 align-items-center">
-                    <div class="col-auto">
-                        {% if song.cover_image %}
-                            <img src="{{ song.cover_image.url }}" alt="{{ song.title }}" style="width: 180px; height: 120px; object-fit: cover; margin: 10px; border-radius: 10px;">
-                        {% else %}
-                            <img src="{% static 'main/default.jpg' %}" alt="Sin imagen" style="width: 180px; height: 120px; object-fit: cover; margin: 10px; border-radius: 10px;">
-                        {% endif %}
-                    </div>
-                    <div class="col ps-3">
-                        <div class="card-body">
-                            <h5 class="card-title mb-2">{{ song.title }}</h5>
-                            <p class="card-text text-muted mb-0">{{ song.artist_name }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {% endfor %}
-</div>
-{% else %}
-<p>No se encontraron canciones.</p>
-{% endif %}
-
-
-
-
-
-
-   <!-- Bloque para contenido dinámico -->
-    {% block content %}
-    {% endblock %}
-
-
-<script>
-// Script para manejar el dropdown de filtro y actualizar el input oculto
-document.addEventListener('DOMContentLoaded', function() {
-    var dropdownItems = document.querySelectorAll('.dropdown-menu .dropdown-item');
-    var filtroSeleccionado = document.getElementById('filtroSeleccionado');
-    var inputFiltro = document.getElementById('inputFiltro');
-    dropdownItems.forEach(function(item) {
-        item.addEventListener('click', function(e) {
-            e.preventDefault();
-            filtroSeleccionado.textContent = item.textContent;
-            inputFiltro.value = item.getAttribute('data-value');
-        });
-    });
-});
-</script>
-<!-- Offcanvas/lista para seleccionar algunos moods -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="emocionesOffcanvas" aria-labelledby="emocionesOffcanvasLabel">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="emocionesOffcanvasLabel">Elige una emoción</h5>
-    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
-  </div>
-  <div class="offcanvas-body">
-    <div class="list-group">
-      <button type="button" class="list-group-item list-group-item-action" data-emotion="Happy">😊 Feliz</button>
-      <button type="button" class="list-group-item list-group-item-action" data-emotion="Sad">😢 Triste</button>
-      <button type="button" class="list-group-item list-group-item-action" data-emotion="Energetic">⚡ Energetico</button>
-      <button type="button" class="list-group-item list-group-item-action" data-emotion="Calm">🌿 Calmado</button>
-      <button type="button" class="list-group-item list-group-item-action" data-emotion="Romantic">❤️ Romantico</button>
-      <button type="button" class="list-group-item list-group-item-action" data-emotion="Melancholic">🌅 Melancólico</button>
-      <button type="button" class="list-group-item list-group-item-action" data-emotion="Epic">😰 Épico</button>
-      <button type="button" class="list-group-item list-group-item-action" data-emotion="Chill">😌 Relajado</button>
-      <button type="button" class="list-group-item list-group-item-action" data-emotion="empowered">💪 Empoderado</button>
-
-    </div>
-  </div>
-</div>
-
-
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{% static 'main/js/search.js' %}"></script>
+   
 </body>
 </html>
+

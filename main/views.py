@@ -4,16 +4,19 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.db.models import Q  # Nos deja usar OR |
 from django.http import JsonResponse #Para usar AJAX y devolver JSON (temporal)
-from .models import Song, Like, Favorite
+from library.models import Song, SongPlay, Like, Favorite
+from artist.models import ArtistProfile
 from django.db.models import F, Count
+from django.utils import timezone
 import random
 
 
-# Create your views here.
 
-def base(request):
-    searchTerm = request.GET.get('q', '')  #lo que el suario va a ingresar en la barra de busqueda
-    filterOption = request.GET.get('filtro', '')  #opcion de filtro que el usuario selecciona si es que selecciona alguna
+
+def search_song__update_song_list(request):  #search_song y #update_song_list
+    searchTerm = request.GET.get('q', '') 
+    filterOption = request.GET.get('filtro', '')  
+    #--> IMPT Aqui se implementa la logica del update_song_list
     if searchTerm:
         if filterOption == 'titulo':
             cancion = Song.objects.filter(title__icontains=searchTerm)  #cancion es un queryset del modelo Cancion (Base de datos)
@@ -37,19 +40,66 @@ def base(request):
         cancion = Song.objects.all()
 
     resultados_count = cancion.count()  #me dice cuantos resultados hay
-    return render(request, "main/base.html", {'canciones': cancion, 'searchTerm': searchTerm, 'filterOption': filterOption, 'resultados_count': resultados_count})  # Le pasamos el request y llamamos a la template base.html
+    most_listened_artist=None
+    artist_photo = None
+    cant_reproductions = None
+    #----Llamamos función que implementa aviso de artista más escuchado en ese filtro
+    if (filterOption == 'emocion' or filterOption == 'año_publicacion' or filterOption == 'genero'):
+        most_listened_artist , artist_photo, cant_reproductions = view_most_listened_category(cancion)
 
-def home(request):
+    return render(request, "main/base.html", {'canciones': cancion, 'searchTerm': searchTerm, 'filterOption': filterOption, 'resultados_count': resultados_count, 'most_listened_artist':most_listened_artist, 'artist_photo':artist_photo, 'cant_reproductions': cant_reproductions})  # Le pasamos el request y llamamos a la template base.html
+ 
+def home(request):  #see_home_page
     return render(request, "main/home.html")  # Asegúrate de que el archivo home.html existe en la carpeta templates/main
 
-def filtrar_sugerencias(request):
-    #print("entrando a func")
+def view_most_listened_category(resultados):
+    most_listeners=0
+    artist_photo = None
+    song_most_listened=None
+    plays_song=0
+    for song in resultados:
+        #Reproducciones de canción anterior
+        aux = plays_song
+        #Reproducciones de canción actual
+        plays_song = get_plays_song(song)
+
+        # if aux > plays_song:
+        #     most_listeners=aux
+        # else:
+        #     most_listeners=plays_song
+        #     #Porque indica que actual tiene más oyentes
+        #     song_most_listened = song
+        most_listeners = aux
+        if aux < plays_song:
+            song_most_listened = song
+            most_listeners = plays_song
+        
+    if song_most_listened != None:
+        artist = song_most_listened.artist_name
+        # Obtenemos foto de perfil de ese artista
+        artist_profile = ArtistProfile.objects.filter(name=artist).first()
+        if artist_profile:
+            artist_photo = artist_profile.profile_image
+    else:
+        artist = None
+    return (artist,artist_photo, most_listeners)
+        
+        
+
+#Obtenemos la cantidad de reproducciones de canción
+def get_plays_song(song):
+    plays_this_month_qs = SongPlay.objects.filter(song=song)
+    plays_this_month = plays_this_month_qs.count()
+
+    return plays_this_month
+
+
+def display_random_song(request):
     emotion = request.GET.get("emotion")
     created_at = request.GET.get("created_at")
     genre = request.GET.get("genre")
     random_el = request.GET.get("random")
 
-    #print(emotion,created_at,genre, random_el)
     usando_filtro = any([emotion, created_at, genre, random_el])
     songs = Song.objects.all()
     # print(songs)
@@ -61,134 +111,14 @@ def filtrar_sugerencias(request):
             songs = Song.objects.filter(id__in=random_ids)
     else:
         if emotion:
-            #print("entre a if emotion")
             songs= songs.filter(mood__iexact=emotion)
-            #print(songs)
         if created_at:
             #print("entre a if created_at")
             songs = songs.filter(created_at=created_at)
             #print(songs)
         if genre:
-            #print("entre a if genre")
             songs = songs.filter(genre__iexact=genre)
-            #print(songs)
     
-    # if(len(songs) == 0):
-    #     print("no hay elementos")
-    # else:
-    #     print("entre else")
-    #     for songss in songs:
-    #         print("entre for")
-    #         print(songss.title)
-
     #Retornamos el diccionario con los valores
     return render(request, 'main/home.html', {'songs': songs, 'usando_filtro': usando_filtro})
-
-def profile(request, artist_name): #artist_name lo pasamo en la url
-    #Obtenemos las canciones de ese artista
-    songs = Song.objects.filter(artist_name=artist_name)
-    return render(request, 'main/profile.html', {'songs':songs, 'artist_name':artist_name})
-
-
-def library(request):
-    songs = Song.objects.annotate(likes_count=Count("likes"))
-
-    if request.user.is_authenticated:
-        user_likes = set(
-            Like.objects.filter(user=request.user).values_list("song_id", flat=True)
-        )
-        user_favorites = set(
-            Favorite.objects.filter(user=request.user).values_list("song_id", flat=True)
-        )
-        for song in songs:
-            song.is_liked = song.id in user_likes
-            song.is_favorited = song.id in user_favorites
-    else:
-        for song in songs:
-            song.is_liked = False
-            song.is_favorited = False
-
-    return render(request, 'main/library.html', {'songs': songs})
-
-
-
-def upload_songs(request):
-    if not request.user.is_authenticated:
-        return redirect('login')  # Redirige al login si no ha iniciado sesión
-
-    if request.user.rol != "Artista":
-        return HttpResponseForbidden("No tienes permiso para subir canciones")  
-        # O también podrías hacer: return redirect('home')
-
-    if request.method == 'POST':
-        title = request.POST.get('title')
-        artist_name = request.POST.get('artist_name')
-        genre = request.POST.get('genre')
-        lyrics = request.POST.get('lyrics')
-        mood = request.POST.get('mood')
-        copyright_text = request.POST.get('copyright')
-        audio_file = request.FILES.get('audio_file')
-        cover_image = request.FILES.get('cover_image')
-
-        song = Song(
-            title=title,
-            artist_name=artist_name,
-            genre=genre,
-            lyrics=lyrics,
-            mood=mood,
-            copyright=copyright_text,
-            audio_file=audio_file,
-            cover_image=cover_image
-        )
-        song.full_clean()
-        song.save()
-
-        return redirect('library')
-
-    return render(request, 'main/upload_songs.html', {
-        'moods': Song._meta.get_field('mood').choices
-    })
-
-
-@login_required
-def toggle_like(request, song_id):
-    song = get_object_or_404(Song, id=song_id)
-
-    like, created = Like.objects.get_or_create(user=request.user, song=song)
-
-    if not created:
-        like.delete()
-        liked = False
-    else:
-        liked = True
-
-    likes_count = Like.objects.filter(song=song).count()
-
-    return JsonResponse({"liked": liked, "likes_count": likes_count})
-
-@login_required
-def favorites_list(request):
-    favorites = Favorite.objects.filter(user=request.user).select_related("song")
-    songs = [fav.song for fav in favorites]
-    return render(request, "main/favorites.html", {"songs": songs})
-
-@login_required
-def toggle_favorite(request, song_id):
-    if request.method == "POST":
-        song = get_object_or_404(Song, id=song_id)
-        user = request.user
-
-        favorite, created = Favorite.objects.get_or_create(user=user, song=song)
-
-        if not created:
-            favorite.delete()
-            is_favorited = False
-        else:
-            is_favorited = True
-
-        return JsonResponse({"is_favorited": is_favorited})
-
-    return JsonResponse({"error": "Método no permitido"}, status=405)
-
-
 

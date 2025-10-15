@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
-def registrar_usuario(request):
+def create_user_account(request):   #create_user_account
     if request.method == 'POST':
         form = RegistroUsuarioForm(request.POST)
         if form.is_valid():
@@ -21,7 +21,7 @@ def registrar_usuario(request):
 
     return render(request, 'usuarios/registro.html', {'form': form})
 
-def login_usuario(request):
+def login_user(request):  # login_user
     # If the user submits the form
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -39,12 +39,17 @@ def login_usuario(request):
     # Render the login form
     return render(request, 'usuarios/login.html')
 
-def home(request):
+def home(request):   #show_home_page
     # Show the home page after login or just as a landing page
     return render(request, 'usuarios/home.html')
 
-def logout_usuario(request):
+def logout_user(request):  #logout_user
     logout(request)
+    storage = messages.get_messages(request)
+    for _ in storage:
+        pass  # iterar para vaciar
+
+    # Ahora sí, mostrar solo el mensaje de logout
     messages.success(request, "You have been logged out.")
     return redirect('login')
 

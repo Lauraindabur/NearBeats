@@ -6,27 +6,33 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from main import views as mainViews  # Import views from main app
-from artist import views as artistViews
+from library import views as libraryViews
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     # Rutas de la app main
     path('', mainViews.home, name='home'),
-    path('buscar/', mainViews.base, name='buscar'),
-    path('filtrar/', mainViews.filtrar_sugerencias, name='filtrar_sugerencias'),
-    path('library/', mainViews.library, name='library'),
-    path('upload/', mainViews.upload_songs, name='upload_songs'),
-    path("toggle-like/<int:song_id>/", mainViews.toggle_like, name="toggle_like"),
+    path('buscar/', mainViews.search_song__update_song_list, name='buscar'),   #Dentro de el implementamos RF update_song_list
+    path('filtrar/', mainViews.display_random_song, name='display_random_song'),
+
+    # Rutas de la app library
+    path('library/', libraryViews.see_library, name='see_library'),
+    path('upload/', libraryViews.upload_songs, name='upload_songs'),
+    path("toggle-like/<int:song_id>/", libraryViews.like_song, name="like_song"),
+    path("save-favorite/<int:song_id>/", libraryViews.save_favorite, name="save_favorite"),
+    path("favorites/", libraryViews.see_favorites_list, name="favorites"),
+    path('play/<int:song_id>/', libraryViews.play_song, name='play_song'),
+
     # Rutas de la app usuarios (prefijo para no chocar con main)
     path('usuarios/', include('usuarios.urls')),
-    path("toggle-favorite/<int:song_id>/", mainViews.toggle_favorite, name="toggle_favorite"),
-    path("favorites/", mainViews.favorites_list, name="favorites"),
-    # Rutas de la app Artist
-     path('profile/<str:artist_name>/', artistViews.artist_page, name='artist_profile'),
+
+    # Rutas de la app artist
+    path('artist/', include('artist.urls')),
+
+    # Rutas de la app follows
+    path('follows/', include('follows.urls')),
 ]
 
 # Archivos media
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-from django.urls import path
-

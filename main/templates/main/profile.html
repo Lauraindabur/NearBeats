@@ -10,10 +10,23 @@
                 <div class="col-md-4 col4m">
                     <img src="{{ song.cover_image.url }}" class="img-fluid rounded-start img-fluidm" alt="...">
                 </div>
-                <div class="col-md-8 col8m">
+                <div class="col-8 col8m">
                     <div class="card-body card-bodym">
                         <h5 class="card-title card-titlem">{{ song.title }}</h5>
-                        <p class="card-text card-textm"><small class="text-body-secondary">{{ song.genre }}</small></p>
+                        <p class="card-text card-textm"><small
+                        class="text-body-secondary">{{ song.genre }}</small></p>
+                        <!-- <div class="col ps-3">
+                            <div class="card-body"> -->
+                                {% if song.audio_file %}
+                                    <audio controls style="width: 100%;">
+                                        <source src="{{ song.audio_file.url }}" type="audio/mpeg">
+                                        Tu navegador no soporta audio.
+                                    </audio>
+                                {% else %}
+                                    <small class="text-muted">Audio no disponible</small>
+                                {% endif %}
+                            <!-- </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

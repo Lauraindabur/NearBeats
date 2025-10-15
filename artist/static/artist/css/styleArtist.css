@@ -1,0 +1,209 @@
+/* tenemos el estilo del perfil de artista, no cambia el fondo global */
+.profile-max {   
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 18px 18px 80px;
+}
+
+.hero {   /* donde se encuentra el primer contenedor con el nombre artista  */
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-2xl, 22px);
+  border: 1px solid var(--glass-border, #e0e0e0);
+  background: linear-gradient(135deg, rgba(255,255,255,.85), rgba(255,255,255,.65));
+  box-shadow: var(--shadow, 0 10px 25px rgba(72, 0, 153, 0.15));
+  padding: 48px;
+  margin-bottom: 22px;
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background: radial-gradient(50% 40% at 15% 30%, rgba(255,79,182,.18), transparent 60%),
+              radial-gradient(60% 50% at 90% 20%, rgba(106,0,244,.16), transparent 60%);
+  filter: blur(62px);
+  pointer-events: none;
+  z-index: 0;
+}
+.hero-grid {
+  /* position: relative; */
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 32px;
+  align-items: center;
+}
+.avatar {
+  width: 100% ;
+  height: 100% ;
+  border-radius: 18px ;
+  overflow: hidden ;
+  position: relative ;
+  border: 2px solid rgba(255,255,255,.7) ;
+  box-shadow: 0 8px 24px rgba(0,0,0,.06);
+  background: linear-gradient(to bottom right, #f8e1ff, #ffd9f1);
+}
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: contrast(1.02) saturate(1.02);
+}
+
+.avatar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, transparent 60%, rgba(255,255,255,.22));
+  mix-blend-mode: screen;
+}
+
+
+.title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center !important;
+}
+
+.artist {
+  font-family: 'Montserrat', 'Inter', sans-serif;
+   text-align: left;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #2c2c2c;
+  margin-bottom: 0;
+  background: linear-gradient(20deg, #9816aa 0%, #d682e3 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+
+.note {
+  margin-top: 12px;
+  font-size: 1rem;
+  color: #6c6c7a;
+  background: rgba(255,255,255,0.7);
+  border-radius: 8px;
+  padding: 10px 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+@media (max-width: 900px){
+  .hero-grid{ grid-template-columns: 90px 1fr; }
+  .avatar{ width:90px; height:90px; border-radius:18px }
+  .profile-max{ padding: 18px 8px 40px; }
+}
+
+/* Parte de estaditica y bio */
+
+.grid {       
+  display: grid;
+ grid-template-columns: 1fr 1.1fr;     /*el primero de biografia el segundo de graficas */
+  gap: 18px;
+  margin-top: 18px;
+}
+.card {
+  border-radius: var(--radius-2xl, 22px);
+  padding: 20px;
+  border: 1px solid var(--glass-border, #e0e0e0);
+  background: linear-gradient(135deg, rgba(255,255,255,.85), rgba(255,255,255,.65));
+  box-shadow: var(--shadow, 0 10px 25px rgba(72, 0, 153, 0.15));
+}
+.card h3 {
+  margin: 0 0 10px;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  color: #6b6b78;
+}
+.bio {
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: #30303a;
+}
+.charts {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+.chart {
+  height: 220px;
+  border-radius: 18px;
+  border: 1px dashed rgba(106,0,244,.35);
+  background: repeating-linear-gradient(45deg, rgba(255,79,182,.08), rgba(255,79,182,.08) 10px, rgba(106,0,244,.08) 10px, rgba(106,0,244,.08) 20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #5d2e74;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.chart canvas {
+  width: 100% !important;   /* para que si se aplique */
+  height: 180px !important;
+  max-width: 100%;
+  background: transparent;
+  border-radius: 12px;
+  box-shadow: none;
+}
+
+.chart h2 {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.reproducciones-mes {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--morado-2, #9333ea);
+}
+
+
+
+
+.music-waves svg {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.followers-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  background: rgba(245, 235, 255, 0.7);
+  border-radius: 14px;
+  padding: 8px 18px;
+  box-shadow: 0 2px 8px rgba(106,0,244,0.07);
+  margin-top: 6px;
+}
+
+
+
+/* animacion de onda */
+.wave {
+  fill: var(--morado-2, #9333ea);
+  animation: waveAnim 1.2s infinite ease-in-out;
+}
+.wave:nth-child(1) { animation-delay: 0s; }
+.wave:nth-child(2) { animation-delay: 0.2s; }
+.wave:nth-child(3) { animation-delay: 0.4s; }
+.wave:nth-child(4) { animation-delay: 0.6s; }
+.wave:nth-child(5) { animation-delay: 0.8s; }
+@keyframes waveAnim {
+  0%, 100% { height: 8px; y: 8; }
+  50% { height: 18px; y: 2; }
+}
+
+

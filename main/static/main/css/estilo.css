@@ -291,5 +291,7 @@
 }
 
 .main-block-profile .card-bodym {
-    background-color: #7b1789;
+    /* background-color: #7b1789; */
+    width: fit-content;
+    height: fit-content;
 }

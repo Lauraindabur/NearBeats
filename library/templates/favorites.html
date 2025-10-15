@@ -1,0 +1,104 @@
+{% extends "base_library.html" %}
+{% load static %}
+
+{% block title %}NearBeats - Favoritos{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+  <h1 class="favorites-title mb-4" style="font-family: 'Dancing Script', cursive; text-align: center;">
+    ⭐ Mis Favoritos
+  </h1>
+
+  {% if recommended_song %}
+  <div class="recommended-song mb-4 shadow-lg d-flex align-items-center">
+    <!-- Lado izquierdo: mensaje con brillo y botón -->
+    <div class="recomendacion-info flex-grow-1 text-start me-4">
+      <div class="recomendacion-titulo">
+        🎧 Tu recomendación del día
+      </div>
+      <a 
+        class="btn btn-light btn-sm fw-bold px-4 py-2 rounded-pill shadow-sm recomendacion-boton play-recomendacion"
+        data-audio="{{ recommended_song.audio_file.url }}"
+        data-title="{{ recommended_song.title }}"
+        data-artist="{{ recommended_song.artist_name }}">
+        <i class="bi bi-play-fill"></i>
+        Escuchar ahora
+      </a>
+    </div>
+
+    <!-- Lado derecho: portada, título y artista -->
+    <div class="recomendacion-datos d-flex align-items-center">
+      <div class="recomendacion-portada">
+        {% if recommended_song.cover_image %}
+          <img src="{{ recommended_song.cover_image.url }}" alt="{{ recommended_song.title }}" class="img-fluid rounded-3 shadow-sm">
+        {% else %}
+          <img src="{% static 'images/sin_portada.png' %}" alt="Sin portada" class="img-fluid rounded-3 shadow-sm">
+        {% endif %}
+      </div>
+      <div class="recomendacion-texto ms-3">
+        <div class="recomendacion-titulo-cancion">
+          {{ recommended_song.title }}
+        </div>
+        <div class="recomendacion-artista">
+          {{ recommended_song.artist_name }}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Lista de favoritos -->
+  <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-3">
+    {% for song in songs %}
+     <div class="col d-flex justify-content-center song-item" id="song-{{ song.id }}">
+  <div class="song-card text-center">
+    <div class="song-cover">
+      {% if song.cover_image %}
+        <img src="{{ song.cover_image.url }}" alt="{{ song.title }}">
+      {% else %}
+        <img src="{% static 'images/sin_portada.png' %}" alt="Sin portada">
+      {% endif %}
+      <div class="play-btn"
+           data-audio="{{ song.audio_file.url }}"
+           data-title="{{ song.title }}"
+           data-artist="{{ song.artist_name }}">
+        <i class="bi bi-play-fill"></i>
+      </div>
+    </div>
+
+    <!-- Info y botones -->
+    <div class="song-info position-relative text-center mt-2">
+      <div>
+        <div class="song-title fw-semibold">{{ song.title }}</div>
+        <div class="song-artist text-muted small">{{ song.artist_name }}</div>
+      </div>
+
+
+            {% if user.is_authenticated %}
+              <!-- Botón like -->
+              <div class="d-flex flex-column align-items-center position-absolute top-50 end-0 translate-middle-y me-1">
+                <button class="btn btn-link p-0 like-btn" data-song-id="{{ song.id }}">
+                  <i class="bi bi-heart{% if song.is_liked %}-fill text-danger{% endif %}" style="font-size: 1.4rem;"></i>
+                </button>
+                <span id="likes-count-{{ song.id }}" class="px-2 py-0 rounded-pill mt-1"
+                      style="font-size: 0.7rem; background-color: #f1f1f1; color: #555;">
+                  {{ song.likes_count }}
+                </span>
+              </div>
+
+              <!-- Botón favoritos -->
+              <div class="d-flex flex-column align-items-center position-absolute top-50 start-0 translate-middle-y ms-1">
+                <button class="btn btn-link p-0 favorite-btn" data-song-id="{{ song.id }}">
+                  <i class="bi bi-star{% if song.is_favorited %}-fill text-warning{% endif %}" style="font-size: 1.4rem;"></i>
+                </button>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p>No tienes canciones favoritas aún.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

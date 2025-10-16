@@ -61,13 +61,13 @@
                         <p class="bio">{{ artist_profile.bio }}</p>
                     </div>
                     <div class="artist-socials mt-3 d-flex align-items-center">
-                        <a href="{{ artist_profile.website|default:'#' }}" target="_blank" rel="noopener" class="social-link me-2" aria-label="Website">
+                        <a href="{{ artist_profile.website|default:'https://www.google.com/' }}" target="_blank" rel="noopener" class="social-link me-2" aria-label="Website">
                             <i class="bi bi-globe"></i>
                         </a>
-                        <a href="{{ artist_profile.instagram|default:'#' }}" target="_blank" rel="noopener" class="social-link me-2" aria-label="Instagram">
+                        <a href="{{ artist_profile.instagram|default:'https://www.instagram.com/' }}" target="_blank" rel="noopener" class="social-link me-2" aria-label="Instagram">
                             <i class="bi bi-instagram"></i>
                         </a>
-                        <a href="{{ artist_profile.twitter|default:'#' }}" target="_blank" rel="noopener" class="social-link me-2" aria-label="Twitter">
+                        <a href="{{ artist_profile.twitter|default:'https://x.com/?lang=es' }}" target="_blank" rel="noopener" class="social-link me-2" aria-label="Twitter">
                             <i class="bi bi-twitter"></i>
                         </a>
                     </div>

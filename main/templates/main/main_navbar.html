@@ -25,7 +25,7 @@
                         {% else %}Todo{% endif %}
                     </span>
                 </button>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu dropdown-menuNavbar">
                     <li><a class="dropdown-item" href="#" data-value="">Todo</a></li>
                     <li><a class="dropdown-item" href="#" data-value="titulo">Título</a></li>
                     <li><a class="dropdown-item" href="#" data-value="artista">Artista</a></li>
@@ -238,7 +238,7 @@
 
 <script>
         document.addEventListener('DOMContentLoaded', function () {
-                var dropdownItems = document.querySelectorAll('.dropdown-menu .dropdown-item');
+                var dropdownItems = document.querySelectorAll('.dropdown-menuNavbar .dropdown-item');
                 var filtroSeleccionado = document.getElementById('filtroSeleccionado');
                 var inputFiltro = document.getElementById('inputFiltro');
                 var offcanvas = document.getElementById('emocionesOffcanvas');

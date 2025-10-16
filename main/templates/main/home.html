@@ -9,6 +9,14 @@
       <h1 class="parte2">Beat</h1>
     </div>
   </div>
+  <div id="slogan" class="d-flex flex-column align-items-center">
+    <span>Descubre tu nuevo vicio musical local… o conviértete</span>
+    <span>en el de alguien más.</span>
+  </div>
+  <!-- <div id="slogan" class="d-flex justify-content-center">
+    <p>Descubre tu nuevo vicio musical local… o conviértete <br>en el de alguien más.</p>
+  </div> -->
+
 
   <!-- Botón de filtro -->
   <div class="canva-boton-filter">
@@ -24,64 +32,76 @@
         <h5 class="offcanvas-title offcanvas-titlem" id="offcanvasExampleLabel">Filtrar por</h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
       </div>
-      <div class="offcanvas-body offcanvas-bodym">
-        <form method="get" action="{% url 'display_random_song' %}" id="filterForm">
+      <div id="filtrar_principal" class="offcanvas-body offcanvas-bodym d-flex flex-column"> <!--Cajita de todo el cuadro de filtrar por-->
+        <form method="get" action="{% url 'display_random_song' %}" id="filterForm"> 
+          <div class="d-flex align-items-start justify-content-center align-items-center w-100 "> <!--Cajita de elementos que apareceran en una fila (todos menos boto filtrar), porque aparecerá abajo-->
+            <div id="filtrar_selectores" class="d-flex flex-column align-items-center"> <!--Cajita de dropdowns -->
+              <!-- Emoción -->
+              <div class="dropdown mt-3 dropdownm dropdownHome">
+                <input type="hidden" name="emotion" id="emotionInput">
+                <button class="btn dropdown-toggle dropdown-togglem" type="button" data-bs-toggle="dropdown">
+                  Emoción
+                </button>
+                <ul class="dropdown-menu dropdown-menum">
+                  <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('emotionInput','triste', event)">Triste</a></li>
+                  <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('emotionInput','melancolico', event)">Melancólico</a></li>
+                  <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('emotionInput','feliz', event)">Feliz</a></li>
+                  <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('emotionInput','romantico', event)">Romántico</a></li>
+                  <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('emotionInput','ruptura', event)">Ruptura</a></li>
+                  <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('emotionInput','nostalgico', event)">Nostálgico</a></li>
+                  <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('emotionInput','solitario', event)">Solitario</a></li>
+                
+                </ul>
+              </div>
+    
+              <!-- Año de publicación -->
+              <div class="dropdown mt-3 dropdownm dropdownHome">
+                <input type="hidden" name="created_at" id="created_atInput">
+                <button class="btn dropdown-toggle dropdown-togglem" type="button" data-bs-toggle="dropdown">
+                  Año de publicación
+                </button>
+                <ul class="dropdown-menu dropdown-menum">
+                  <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('created_atInput','2000', event)">2000</a></li>
+                  <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('created_atInput','2010', event)">2010</a></li>
+                  <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('created_atInput','2025', event)">2025</a></li>
+                </ul>
+              </div>
+    
+              <!-- Género -->
+              <div class="dropdown mt-3 dropdownm dropdownHome">
+                <input type="hidden" name="genre" id="genreInput">
+                <button class="btn dropdown-toggle dropdown-togglem" type="button" data-bs-toggle="dropdown">
+                  Género
+                </button>
+                <ul class="dropdown-menu dropdown-menum">
+                  <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('genreInput','pop', event)">Pop</a></li>
+                  <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('genreInput','rock', event)">Rock</a></li>
+                  <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('genreInput','merengue', event)">Merengue</a></li>
+                </ul>
+              </div>
+            </div>
 
-          <!-- Emoción -->
-          <div class="dropdown mt-3 dropdownm">
-            <input type="hidden" name="emotion" id="emotionInput">
-            <button class="btn dropdown-toggle dropdown-togglem" type="button" data-bs-toggle="dropdown">
-              Emoción
-            </button>
-            <ul class="dropdown-menu dropdown-menum">
-              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('emotionInput','triste', event)">Tristeza</a></li>
-              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('emotionInput','melancolico', event)">Melancolía</a></li>
-              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('emotionInput','feliz', event)">Alegría</a></li>
-            </ul>
+            <!--Raya divisora-->
+            <div id="barra-divisora" class="vr mx-4"></div>
+            
+            <!-- Random -->
+            <div id="filtrar_random" class="form-check form-checkm mt-3 d-flex align-items-center" >
+              <input type="hidden" name="random" id="randomInput">
+              <input class="form-check-input form-check-inputm" type="radio"
+              name="flexRadioDefault" id="flexRadioDefault1"  onclick="setFiltro('randomInput', '1')">
+              <label class="form-check-label form-check-labelm" for="flexRadioDefault1">
+                Canción aleatoria
+              </label>
+            </div>
           </div>
 
-          <!-- Año de publicación -->
-          <div class="dropdown mt-3 dropdownm">
-            <input type="hidden" name="created_at" id="created_atInput">
-            <button class="btn dropdown-toggle dropdown-togglem" type="button" data-bs-toggle="dropdown">
-              Año de publicación
-            </button>
-            <ul class="dropdown-menu dropdown-menum">
-              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('created_atInput','2000-02-20 14:30:00', event)">2000</a></li>
-              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('created_atInput','2010-02-20 14:30:00', event)">2010</a></li>
-              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('created_atInput','2020-02-20 14:30:00', event)">2020</a></li>
-            </ul>
-          </div>
-
-          <!-- Género -->
-          <div class="dropdown mt-3 dropdownm">
-            <input type="hidden" name="genre" id="genreInput">
-            <button class="btn dropdown-toggle dropdown-togglem" type="button" data-bs-toggle="dropdown">
-              Género
-            </button>
-            <ul class="dropdown-menu dropdown-menum">
-              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('genreInput','pop', event)">Pop</a></li>
-              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('genreInput','rock', event)">Rock</a></li>
-              <li><a class="dropdown-item dropdown-itemm" onclick="setFiltro('genreInput','merengue', event)">Merengue</a></li>
-            </ul>
-          </div>
-
-          <!-- Random -->
-          <div class="form-check form-checkm mt-3">
-            <input type="hidden" name="random" id="randomInput">
-            <input class="form-check-input form-check-inputm" type="radio"
-            name="flexRadioDefault" id="flexRadioDefault1"  onclick="setFiltro('randomInput', '1')">
-            <label class="form-check-label form-check-labelm" for="flexRadioDefault1">
-              Canción aleatoria
-            </label>
-          </div>
-
-          <div class="btndiv mt-3">
+          <!--Boton dentro de cajita general-->
+          <div class="btndiv d-flex mt-4 justify-content-center" id="btn-filtrar">
             <button type="submit" class="btn btnm">Buscar</button>
           </div>
-
         </form>
       </div>
+
     </div>
   </div>
 

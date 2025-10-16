@@ -81,21 +81,40 @@ document.addEventListener("DOMContentLoaded", function() {
 
   const playBtn = root.querySelector('#play-tracks-btn');
   const statsBtn = root.querySelector('#stats-btn');
+  const eventsBtn = root.querySelector('#events-btn')
   const tracksSection = root.querySelector('#tracks-section');
   const statsSection = root.querySelector('#stats-section');
+  const eventsSection = root.querySelector('#events-section');
 
+  // Maneja desaparicion de elementos al clickear boton, haciendo que se active uno y se desactiven todos los demás
   function showTracks() {
+    //Activamos solo 1
     playBtn.classList.add('active');
     statsBtn.classList.remove('active');
+    eventsBtn.classList.remove('active');
+    //Desaparecemos a todos menos a 1
     tracksSection.classList.remove('d-none');
     statsSection.classList.add('d-none');
+    if (eventsSection) eventsSection.classList.add('d-none');
+  }
+
+  function showEvents(){
+    eventsBtn.classList.add('active');
+    playBtn.classList.remove('active');
+    statsBtn.classList.remove('active');
+    tracksSection.classList.add('d-none');
+    statsSection.classList.add('d-none');
+    if (eventsSection) eventsSection.classList.remove('d-none');
   }
 
   function showStats() {
-    playBtn.classList.remove('active');
     statsBtn.classList.add('active');
+    playBtn.classList.remove('active');
+    eventsBtn.classList.remove('active');
     tracksSection.classList.add('d-none');
+  if (eventsSection) eventsSection.classList.add('d-none');
     statsSection.classList.remove('d-none');
+    
     // Crear charts si aún no existen 
     createTopChart();
     createHourChart();
@@ -105,6 +124,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   if (playBtn) playBtn.addEventListener('click', showTracks);
   if (statsBtn) statsBtn.addEventListener('click', showStats);
+  if (eventsBtn) eventsBtn.addEventListener('click', showEvents);
 
   // por defecto-> mostrar tracks
   showTracks();

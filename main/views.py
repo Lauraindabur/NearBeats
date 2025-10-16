@@ -113,7 +113,13 @@ def display_random_song(request):
         if emotion:
             songs= songs.filter(mood__iexact=emotion)
         if created_at:
-            songs = songs.filter(created_at=created_at)
+            # El frontend siempre enviará solo el año (YYYY). Filtramos por el año del campo created_at.
+            try:
+                year = int(created_at.strip())
+                songs = songs.filter(created_at__year=year)
+            except Exception:
+                # Si el valor no es un entero válido, ignoramos el filtro para no romper la vista
+                pass
         if genre:
             songs = songs.filter(genre__iexact=genre)
     

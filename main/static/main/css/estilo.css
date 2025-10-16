@@ -114,9 +114,9 @@
   box-shadow: 0 0 0 3px rgba(162,59,185,0.15) !important;
 }
 
-.mb-2 {
+/* .mb-2 {
   margin-left: 19px;
-}
+} */
 
 .btn-morado {
   color:  rgb(152, 22, 170); 
@@ -175,6 +175,12 @@
     color: rgb(214,130,227);
 }
 
+#slogan span {
+  color: #606060; 
+
+}
+
+
 .btnm{
     /* background-color: rgb(243,237,247); */
     background-color: #E7CBFB;
@@ -189,11 +195,16 @@
     box-shadow: none;
 }
 
+#barra-divisora {
+  height: auto;
+  min-height: 100px;
+}
+
 .offcanvasm {
     left: 50% !important; 
     top: 50% !important;
-    width: 60vh;
-    height: 70vh;
+    /* width: 60vh; */
+    min-height: 60vh;
     border-radius: 12px;
     transform: translate(-50%,-50%) !important;
     background-color: rgb(247,242,250);
@@ -209,14 +220,14 @@
     text-align: center;
 }
 
-.dropdownm {
+/* .dropdownm {
     display: flex;
     flex-direction: column;
-    /* justify-content: center; */
-}
+    /* justify-content: center; 
+} */
 
 .dropdown-togglem {
-    margin:3vh ;
+    margin:1vh ;
     border-color: rgb(202,196,208);
     color: rgba(117, 13, 131, 0.664);
     font-weight: 500;
@@ -243,11 +254,6 @@
     color:black; 
 } 
 
-.offcanvasm .form-checkm {
-    display: flex;
-    align-items: center; /*Alinea en eje y*/
-    margin-left: 19vh;
-}
 
 .form-check-labelm {
     margin: 1vh;

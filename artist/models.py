@@ -16,3 +16,14 @@ class ArtistProfile(models.Model):  #se pone el mismo nombre que el definido en 
 
     def __str__(self):
         return self.name
+    
+class Events(models.Model):
+    artist = models.ManyToManyField(
+        ArtistProfile,
+        related_name='eventos'
+    )
+    title = models.CharField(max_length=100)
+    description = models.CharField(null=True, blank=True)
+    date = models.DateTimeField()
+    tickets = models.CharField(max_length=150, default="www.tickets.com") 
+    event_poster = models.ImageField(upload_to='artists/events/', null=True, blank=True, default='artists/events/poster_default.jpg')

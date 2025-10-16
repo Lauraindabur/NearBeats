@@ -12,7 +12,28 @@
     {% if request.resolver_match.url_name != 'upload_songs' and request.resolver_match.url_name != 'login' and request.resolver_match.url_name != 'register' %}
     <form class="d-flex align-items-center w-50 form-search" method="GET" action="{% url 'buscar' %}">
     <div class="input-group position-relative">
-
+            <!-- Dropdown de filtro -->
+            <div class="btn-group me-2">
+                <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown"
+                    aria-expanded="false" id="dropdownFiltro" style="background-color: #f3e5f5; min-width: 120px;">
+                    <span id="filtroSeleccionado">
+                        {% if filterOption == "titulo" %}Título
+                        {% elif filterOption == "artista" %}Artista
+                        {% elif filterOption == "genero" %}Género
+                        {% elif filterOption == "año_publicacion" %}Año de Publicación
+                        {% elif filterOption == "emocion" %}Emoción
+                        {% else %}Todo{% endif %}
+                    </span>
+                </button>
+                <ul class="dropdown-menu dropdown-menuNavbar">
+                    <li><a class="dropdown-item" href="#" data-value="">Todo</a></li>
+                    <li><a class="dropdown-item" href="#" data-value="titulo">Título</a></li>
+                    <li><a class="dropdown-item" href="#" data-value="artista">Artista</a></li>
+                    <li><a class="dropdown-item" href="#" data-value="genero">Género</a></li>
+                    <li><a class="dropdown-item" href="#" data-value="año_publicacion">Año de Publicación</a></li>
+                    <li><a class="dropdown-item" href="#" data-value="emocion">Emoción</a></li>
+                </ul>
+            </div>
             <input type="hidden" name="filtro" id="inputFiltro" value="{{ filterOption }}">
             <!-- Campo de texto -->
             <input type="search" class="form-control" name="q" id="busqueda" placeholder="¿Qué quieres escuchar hoy?"
@@ -130,15 +151,15 @@
         </form>
         {% else %}
             <li class="nav-item nav-itemm">
-              <a class="btn btn-light border border-light-subtle text-dark nav-linkm"
-                href="{% url 'login' %}?next={% url request.resolver_match.url_name %}">
+                            <a class="btn btn-light border border-light-subtle text-dark nav-linkm"
+                                href="{% url 'login' %}?next={{ request.get_full_path }}">
                     Inicia sesión
             </a>
 
             </li>
             <li class="nav-item nav-itemmSU">
                 <a class="nav-link nav-linkm "
-                href="{% url 'register' %}?next={% url request.resolver_match.url_name %}">
+                href="{% url 'register' %}?next={{ request.get_full_path }}">
                     Regístrate
                 </a>
             </li>
@@ -232,7 +253,7 @@
 
 <script>
         document.addEventListener('DOMContentLoaded', function () {
-                var dropdownItems = document.querySelectorAll('.dropdown-menu .dropdown-item');
+                var dropdownItems = document.querySelectorAll('.dropdown-menuNavbar .dropdown-item');
                 var filtroSeleccionado = document.getElementById('filtroSeleccionado');
                 var inputFiltro = document.getElementById('inputFiltro');
                 var offcanvas = document.getElementById('emocionesOffcanvas');

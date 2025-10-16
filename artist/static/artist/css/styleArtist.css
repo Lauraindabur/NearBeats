@@ -45,6 +45,20 @@
   align-items: center;
 }
 
+.card-body .btn_info {
+  background-color: var(--pb-primary);
+  color: var(--pb-muted);
+  border-color: var(--pb-primary);
+}
+
+.card-body .btn_info:hover,
+ .card-body .btn_info:focus,
+ .card-body .btn_info:active {
+  background-color: var(--pb-primary-dark);
+  color: var(--pb-muted);
+  border-color: var(--pb-primary-dark);
+}
+
 .artist-profile .hero .container { max-width: 100%; padding-left: 0.75rem; padding-right: 0.75rem; }
 .artist-profile .hero .avatar { width: 100%; max-width: 220px; height: 220px; margin: 0; transition: width .18s ease, height .18s ease, transform .18s ease; border-radius: 12px; overflow: hidden; }
 .artist-profile .hero .avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; display: block; }

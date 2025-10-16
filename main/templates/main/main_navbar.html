@@ -136,15 +136,15 @@
         </form>
         {% else %}
             <li class="nav-item nav-itemm">
-              <a class="btn btn-light border border-light-subtle text-dark nav-linkm"
-                href="{% url 'login' %}?next={% url request.resolver_match.url_name %}">
+                            <a class="btn btn-light border border-light-subtle text-dark nav-linkm"
+                                href="{% url 'login' %}?next={{ request.get_full_path }}">
                     Inicia sesión
             </a>
 
             </li>
             <li class="nav-item nav-itemmSU">
                 <a class="nav-link nav-linkm "
-                href="{% url 'register' %}?next={% url request.resolver_match.url_name %}">
+                href="{% url 'register' %}?next={{ request.get_full_path }}">
                     Regístrate
                 </a>
             </li>

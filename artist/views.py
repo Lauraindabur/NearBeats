@@ -6,7 +6,7 @@ from django.db.models import Q  # Nos deja usar OR |
 from django.http import JsonResponse #Para usar AJAX y devolver JSON (temporal)
 from library.models import Song, SongPlay
 from django.db.models import F, Count
-from .models import ArtistProfile  # Importa desde la app artist
+from .models import ArtistProfile, Events  # Importa desde la app artist
 from django.utils import timezone
 from collections import Counter
 
@@ -15,10 +15,14 @@ from collections import Counter
 #Función para inicializar todos las funciones cuando se acceda a la pagina desde
 #cualquier url
 def get_artist_dashboard(request, artist_name):
+    #Limpiamos cadena de espacios al inicio y al final, agregando "" por si
+    #pasan algo que no sea una cadena
+    artist_name = (artist_name or "").strip()
     context={}
     context.update(see_top_songs(request, artist_name))
     context.update(see_artist_graphic(request, artist_name))
     context.update(view_song_selected_artist(request, artist_name))
+    context.update(view_artist_events(artist_name))
 
     #Normalizar datos aquí antes de pasarlos al template
     # if "play_counts" in context:
@@ -86,3 +90,27 @@ def view_song_selected_artist(request, artist_name): #artist_name lo pasamo en l
     #Obtenemos las canciones de ese artista
     songList = Song.objects.filter(artist_name=artist_name)
     return {'songList':songList}
+
+def view_artist_events(artist_name):
+    print("artista: ----------------------------------------------------",artist_name)
+
+    # Usar filter().first() en lugar de get() para evitar que la vista rompa con DoesNotExist
+    artist_obj = ArtistProfile.objects.filter(name=artist_name).first()
+    if not artist_obj:
+        # No existe el artista pedido; devolvemos lista vacía de eventos para no romper la página
+        return {"events": []}
+
+    events_objs = Events.objects.filter(artist=artist_obj) #Obtenemos todos los eventos del artista
+    eventos = []
+    for event in events_objs:
+        eventos.append({
+            "title": event.title,
+            "description":event.description,
+            "date": event.date,
+            "tickets": event.tickets,
+            "poster": event.event_poster,
+        })
+
+    # Devolver con la clave 'events' para que coincida con la plantilla `for event in events`
+    return {"events": eventos} #Retornamos lista con diccionarios
+

@@ -1,39 +1,18 @@
 {% load static %}
 
-<nav class="main-navbar d-flex justify-content-between align-items-center" style="padding-left: 20px;">
+<nav class="main-navbar d-flex justify-content-between align-items-center" style="padding-left: 2px;">
 
-    {% if request.resolver_match.url_name == 'login' or request.resolver_match.url_name == 'register' %}
+    
     <a href="{% url 'home' %}" class="navbar-brand d-inline-flex align-items-center">
-        <img src="{% static 'images/NearBeatsLogo.png' %}" alt="NearBeats Logo" style="max-height: 160px;">
+        <img src="{% static 'images/NearBeatsLogo.png' %}" alt="NearBeats Logo" style="max-height: 150px;">
     </a>
-    {% endif %}
+    
 
     <!-- 🔍 Buscador -->
     {% if request.resolver_match.url_name != 'upload_songs' and request.resolver_match.url_name != 'login' and request.resolver_match.url_name != 'register' %}
     <form class="d-flex align-items-center w-50 form-search" method="GET" action="{% url 'buscar' %}">
     <div class="input-group position-relative">
-            <!-- Dropdown de filtro -->
-            <div class="btn-group me-2">
-                <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown"
-                    aria-expanded="false" id="dropdownFiltro" style="background-color: #f3e5f5; min-width: 120px;">
-                    <span id="filtroSeleccionado">
-                        {% if filterOption == "titulo" %}Título
-                        {% elif filterOption == "artista" %}Artista
-                        {% elif filterOption == "genero" %}Género
-                        {% elif filterOption == "año_publicacion" %}Año de Publicación
-                        {% elif filterOption == "emocion" %}Emoción
-                        {% else %}Todo{% endif %}
-                    </span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#" data-value="">Todo</a></li>
-                    <li><a class="dropdown-item" href="#" data-value="titulo">Título</a></li>
-                    <li><a class="dropdown-item" href="#" data-value="artista">Artista</a></li>
-                    <li><a class="dropdown-item" href="#" data-value="genero">Género</a></li>
-                    <li><a class="dropdown-item" href="#" data-value="año_publicacion">Año de Publicación</a></li>
-                    <li><a class="dropdown-item" href="#" data-value="emocion">Emoción</a></li>
-                </ul>
-            </div>
+
             <input type="hidden" name="filtro" id="inputFiltro" value="{{ filterOption }}">
             <!-- Campo de texto -->
             <input type="search" class="form-control" name="q" id="busqueda" placeholder="¿Qué quieres escuchar hoy?"
@@ -52,7 +31,7 @@
     {% endif %}
 
     <!-- 🔹 Navegación -->
-     <ul class="nav justify-content-end nav-underline nav-underlinem align-items-center">
+     <ul class="nav justify-content-end nav-underline nav-underlinem align-items-center w-50">
     <li class="nav-item nav-itemm nav-itemmHome">
         <a class="nav-link nav-linkm {% if request.resolver_match.url_name == 'home' %}active{% endif %}"
             aria-current="page" href="{% url 'home' %}">
@@ -70,13 +49,28 @@
 
 
         {% if user.is_authenticated %}
+        <!-- Favoritos (solo usuarios autenticados) -->
+    <li class="nav-item nav-itemm">
+        <a class="nav-link nav-linkm {% if request.resolver_match.url_name == 'favorites' %}active{% endif %}"
+           href="{% url 'favorites' %}">
+            <i class="bi bi-heart me-2"></i>Favoritos
+        </a>
+    </li>
+
+    <!-- Playlists (solo usuarios autenticados) -->
+    <li class="nav-item nav-itemm">
+        <a class="nav-link nav-linkm {% if request.resolver_match.url_name == 'playlists' %}active{% endif %}"
+           href="{% url 'playlists' %}">
+            <i class="bi bi-list-music me-2"></i>Playlists
+        </a>
+    </li>
         <!-- Perfil de usuario -->
 <li class="nav-item dropdown">
     <a class="nav-link d-flex align-items-center profile-toggle text-dark" href="#" id="userDropdown"
         role="button" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;">
         <img src="{% static 'images/default_profile.jpeg' %}" alt="Foto de perfil"
             class="rounded-circle border border-2 border-primary"
-            style="width: 34px; height: 34px; object-fit: cover;">
+            style="width: 25px; height: 25px; object-fit: cover;">
         <div class="d-none d-md-flex flex-column align-items-start ms-2"> <!-- Contenedor flex para texto -->
             <span class="fw-semibold" style="line-height: 1.2;">{{ user.nombre }}</span>
           

@@ -12,10 +12,17 @@ Local and emerging musicians especially in Medellín face serious difficulties i
 **NearBeats** is a proposed web aplication that aims to offer a fairer space for these musicians to be recognized. Instead of relying solely on popularity metrics, the platform provides music recommendations that are more diverse, giving all artists an equal chance to be heard.
 </div>
 
+**Prerequirements**
+1. To run our app, you must have installed Python and Django dependencies
+
 **Instructions to run it:**
 1. Download our web app code.
-2. In console, in our carpet Open a console and navigate to the NearBeats folder.
-3. Run the following command:</br>
+2. Unzip the package in a new folder
+3. Go to the folder created
+4. If you see a "Nearbeats" folder opent it
+5. In Nearbeats folder run a new console
+5. In the opened console, verify you are really in the Nearbeats directory
+6. Run the following commands:</br>
    ```
    pip install -r requirements.txt
    ```

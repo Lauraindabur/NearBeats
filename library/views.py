@@ -316,7 +316,7 @@ def play_song(request, song_id):
     if request.user.is_authenticated:
         SongPlay.objects.create(user=request.user, song=song)
     else:
-        SongPlay.objects.create(user=None, song=song)  # 👈 Guardar anónimo
+        SongPlay.objects.create(user=None, song=song)  # Guardar anónimo
 
     return JsonResponse({'status': 'ok'})
 
@@ -395,8 +395,14 @@ def create_playlist(request):
 
 @login_required
 def playlist_detail(request, playlist_id):
-    """Ver detalles de una playlist específica"""
-    playlist = get_object_or_404(Playlist, id=playlist_id, user=request.user)
+    """Ver detalles de una playlist específica
+    Notas: Quite en linea de abajo user_id=request.user.id porque como ya se
+    busca por id de playlist, es innecesario, a aparte de que impedia que,
+    mediante link, se pudiera acceder a una playlist compartida de otro usuario,
+    pues el que la creó era diferente al usuario que estaba logueado.
+    De momento para ver playlist compartida también es necesario estar logeado,
+    en un futuro se puede evitar"""
+    playlist = get_object_or_404(Playlist, id=playlist_id)
     playlist_songs = playlist.playlistsong_set.select_related('song').all()
     
     # Obtener todas las canciones para agregar a la playlist
@@ -408,7 +414,7 @@ def playlist_detail(request, playlist_id):
     # Obtener choices de mood para el filtro
     mood_choices = Song._meta.get_field('mood').choices
     
-    # 👇 Lista de IDs ya en la playlist
+    # Lista de IDs ya en la playlist
     existing_song_ids = list(playlist_songs.values_list('song_id', flat=True))
     
     return render(request, 'playlist_detail.html', {
@@ -417,7 +423,7 @@ def playlist_detail(request, playlist_id):
         'all_songs': all_songs,
         'genres': genres,
         'mood_choices': mood_choices,
-        'existing_song_ids': existing_song_ids,  # 👈 se pasa al template
+        'existing_song_ids': existing_song_ids,  # se pasa al template
     })
 
 

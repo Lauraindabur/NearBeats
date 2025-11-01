@@ -77,7 +77,15 @@
                         {% endif %}
                         
                         <div class="card-body">
-                            <h5 class="card-title">{{ playlist.name }}</h5>
+                            <div class="d-flex justify-content-between">
+                                <h5 class="card-title">{{ playlist.name }}</h5>
+                                <!-- El stopPropagation y preventDefault es porque todo el padre tiene un listener para dirigir a la playlist, incluso el boton, entonces despues de que copiaba el link, lo dirigia a la playlist, lo cual no es adecuado -->
+                                <button class="btn btn-link p-0 share-btn" 
+                                        onclick="event.stopPropagation(); event.preventDefault(); share_playlist('{{ playlist.id }}');" 
+                                        title="Compartir playlist">
+                                    <i class="bi bi-share-fill" style="font-size: 1.2rem; color: #9816AA; "></i>
+                                </button>
+                            </div>
                             {% if playlist.description %}
                             <p class="card-text">{{ playlist.description|truncatewords:20 }}</p>
                             {% endif %}
@@ -109,4 +117,7 @@
         {% endif %}
     </div>
 </div>
+{% endblock %}
+{% block extra_js %}
+    <script src="/static/js/share.js"></script>
 {% endblock %}

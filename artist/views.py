@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.db.models import Q  # Nos deja usar OR |
 from django.http import JsonResponse #Para usar AJAX y devolver JSON (temporal)
-from library.models import Song, SongPlay
+from library.models import Song, SongPlay, Playlist
 from django.db.models import F, Count
 from .models import ArtistProfile, Events  # Importa desde la app artist
 from django.utils import timezone
@@ -113,4 +113,3 @@ def view_artist_events(artist_name):
 
     # Devolver con la clave 'events' para que coincida con la plantilla `for event in events`
     return {"events": eventos} #Retornamos lista con diccionarios
-

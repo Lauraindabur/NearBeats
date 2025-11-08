@@ -54,9 +54,15 @@
         <div class="song-info text-center p-2">
           <div class="song-title fw-semibold text-truncate">{{ song.title }}</div>
           <div class="song-artist text-muted small text-truncate">{{ song.artist_name }}</div>
+          <!-- Seguidores del artista -->
           <button class="btn btn-link p-0 comment-btn" data-artist-id="{{ song.artist_name }}" onclick="showFollowersCount(this)" title="Ver seguidores">
             <i class="bi bi-eye"></i>
           </button>
+          <!-- Fecha creacion cancion -->
+          <div class="song-date text-muted small">
+            {{ song.created_at|date:"d M Y" }}
+            <i class="bi bi-clock" style="font-size: 0.8rem;"></i>
+          </div>
         </div>
 
         <!-- Acciones -->
@@ -76,6 +82,7 @@
             </div>
 
             <!-- Derecha  -->
+             <!-- fecha creacion -->
             <div class="d-flex align-items-center gap-1">
               <button class="btn btn-link p-0 like-btn" data-song-id="{{ song.id }}" title="Me gusta">
                 <i class="bi bi-heart{% if song.is_liked %}-fill text-danger{% endif %}" style="font-size: 1.2rem;"></i>

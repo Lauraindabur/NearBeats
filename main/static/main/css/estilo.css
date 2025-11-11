@@ -1,27 +1,41 @@
 /*-------------------PARTE DE BASE.HTML*/
 
+/* Navbar normal */
 .main-navbar {
     background-color: rgb(152, 22, 170);
-    /*min-height: 45px; /* Altura mínima para pantallas pequeñas */
-    height: 12vh;      /* Ocupa el 8% de la altura de la ventana */
-    padding: 20px 15px; /* Más espacio arriba y abajo */
+    height: 12vh;
+    padding: 20px 15px;
 }
 
+/* Navbar para páginas de biblioteca */
+.library-navbar {
+    background-color: #fefdff !important;
+}
+
+/* Hover normal */
+.main-navbar .nav-itemm .nav-linkm:hover {
+    color: white;
+}
+
+/* Hover para biblioteca */
+.library-navbar .nav-itemm .nav-linkm:hover {
+    color: #502955 !important;
+}
+
+/* Active state para biblioteca */
+.library-navbar .nav-linkm.active {
+    color: #d06bff !important;
+}
+
+/* Resto de tus estilos existentes... */
 .nav-linkm{
     color: black;
     font-size:medium;
 }
 
 .nav-itemm{
-    /*min-height: 6vh;*/
-    /*background-color: blueviolet;*/
     margin-left: 10px;
     margin-right: 10px;
-}
-
-/* A los nav-item que esten dentro de main-navbar*/
-.main-navbar .nav-itemm .nav-linkm:hover {
-    color: white; /* Cambia el color del texto */
 }
  /*For nav-itemmine2SignUP*/
  .main-navbar .nav-itemmSU {

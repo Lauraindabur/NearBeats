@@ -28,7 +28,7 @@
     color: white;
 }
 
-/* Botón de “Agregar” */
+/* Botón de "Agregar" */
 .btn-success {
     background-color: var(--accent-purple);
     border-color: var(--accent-purple);
@@ -37,7 +37,8 @@
     background-color: var(--light-purple);
     border-color: var(--light-purple);
 }
-/* Estados activos y focus (para evitar el azul) */
+
+/* Estados activos y focus */
 .btn-primary:active,
 .btn-primary:focus {
     background-color: var(--dark-purple) !important;
@@ -61,8 +62,6 @@
     color: #fff !important;
     box-shadow: none !important;
 }
-
-
 
 /* Badges */
 .badge.bg-primary {
@@ -89,59 +88,3 @@
     background-color: var(--primary-purple);
     border-color: var(--primary-purple);
 }
-
-/* Estilos para transición suave */
-#addSongModal.modal {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    z-index: 1060 !important;
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-}
-
-#addSongModal .modal-dialog {
-    margin: auto !important;
-    max-height: 95vh !important;
-    display: flex !important;
-    align-items: center !important;
-    min-height: 100vh !important;
-    transition: all 0.3s ease !important;
-}
-
-#addSongModal .modal-content {
-    max-height: 95vh !important;
-    width: 100% !important;
-    border: none !important;
-    border-radius: 0.5rem !important;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.056) !important;
-    transition: all 0.3s ease !important;
-}
-
-/* Animación de entrada más suave */
-.modal.fade .modal-dialog {
-    transition: transform 0.3s ease-out, opacity 0.3s ease-out !important;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    #addSongModal .modal-dialog {
-        margin: 0.5rem !important;
-        max-height: 98vh !important;
-    }
-    
-    #addSongModal .modal-content {
-        max-height: 98vh !important;
-    }
-}
-
-
-
-.modal-backdrop {
-    z-index: 1040 !important;
-     background-color: transparent !important;
-    pointer-events: none !important; 
-}
-

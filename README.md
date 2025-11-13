@@ -31,3 +31,15 @@ Local and emerging musicians especially in Medellín face serious difficulties i
    ```
 
 5. Open your browser and go to: http://127.0.0.1:8000
+
+ ### 📦 **Libraries Required Before Running the Program**
+
+Make sure to install the following dependencies before running the project:
+
+- **Django**
+- **Pillow**
+- **pandas**
+- **matplotlib**
+- **openpyxl**
+- **django-extensions**
+

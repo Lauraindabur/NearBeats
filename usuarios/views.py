@@ -4,6 +4,7 @@ from .models import Usuario
 from artist.models import ArtistProfile
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.urls import reverse  # Import para usar reverse y no hardcodear URLs
 
 # Registro de usuario
 def create_user_account(request):
@@ -31,13 +32,14 @@ def create_user_account(request):
                         }
                     )
             except Exception as e:
-                # No bloquear el registro por un fallo en creación de perfil, pero avisar
                 messages.warning(request, f"Advertencia al crear perfil de artista: {e}")
 
             messages.success(request, "Usuario registrado con éxito.")
-            # Redirige a login respetando next_page
+
+            # Redirige a login 
+            login_url = reverse('login')  
             if next_page:
-                return redirect(f"/login/?next={next_page}")
+                return redirect(f"{login_url}?next={next_page}")
             return redirect('login')
     else:
         form = RegistroUsuarioForm()
@@ -71,7 +73,7 @@ def logout_user(request):
     logout(request)
     storage = messages.get_messages(request)
     for _ in storage:
-        pass  # iterar para vaciar mensajes antiguos
+        pass  
 
     messages.success(request, "Has cerrado sesión correctamente.")
     return redirect('login')
